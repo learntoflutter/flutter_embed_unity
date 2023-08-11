@@ -1,0 +1,26 @@
+name: flutter_embed_unity_android
+description: Android implementation of the flutter_embed_unity plugin.
+publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+version: 0.0.1
+
+environment:
+  sdk: '>=3.0.6 <4.0.0'
+  flutter: ">=3.3.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_embed_unity_platform_interface: #^0.0.1
+    path: ../flutter_embed_unity_platform_interface
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+flutter:
+  plugin:
+    implements: flutter_embed_unity
+    platforms:
+      android:
+        package: com.jamesncl.dev.flutter_embed_unity_android
+        pluginClass: FlutterEmbedUnityAndroidPlugin

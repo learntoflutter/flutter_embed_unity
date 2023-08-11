@@ -1,0 +1,31 @@
+name: flutter_embed_unity
+description: Embed Unity 3D into Flutter apps. Designed to offer more basic functionality than other packages, but be more stable and maintainable
+version: 0.0.1
+publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+
+environment:
+  sdk: '>=3.0.6 <4.0.0'
+  flutter: ">=3.3.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  # The design on https://flutter.dev/go/federated-plugins was to leave
+  # this constraint as "any". We cannot do it right now as it fails pub publish
+  # validation, so we set a ^ constraint.
+  # TODO: Revisit this (either update this part in the design or the pub tool).
+  # https://github.com/flutter/flutter/issues/46264
+  flutter_embed_unity_platform_interface: #^0.0.1
+    path: ../flutter_embed_unity_platform_interface
+  flutter_embed_unity_android: #^0.0.1
+    path: ../flutter_embed_unity_android
+  flutter_embed_unity_ios: #^0.0.1
+    path: ../flutter_embed_unity_ios
+
+flutter:
+  plugin:
+    platforms:
+      android:
+        default_package: flutter_embed_unity_android
+      ios:
+        default_package: flutter_embed_unity_ios
