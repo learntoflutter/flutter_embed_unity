@@ -1,3 +1,2 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-  package="com.jamesncl.dev.flutter_embed_unity_android">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
 </manifest>
