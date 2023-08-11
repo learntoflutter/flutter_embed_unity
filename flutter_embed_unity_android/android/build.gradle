@@ -48,6 +48,13 @@ android {
 
     dependencies {
         testImplementation 'org.jetbrains.kotlin:kotlin-test'
+        // This is to include the .jar file in the libs folder containing Unity classes required
+        // to compile the plugin (because for example we extend com.unity3d.player.UnityPlayer)
+        // The .jar file is taken from the currently supported Unity Editor files: for Unity 2022.3
+        // LTS on Windows this can be found at:
+        // <Unity hub editors install folder>\2022.3.7f1\Editor\Data\PlaybackEngines\AndroidPlayer\Variations\mono\Development\Classes
+        // Use compileOnly because we only need this to compile the plugin during development - at
+        // runtime this dependency will be provided by the user's exported Unity project
         compileOnly fileTree(dir: 'libs', include: ['*.jar'])
     }
 
