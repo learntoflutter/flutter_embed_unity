@@ -46,8 +46,13 @@ class _MyAppState extends State<MyApp> {
         appBar: AppBar(
           title: const Text('Plugin example app'),
         ),
-        body: Center(
-          child: Text('Test: $_succeeded'),
+        body: Column(
+          children: [
+            const Expanded(
+              child: FlutterEmbed(),
+            ),
+            Text('Method call test: $_succeeded'),
+          ],
         ),
       ),
     );

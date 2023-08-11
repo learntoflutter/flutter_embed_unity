@@ -51,8 +51,10 @@ class _MyAppState extends State<MyApp> {
         appBar: AppBar(
           title: const Text('Plugin example app'),
         ),
-        body: Center(
-          child: Text('CanLaunch: $_canLaunch'),
+        body: Column(
+          children: [
+            Text('CanLaunch: $_canLaunch'),
+          ],
         ),
       ),
     );

@@ -6,7 +6,7 @@ import android.graphics.Color
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
-import com.jamesncl.dev.flutter_embed_unity_android.Constants.Companion.LOG_TAG
+import com.jamesncl.dev.flutter_embed_unity_android.Constants.Companion.logTag
 import io.flutter.Log
 import io.flutter.plugin.platform.PlatformView
 
@@ -41,19 +41,19 @@ class UnityPlatformView (
         FlutterEmbedUnityAndroidPlugin.views.remove(this)
         if (plugin.player?.parent === view) {
             if (FlutterEmbedUnityAndroidPlugin.views.isEmpty()) {
-                Log.d(LOG_TAG, "All UnityPlatformViews disposed, pausing Unity player")
+                Log.d(logTag, "All UnityPlatformViews disposed, pausing Unity player")
                 view.removeView(plugin.player)
                 plugin.player?.pause()
                 plugin.resetScreenOrientation()
             } else {
-                Log.d(LOG_TAG, "UnityPlatformView disposed, reattaching next view from list of ${FlutterEmbedUnityAndroidPlugin.views.size}")
+                Log.d(logTag, "UnityPlatformView disposed, reattaching next view from list of ${FlutterEmbedUnityAndroidPlugin.views.size}")
                 FlutterEmbedUnityAndroidPlugin.views[FlutterEmbedUnityAndroidPlugin.views.size - 1].reattach()
             }
         }
     }
 
     private fun attach() {
-        Log.d(LOG_TAG, "Attaching new UnityPlatformView and resuming UnityPlayer")
+        Log.d(logTag, "Attaching new UnityPlatformView and resuming UnityPlayer ${plugin.player}")
         if (plugin.player?.parent != null) {
             (plugin.player?.parent as ViewGroup).removeView(plugin.player)
         }

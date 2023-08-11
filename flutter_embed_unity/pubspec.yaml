@@ -22,6 +22,9 @@ dependencies:
   flutter_embed_unity_ios: #^0.0.1
     path: ../flutter_embed_unity_ios
 
+dev_dependencies:
+  flutter_lints: ^2.0.2
+
 flutter:
   plugin:
     platforms:
