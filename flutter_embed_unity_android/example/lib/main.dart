@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'dart:async';
 
 import 'package:flutter/services.dart';
+import 'package:flutter_embed_unity/flutter_embed_unity.dart';
 import 'package:flutter_embed_unity_android/flutter_embed_unity_android_platform_interface.dart';
 
 void main() {
@@ -53,7 +54,10 @@ class _MyAppState extends State<MyApp> {
         ),
         body: Column(
           children: [
-            Text('CanLaunch: $_canLaunch'),
+            const Expanded(
+              child: FlutterEmbed(),
+            ),
+            Text('Test: $_canLaunch'),
           ],
         ),
       ),

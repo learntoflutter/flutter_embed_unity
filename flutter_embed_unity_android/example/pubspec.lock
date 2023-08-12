@@ -67,10 +67,24 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_embed_unity:
+    dependency: "direct main"
+    description:
+      path: "../../flutter_embed_unity"
+      relative: true
+    source: path
+    version: "0.0.1"
   flutter_embed_unity_android:
     dependency: "direct main"
     description:
       path: ".."
+      relative: true
+    source: path
+    version: "0.0.1"
+  flutter_embed_unity_ios:
+    dependency: transitive
+    description:
+      path: "../../flutter_embed_unity_ios"
       relative: true
     source: path
     version: "0.0.1"
