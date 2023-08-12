@@ -45,8 +45,6 @@ https://docs.unity3d.com/2022.3/Documentation/Manual/UnityasaLibrary.html
 
 
 - Delete Burst
-- ???? Move gradle.properties from root to unityLibrary?
-- ???? Move launcher res to unityLibrary res?
 
 
 We're replacing launcher with our own app, but when we run, there will be an error:
@@ -56,12 +54,12 @@ We're replacing launcher with our own app, but when we run, there will be an err
 This is because unity is trying to read some string values from the `strings.xml` resouces file which it was expecting to find (`app_name` and `game_view_content_description`). Even though we don't actually use these, we still need them to be present to keep unity happy. So:
 
 - Copy strings.xml from `android\unityLibrary\launcher\src\main\res\values\` to `android\unityLibrary\unityLibrary\src\main\res\values\`
-- Now we can delete the `launcher` folder
+- Now we can delete the `launcher` folder, `gradle` folder, and files at the root export (`build.gradle`, `gradle.properties`, `local.properties`, `settings.gradle`)
 
 
 - Move contents of unityLibrary/unityLibrary to unityLibrary
-- ??? Delete ` android:extractNativeLibs="true"` from `<application ... >` tag in `android\unityLibrary\src\main\AndroidManifest.xml`
-- ??? Delete the whole `<activity>` under `<application>` in `android\unityLibrary\src\main\AndroidManifest.xml`
+- ??????????? Delete ` android:extractNativeLibs="true"` from `<application ... >` tag in `android\unityLibrary\src\main\AndroidManifest.xml`
+- Delete the whole `<activity>` under `<application>` in `android\unityLibrary\src\main\AndroidManifest.xml`
 
 By default, Unity has this in it's exported project build.gradle:
 
