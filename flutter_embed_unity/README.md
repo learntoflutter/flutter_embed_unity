@@ -44,7 +44,6 @@ See See https://docs.unity3d.com/2022.3/Documentation/Manual/UnityasaLibrary-And
 https://docs.unity3d.com/2022.3/Documentation/Manual/UnityasaLibrary.html
 
 
-- Delete Burst
 
 
 We're replacing launcher with our own app, but when we run, there will be an error:
@@ -114,4 +113,9 @@ dependencies {
 
 
 
+## Optional adjustments
 
+playerOptions.options = BuildOptions.AllowDebugging | BuildOptions.Development;
+PlayerSettings.SetIl2CppCompilerConfiguration(BuildTargetGroup.Android, isReleaseBuild ? Il2CppCompilerConfiguration.Release : Il2CppCompilerConfiguration.Debug);
+                PlayerSettings.SetIl2CppCodeGeneration(UnityEditor.Build.NamedBuildTarget.Android, UnityEditor.Build.Il2CppCodeGeneration.OptimizeSize);
+            
