@@ -1,9 +1,6 @@
 package com.jamesncl.dev.flutter_embed_unity_android
 
-import android.app.Activity
-import android.content.pm.ActivityInfo
 import android.util.Log
-import android.view.WindowManager
 import com.jamesncl.dev.flutter_embed_unity_android.Constants.Companion.logTag
 import com.jamesncl.dev.flutter_embed_unity_android.Constants.Companion.methodChannelIdentifier
 import com.jamesncl.dev.flutter_embed_unity_android.Constants.Companion.uniqueViewIdentifier
@@ -19,88 +16,60 @@ import io.flutter.plugin.common.MethodChannel
  * */
 class FlutterEmbedUnityAndroidPlugin: FlutterPlugin, ActivityAware {
   /// The MethodChannel that will the communication between Flutter and native Android
-  ///
-  /// This local reference serves to register the plugin with the Flutter Engine and unregister it
-  /// when the Flutter Engine is detached from the Activity
   private lateinit var channel : MethodChannel
-
-  private lateinit var pluginBinding: FlutterPlugin.FlutterPluginBinding
-
-  private val methodCallHandler = FlutterMethodCallHandler()
-  private var currentActivity: Activity? = null
-  private var initialActivityRequestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
-  internal var player: CustomUnityPlayer? = null
-
-  companion object {
-    val views: MutableList<UnityPlatformView> = mutableListOf()
-  }
+//  private lateinit var pluginBinding: FlutterPlugin.FlutterPluginBinding
+  private val unityPlayerManager = UnityPlayerManager()
+  private val methodCallHandler: FlutterMethodCallHandler = FlutterMethodCallHandler()
 
   override fun onAttachedToEngine(flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
-    pluginBinding = flutterPluginBinding
+    Log.d(logTag, "onAttachedToEngine")
+//    pluginBinding = flutterPluginBinding
     channel = MethodChannel(flutterPluginBinding.binaryMessenger, methodChannelIdentifier)
     channel.setMethodCallHandler(methodCallHandler)
 
-    Log.d(logTag, "onAttachedToEngine")
-
+    // Register a view factory
+    // On the Flutter side, when we create a PlatformView with our unique identifier:
+    //
+    // AndroidView(
+    //    viewType: Constants.uniqueViewIdentifier,
+    // )
+    //
+    // the UnityViewFactory will be invoked to create a UnityPlatformView:
     flutterPluginBinding
       .platformViewRegistry
       .registerViewFactory(
         uniqueViewIdentifier,
-        UnityViewFactory(this)
+        UnityViewFactory(unityPlayerManager)
       )
   }
 
 
   override fun onDetachedFromEngine(binding: FlutterPlugin.FlutterPluginBinding) {
+    Log.d(logTag, "onDetachedFromEngine")
     channel.setMethodCallHandler(null)
   }
 
   // ActivityAware
   override fun onAttachedToActivity(binding: ActivityPluginBinding) {
     Log.d(logTag, "onAttachedToActivity")
-    activityAttached(binding.activity)
+    unityPlayerManager.activityAttached(binding.activity)
   }
 
   // ActivityAware
   override fun onDetachedFromActivityForConfigChanges() {
     Log.d(logTag, "onDetachedFromActivityForConfigChanges")
-    activityDetached()
+    unityPlayerManager.activityDetached()
   }
 
   // ActivityAware
   override fun onReattachedToActivityForConfigChanges(binding: ActivityPluginBinding) {
     Log.d(logTag, "onReattachedToActivityForConfigChanges")
-    activityAttached(binding.activity)
+    unityPlayerManager.activityAttached(binding.activity)
   }
 
   // ActivityAware
   override fun onDetachedFromActivity() {
     Log.d(logTag, "onDetachedFromActivity")
-    activityDetached()
-  }
-
-  fun resetScreenOrientation() {
-    currentActivity?.requestedOrientation = initialActivityRequestedOrientation
-  }
-
-  private fun activityDetached() {
-    currentActivity = null
-    player?.destroy()
-    player = null
-  }
-  private fun activityAttached(activity: Activity) {
-    Log.d(logTag, "activityAttached 1")
-    initialActivityRequestedOrientation = activity.requestedOrientation
-    Log.d(logTag, "activityAttached 2")
-    currentActivity = activity
-    Log.d(logTag, "activityAttached 3")
-    try{
-      player = CustomUnityPlayer(activity)
-    }
-    catch(e: Throwable) {
-      Log.e(logTag, "Error creating CustomUnityPlayer: $e")
-    }
-    Log.d(logTag, "created player: ${player}")
-    activity.window.clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
+    unityPlayerManager.activityDetached()
   }
 }

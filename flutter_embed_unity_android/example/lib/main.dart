@@ -17,33 +17,9 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  bool? _canLaunch;
+
   final _flutterEmbedUnityAndroidPlugin = FlutterEmbedUnityAndroid();
-
-  @override
-  void initState() {
-    super.initState();
-    initPlatformState();
-  }
-
-  // Platform messages are asynchronous, so we initialize in an async method.
-  Future<void> initPlatformState() async {
-    try {
-      bool canLaunch =
-          await _flutterEmbedUnityAndroidPlugin.canLaunch('test');
-
-      // If the widget was removed from the tree while the asynchronous platform
-      // message was in flight, we want to discard the reply rather than calling
-      // setState to update our non-existent appearance.
-      if (mounted) {
-        setState(() {
-          _canLaunch = canLaunch;
-        });
-      }
-    } on PlatformException {
-      print('PlatformException calling _flutterEmbedUnityAndroidPlugin.canLaunch');
-    }
-  }
+  double _rotationSpeed = 15;
 
   @override
   Widget build(BuildContext context) {
@@ -57,7 +33,21 @@ class _MyAppState extends State<MyApp> {
             const Expanded(
               child: FlutterEmbed(),
             ),
-            Text('Test: $_canLaunch'),
+            Slider(
+              min: -100,
+              max: 100,
+              value: _rotationSpeed,
+              onChanged: (value) {
+                setState(() {
+                  _rotationSpeed = value;
+                  _flutterEmbedUnityAndroidPlugin.sendToUnity(
+                    "Cube",
+                    "SetRotationSpeed",
+                    value.toStringAsFixed(2),
+                  );
+                });
+              },
+            )
           ],
         ),
       ),

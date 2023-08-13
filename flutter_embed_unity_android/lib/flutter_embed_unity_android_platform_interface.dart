@@ -13,10 +13,10 @@ class FlutterEmbedUnityAndroid extends FlutterEmbedUnityPlatform {
   }
 
   @override
-  Future<bool> canLaunch(String url) async {
-    return _channel.invokeMethod<bool>(
-      'canLaunch',
-      <String, Object>{'url': url},
-    ).then((bool? value) => value ?? false);
+  Future<void> sendToUnity(String gameObjectName, String methodName, String data) async {
+    _channel.invokeMethod<bool>(
+        'sendToUnity',
+        <String>[gameObjectName, methodName, data],
+    );
   }
 }

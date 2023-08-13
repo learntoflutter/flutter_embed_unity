@@ -10,23 +10,20 @@ import com.jamesncl.dev.flutter_embed_unity_android.Constants.Companion.logTag
 import io.flutter.Log
 import io.flutter.plugin.platform.PlatformView
 
-class UnityPlatformView (
-    plugin: FlutterEmbedUnityAndroidPlugin,
-    context: Context,
-    id: Int
-) :
-    PlatformView {
-    private val plugin: FlutterEmbedUnityAndroidPlugin
-    val id: Int
+class UnityPlatformView (private val unityPlayerManager: UnityPlayerManager,
+    context: Context, id: Int) : PlatformView {
+
     private val view: FrameLayout
 
     init {
-        FlutterEmbedUnityAndroidPlugin.views.add(this)
-        this.plugin = plugin
-        this.id = id
+        views.add(this)
         view = FrameLayout(context)
         view.setBackgroundColor(Color.TRANSPARENT)
         attach()
+    }
+
+    companion object {
+        val views: MutableList<UnityPlatformView> = mutableListOf()
     }
 
     override fun getView(): View {
@@ -38,32 +35,32 @@ class UnityPlatformView (
     }
 
     private fun remove() {
-        FlutterEmbedUnityAndroidPlugin.views.remove(this)
-        if (plugin.player?.parent === view) {
-            if (FlutterEmbedUnityAndroidPlugin.views.isEmpty()) {
+        views.remove(this)
+        if (unityPlayerManager.player?.parent === view) {
+            if (views.isEmpty()) {
                 Log.d(logTag, "All UnityPlatformViews disposed, pausing Unity player")
-                view.removeView(plugin.player)
-                plugin.player?.pause()
-                plugin.resetScreenOrientation()
+                view.removeView(unityPlayerManager.player)
+                unityPlayerManager.player?.pause()
+                unityPlayerManager.resetScreenOrientation()
             } else {
-                Log.d(logTag, "UnityPlatformView disposed, reattaching next view from list of ${FlutterEmbedUnityAndroidPlugin.views.size}")
-                FlutterEmbedUnityAndroidPlugin.views[FlutterEmbedUnityAndroidPlugin.views.size - 1].reattach()
+                Log.d(logTag, "UnityPlatformView disposed, reattaching next view from list of ${views.size}")
+                views[views.size - 1].reattach()
             }
         }
     }
 
     private fun attach() {
-        Log.d(logTag, "Attaching new UnityPlatformView and resuming UnityPlayer ${plugin.player}")
-        if (plugin.player?.parent != null) {
-            (plugin.player?.parent as ViewGroup).removeView(plugin.player)
+        Log.d(logTag, "Attaching new UnityPlatformView and resuming UnityPlayer ${unityPlayerManager.player}")
+        if (unityPlayerManager.player?.parent != null) {
+            (unityPlayerManager.player?.parent as ViewGroup).removeView(unityPlayerManager.player)
         }
-        view.addView(plugin.player)
-        plugin.player?.windowFocusChanged(plugin.player!!.requestFocus())
-        plugin.player?.resume()
+        view.addView(unityPlayerManager.player)
+        unityPlayerManager.player?.windowFocusChanged(unityPlayerManager.player!!.requestFocus())
+        unityPlayerManager.player?.resume()
     }
 
     private fun reattach() {
-        if (plugin.player?.parent !== view) {
+        if (unityPlayerManager.player?.parent !== view) {
             attach()
         }
     }

@@ -7,16 +7,11 @@ import io.flutter.plugin.platform.PlatformView
 import io.flutter.plugin.platform.PlatformViewFactory
 
 
-class UnityViewFactory internal constructor(plugin: FlutterEmbedUnityAndroidPlugin) :
+class UnityViewFactory (private val unityPlayerManager: UnityPlayerManager) :
     PlatformViewFactory(null) {
-    private val plugin: FlutterEmbedUnityAndroidPlugin
-
-    init {
-        this.plugin = plugin
-    }
 
     override fun create(context: Context, viewId: Int, args: Any?): PlatformView {
-        Log.d(this.toString(), "create: $viewId")
-        return UnityPlatformView(plugin, context, viewId)
+        Log.d(this.toString(), "UnityViewFactory creating view $viewId")
+        return UnityPlatformView(unityPlayerManager, context, viewId)
     }
 }
