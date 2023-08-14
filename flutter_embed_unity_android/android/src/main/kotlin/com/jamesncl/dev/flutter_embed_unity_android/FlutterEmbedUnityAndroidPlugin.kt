@@ -1,6 +1,5 @@
 package com.jamesncl.dev.flutter_embed_unity_android
 
-import android.util.Log
 import com.jamesncl.dev.flutter_embed_unity_android.Constants.Companion.logTag
 import com.jamesncl.dev.flutter_embed_unity_android.Constants.Companion.methodChannelIdentifier
 import com.jamesncl.dev.flutter_embed_unity_android.Constants.Companion.uniqueViewIdentifier
@@ -8,6 +7,7 @@ import io.flutter.embedding.engine.plugins.FlutterPlugin
 import io.flutter.embedding.engine.plugins.activity.ActivityAware
 import io.flutter.embedding.engine.plugins.activity.ActivityPluginBinding
 import io.flutter.plugin.common.MethodChannel
+import io.flutter.Log
 
 /**
  * The plugin implements ActivityAware so that it can respond to Android activity-related events.
@@ -18,8 +18,8 @@ class FlutterEmbedUnityAndroidPlugin: FlutterPlugin, ActivityAware {
   /// The MethodChannel that will the communication between Flutter and native Android
   private lateinit var channel : MethodChannel
 //  private lateinit var pluginBinding: FlutterPlugin.FlutterPluginBinding
-  private val unityPlayerManager = UnityPlayerManager()
-  private val methodCallHandler: FlutterMethodCallHandler = FlutterMethodCallHandler()
+  private val methodCallHandler = FlutterMethodCallHandler()
+  private val bindFlutterActivityToViewFactory = BindFlutterActivityToViewFactory()
 
   override fun onAttachedToEngine(flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
     Log.d(logTag, "onAttachedToEngine")
@@ -39,7 +39,11 @@ class FlutterEmbedUnityAndroidPlugin: FlutterPlugin, ActivityAware {
       .platformViewRegistry
       .registerViewFactory(
         uniqueViewIdentifier,
-        UnityViewFactory(unityPlayerManager)
+        // The view factory needs access to the Flutter view, because it needs to be
+        // passed to the UnityPlayer which the view creates. However the activity is
+        // not available yet (it is only available when onAttachedToActivity is
+        // called). Therefore pass this intermediary which will be updated later
+        UnityViewFactory(bindFlutterActivityToViewFactory)
       )
   }
 
@@ -52,24 +56,24 @@ class FlutterEmbedUnityAndroidPlugin: FlutterPlugin, ActivityAware {
   // ActivityAware
   override fun onAttachedToActivity(binding: ActivityPluginBinding) {
     Log.d(logTag, "onAttachedToActivity")
-    unityPlayerManager.activityAttached(binding.activity)
+    bindFlutterActivityToViewFactory.flutterActivity = binding.activity
   }
 
   // ActivityAware
   override fun onDetachedFromActivityForConfigChanges() {
     Log.d(logTag, "onDetachedFromActivityForConfigChanges")
-    unityPlayerManager.activityDetached()
+    bindFlutterActivityToViewFactory.flutterActivity = null
   }
 
   // ActivityAware
   override fun onReattachedToActivityForConfigChanges(binding: ActivityPluginBinding) {
     Log.d(logTag, "onReattachedToActivityForConfigChanges")
-    unityPlayerManager.activityAttached(binding.activity)
+    bindFlutterActivityToViewFactory.flutterActivity = binding.activity
   }
 
   // ActivityAware
   override fun onDetachedFromActivity() {
     Log.d(logTag, "onDetachedFromActivity")
-    unityPlayerManager.activityDetached()
+    bindFlutterActivityToViewFactory.flutterActivity = null
   }
 }

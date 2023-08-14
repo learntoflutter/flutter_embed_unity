@@ -3,6 +3,7 @@ package com.jamesncl.dev.flutter_embed_unity_android
 import com.unity3d.player.UnityPlayer
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
+import io.flutter.Log
 
 class FlutterMethodCallHandler: MethodChannel.MethodCallHandler {
     override fun onMethodCall(call: MethodCall, result: MethodChannel.Result) {

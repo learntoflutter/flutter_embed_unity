@@ -1,67 +1,51 @@
 package com.jamesncl.dev.flutter_embed_unity_android
 
-
 import android.content.Context
 import android.graphics.Color
 import android.view.View
-import android.view.ViewGroup
 import android.widget.FrameLayout
-import com.jamesncl.dev.flutter_embed_unity_android.Constants.Companion.logTag
 import io.flutter.Log
 import io.flutter.plugin.platform.PlatformView
+import io.flutter.util.ViewUtils.getActivity
 
-class UnityPlatformView (private val unityPlayerManager: UnityPlayerManager,
-    context: Context, id: Int) : PlatformView {
+class UnityPlatformView(
+    viewFactoryContext: Context,
+    bindFlutterActivityToViewFactory: BindFlutterActivityToViewFactory,
+    val baseView: FrameLayout = FrameLayout(viewFactoryContext),
+    val player: UnityPlayerCustom = UnityPlayerCustom(bindFlutterActivityToViewFactory.flutterActivity!!)) : PlatformView {
 
-    private val view: FrameLayout
-
+//    private val baseView: View
+//
     init {
-        views.add(this)
-        view = FrameLayout(context)
-        view.setBackgroundColor(Color.TRANSPARENT)
-        attach()
+        baseView.setBackgroundColor(Color.GREEN)
+        baseView.addView(player)
+        // It's important to call windowFocusChanged, otherwise unity will not start
+        // (not sure why - UnityPlayer is undocumented)
+        player.windowFocusChanged(player.requestFocus())
     }
 
-    companion object {
-        val views: MutableList<UnityPlatformView> = mutableListOf()
-    }
-
+    // PlatformView
     override fun getView(): View {
-        return view
+        return baseView
     }
 
+    // PlatformView
+    override fun onFlutterViewAttached(flutterView: View) {
+        super.onFlutterViewAttached(flutterView)
+        Log.d(Constants.logTag, "UnityPlayerCustom onFlutterViewAttached, resuming Unity")
+        player.resume()  // UnityPlayer
+    }
+
+    // PlatformView
+    override fun onFlutterViewDetached() {
+        Log.d(Constants.logTag, "UnityPlayerCustom onFlutterViewDetached, pausing Unity")
+        player.pause()  // UnityPlayer
+        super.onFlutterViewDetached()
+    }
+
+    // PlatformView
     override fun dispose() {
-        remove()
-    }
-
-    private fun remove() {
-        views.remove(this)
-        if (unityPlayerManager.player?.parent === view) {
-            if (views.isEmpty()) {
-                Log.d(logTag, "All UnityPlatformViews disposed, pausing Unity player")
-                view.removeView(unityPlayerManager.player)
-                unityPlayerManager.player?.pause()
-                unityPlayerManager.resetScreenOrientation()
-            } else {
-                Log.d(logTag, "UnityPlatformView disposed, reattaching next view from list of ${views.size}")
-                views[views.size - 1].reattach()
-            }
-        }
-    }
-
-    private fun attach() {
-        Log.d(logTag, "Attaching new UnityPlatformView and resuming UnityPlayer ${unityPlayerManager.player}")
-        if (unityPlayerManager.player?.parent != null) {
-            (unityPlayerManager.player?.parent as ViewGroup).removeView(unityPlayerManager.player)
-        }
-        view.addView(unityPlayerManager.player)
-        unityPlayerManager.player?.windowFocusChanged(unityPlayerManager.player!!.requestFocus())
-        unityPlayerManager.player?.resume()
-    }
-
-    private fun reattach() {
-        if (unityPlayerManager.player?.parent !== view) {
-            attach()
-        }
+        Log.d(Constants.logTag, "UnityPlayerCustom dispose, destroying Unity")
+        player.destroy()  // UnityPlayer
     }
 }
