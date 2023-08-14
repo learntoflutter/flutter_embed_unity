@@ -11,6 +11,7 @@ public class CubeRotation : MonoBehaviour
     }
 
     public void SetRotationSpeed(string data) {
+        Debug.Log($"Unity received SetRotationSpeed {data}");
         _rotationSpeed = float.Parse(data);
     }
 }

@@ -1,13 +1,17 @@
 package com.jamesncl.dev.flutter_embed_unity_android
 
+import com.jamesncl.dev.flutter_embed_unity_android.Constants.Companion.logTag
 import com.unity3d.player.UnityPlayer
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
 import io.flutter.Log
+import java.util.Calendar
+import java.util.Date
 
 class FlutterMethodCallHandler: MethodChannel.MethodCallHandler {
     override fun onMethodCall(call: MethodCall, result: MethodChannel.Result) {
         if (call.method == "sendToUnity") {
+//            Log.i(logTag, "sendToUnity")
             val gameObjectMethodNameData = (call.arguments as List<*>).filterIsInstance<String>()
             UnityPlayer.UnitySendMessage(
                 gameObjectMethodNameData[0], // Unity game object name

@@ -5,6 +5,7 @@ using System.Drawing.Printing;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
+using PlasticPipe.PlasticProtocol.Messages;
 using UnityEditor;
 using UnityEditor.Build.Reporting;
 using UnityEngine;
@@ -128,6 +129,12 @@ internal class ProjectExporter
         buildGradleContents = regexAndroidBlock.Replace(buildGradleContents, "android {\n\tnamespace 'com.unity3d.player'", 1);
         File.WriteAllText(buildGradleFile.FullName, buildGradleContents);
         Debug.Log($"Added namespace 'com.unity3d.player' to {buildGradleFile.FullName} for Gradle 8 compatibility");
+
+        DirectoryInfo burstDebugInformation = new DirectoryInfo(Path.Join(exportPath, "..", "unityLibrary_BurstDebugInformation_DoNotShip"));
+        if(burstDebugInformation.Exists) {
+            FileIOHelpers.DeleteDirectoryAndContents(burstDebugInformation);
+            Debug.Log($"Deleted {burstDebugInformation.FullName}");
+        }
 
         Debug.Log("Transforming Unity export for Flutter integration complete");
     }
