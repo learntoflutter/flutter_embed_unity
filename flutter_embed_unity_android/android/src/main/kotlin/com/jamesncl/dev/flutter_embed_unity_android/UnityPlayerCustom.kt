@@ -1,26 +1,13 @@
 package com.jamesncl.dev.flutter_embed_unity_android
 
-import android.annotation.SuppressLint
 import android.app.Activity
-import android.content.Context
-import android.content.Intent
 import android.content.res.Configuration
-import android.os.Bundle
-import android.view.InputDevice
-import android.view.KeyEvent
-import android.view.MotionEvent
-import android.view.View
-import android.view.Window
 import com.jamesncl.dev.flutter_embed_unity_android.Constants.Companion.logTag
-import com.unity3d.player.IUnityPlayerLifecycleEvents
-import com.unity3d.player.MultiWindowSupport
 import com.unity3d.player.UnityPlayer
 import io.flutter.Log
-import io.flutter.plugin.platform.PlatformView
 
 
-class UnityPlayerCustom(activity: Activity) :
-    UnityPlayer(activity) {
+class UnityPlayerCustom(activity: Activity) : UnityPlayer(activity) {
 
     // IUnityPlayerLifecycleEvents
     override fun onUnityPlayerUnloaded() {

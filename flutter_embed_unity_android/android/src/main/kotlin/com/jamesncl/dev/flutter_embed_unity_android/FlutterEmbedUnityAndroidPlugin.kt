@@ -17,13 +17,10 @@ import io.flutter.Log
 class FlutterEmbedUnityAndroidPlugin: FlutterPlugin, ActivityAware {
   /// The MethodChannel that will the communication between Flutter and native Android
   private lateinit var channel : MethodChannel
-//  private lateinit var pluginBinding: FlutterPlugin.FlutterPluginBinding
   private val methodCallHandler = FlutterMethodCallHandler()
-  private val bindFlutterActivityToViewFactory = BindFlutterActivityToViewFactory()
 
   override fun onAttachedToEngine(flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
     Log.d(logTag, "onAttachedToEngine")
-//    pluginBinding = flutterPluginBinding
     channel = MethodChannel(flutterPluginBinding.binaryMessenger, methodChannelIdentifier)
     channel.setMethodCallHandler(methodCallHandler)
 
@@ -39,11 +36,7 @@ class FlutterEmbedUnityAndroidPlugin: FlutterPlugin, ActivityAware {
       .platformViewRegistry
       .registerViewFactory(
         uniqueViewIdentifier,
-        // The view factory needs access to the Flutter view, because it needs to be
-        // passed to the UnityPlayer which the view creates. However the activity is
-        // not available yet (it is only available when onAttachedToActivity is
-        // called). Therefore pass this intermediary which will be updated later
-        UnityViewFactory(bindFlutterActivityToViewFactory)
+        UnityViewFactory()
       )
   }
 
@@ -56,24 +49,20 @@ class FlutterEmbedUnityAndroidPlugin: FlutterPlugin, ActivityAware {
   // ActivityAware
   override fun onAttachedToActivity(binding: ActivityPluginBinding) {
     Log.d(logTag, "onAttachedToActivity")
-    bindFlutterActivityToViewFactory.flutterActivity = binding.activity
   }
 
   // ActivityAware
   override fun onDetachedFromActivityForConfigChanges() {
     Log.d(logTag, "onDetachedFromActivityForConfigChanges")
-    bindFlutterActivityToViewFactory.flutterActivity = null
   }
 
   // ActivityAware
   override fun onReattachedToActivityForConfigChanges(binding: ActivityPluginBinding) {
     Log.d(logTag, "onReattachedToActivityForConfigChanges")
-    bindFlutterActivityToViewFactory.flutterActivity = binding.activity
   }
 
   // ActivityAware
   override fun onDetachedFromActivity() {
     Log.d(logTag, "onDetachedFromActivity")
-    bindFlutterActivityToViewFactory.flutterActivity = null
   }
 }
