@@ -17,7 +17,11 @@ class FlutterMethodCallHandler: MethodChannel.MethodCallHandler {
                 gameObjectMethodNameData[0], // Unity game object name
                 gameObjectMethodNameData[1], // Game object method name
                 gameObjectMethodNameData[2]) // Data
-        } else {
+        }
+        else if(call.method == "reset") {
+
+        }
+        else {
             result.notImplemented()
         }
     }

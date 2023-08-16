@@ -13,10 +13,16 @@ class FlutterEmbedUnityAndroid extends FlutterEmbedUnityPlatform {
   }
 
   @override
-  Future<void> sendToUnity(String gameObjectName, String methodName, String data) async {
+  void sendToUnity(String gameObjectName, String methodName, String data) {
     _channel.invokeMethod<bool>(
         'sendToUnity',
         <String>[gameObjectName, methodName, data],
+    );
+  }
+
+  void reset() {
+    _channel.invokeMethod(
+      'reset',
     );
   }
 }

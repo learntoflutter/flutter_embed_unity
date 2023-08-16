@@ -33,6 +33,12 @@ class _MyAppState extends State<MyApp> {
             const Expanded(
               child: FlutterEmbed(),
             ),
+            ElevatedButton(
+              child: Text("Reset"),
+              onPressed: () {
+                _flutterEmbedUnityAndroidPlugin.reset();
+              },
+            ),
             Slider(
               min: -100,
               max: 100,

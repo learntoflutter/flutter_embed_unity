@@ -21,13 +21,13 @@ internal class ProjectExporter
             Debug.LogError("Building Android project failed");
         }
         else {
+            TransformExportedProject(buildPlayerOptions.locationPathName);
+
             // Debug.Log doesn't work until after BuildPipeline.BuildPlayer has executed
             foreach(var log in precheckWarnings) {
                 Debug.LogWarning(log);
             }
-
             Debug.Log($"Building Android project to {buildPlayerOptions.locationPathName} succeeded");
-            TransformExportedProject(buildPlayerOptions.locationPathName);
         }
     }
 

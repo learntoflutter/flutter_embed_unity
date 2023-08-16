@@ -30,8 +30,7 @@ abstract class FlutterEmbedUnityPlatform extends PlatformInterface {
     _instance = instance;
   }
 
-  /// Returns `true` if this platform is able to launch [url].
-  Future<bool> canLaunch(String url) {
+  void sendToUnity(String gameObjectName, String methodName, String data) {
     throw UnimplementedError('canLaunch() has not been implemented.');
   }
 }

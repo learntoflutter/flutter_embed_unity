@@ -1,8 +1,8 @@
 package com.jamesncl.dev.flutter_embed_unity_android
 
 import android.content.Context
-import android.graphics.Color
 import android.view.View
+import android.view.WindowManager
 import android.widget.FrameLayout
 import com.jamesncl.dev.flutter_embed_unity_android.Constants.Companion.logTag
 import io.flutter.Log
@@ -42,6 +42,8 @@ class UnityPlatformView(viewFactoryContext: Context) : PlatformView {
             // (not sure why - UnityPlayer is undocumented)
             player.windowFocusChanged(player.requestFocus())
             this.player = player
+
+//            activity.window.clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
         }
         else {
             Log.e(logTag,"Error constructing player: could not get Activity from view factory context")
