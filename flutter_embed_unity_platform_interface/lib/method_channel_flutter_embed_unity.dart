@@ -9,11 +9,19 @@ const MethodChannel _channel = MethodChannel('com.jamesncl.dev/flutter_embed_uni
 
 /// An implementation of [FlutterEmbedUnityPlatform] that uses method channels.
 class MethodChannelFlutterEmbedUnity extends FlutterEmbedUnityPlatform {
+
   @override
-  Future<bool> canLaunch(String url) {
-    return _channel.invokeMethod<bool>(
-      'canLaunch',
-      <String, Object>{'url': url},
-    ).then((bool? value) => value ?? false);
+  void sendToUnity(String gameObjectName, String methodName, String data) {
+    _channel.invokeMethod(
+      "sendToUnity",
+      [gameObjectName, methodName, data],
+    );
+  }
+
+  @override
+  void orientationChanged() {
+    _channel.invokeMethod(
+      "orientationChanged",
+    );
   }
 }

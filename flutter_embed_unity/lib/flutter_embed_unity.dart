@@ -6,6 +6,10 @@ export 'src/flutter_embed.dart' show FlutterEmbed;
 
 FlutterEmbedUnityPlatform get _platform => FlutterEmbedUnityPlatform.instance;
 
-Future<bool> canLaunch(String url) async {
-  return await _platform.canLaunch(url);
+void sendToUnity(String gameObjectName, String methodName, String data) {
+  _platform.sendToUnity(gameObjectName, methodName, data);
+}
+
+void orientationChanged() {
+  _platform.orientationChanged();
 }

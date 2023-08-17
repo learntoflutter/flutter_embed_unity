@@ -8,36 +8,8 @@ void main() {
   runApp(const MyApp());
 }
 
-class MyApp extends StatefulWidget {
+class MyApp extends StatelessWidget {
   const MyApp({super.key});
-
-  @override
-  State<MyApp> createState() => _MyAppState();
-}
-
-class _MyAppState extends State<MyApp> {
-
-  bool? _succeeded;
-
-  @override
-  void initState() {
-    super.initState();
-    initPlatformState();
-  }
-
-  Future<void> initPlatformState() async {
-    try {
-      bool succeeded = await canLaunch('test');
-
-      if (mounted) {
-        setState(() {
-          _succeeded = succeeded;
-        });
-      }
-    } on PlatformException {
-      print('PlatformException calling canLaunch');
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -46,12 +18,11 @@ class _MyAppState extends State<MyApp> {
         appBar: AppBar(
           title: const Text('Plugin example app'),
         ),
-        body: Column(
+        body: const Column(
           children: [
-            const Expanded(
+            Expanded(
               child: FlutterEmbed(),
             ),
-            Text('Method call test: $_succeeded'),
           ],
         ),
       ),

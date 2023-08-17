@@ -147,7 +147,7 @@ internal class ProjectExportChecker
 
                     if (confirmDeleteOldExport)
                     {
-                        FileIOHelpers.DeleteDirectoryAndContents(selectedDirectory);
+                        Directory.Delete(selectedDirectory.FullName, true);
                     }
                 }
 

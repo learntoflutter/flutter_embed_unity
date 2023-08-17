@@ -2,6 +2,45 @@
 
 Embed Unity 3D into Flutter apps. Designed to offer more basic functionality than other packages, but be more stable and maintainable
 
+## Limitations
+
+Breaking many of these rules, which is why this library is brittle / has workarounds:
+
+https://docs.unity3d.com/Manual/UnityasaLibrary.html
+https://docs.unity3d.com/Manual/UnityasaLibrary-Android.html
+
+
+On Android and iOS:
+Only full-screen rendering is supported. It’s not possible to render only on a part of the screen.
+When Unity is in an unloaded state (after calling Application.Unload), it retains some amount of memory (between 80–180Mb) to be able to instantly switch back and run again in the same process. The amount of memory that’s not released largely depends on the device’s graphics resolution.
+On iOS, if the Unity runtime quits entirely (after calling Application.Quit), it’s not possible to reload Unity again in the same app session.
+You can’t load more than one instance of the Unity runtime, or integrate more than one Unity runtime.
+
+
+
+
+## Required configurations
+
+### android:configChanges
+
+
+The UnityPlayer is not designed to be shown again after it is shut down, or used in Flutter widgets. 
+
+See https://docs.unity3d.com/Manual/UnityasaLibrary-Android.html
+> Quit - The application calls IUnityPlayerLifecycleEvents.onUnityPlayerQuitted when the Unity Player quits. The process that was running Unity ends after this call.
+
+Workarounds. One limitation is that we cannot handle the main FlutterActivity being destroyed (eg on orientation change). Therefore you must make sure that android:configChanges includes at least orientation, screenLayout, screenSize and keyboardHidden (to prevent crashes during orientation change) and ideally all the values included in the default configuration:
+
+android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
+
+See https://developer.android.com/guide/topics/manifest/activity-element#config
+https://developer.android.com/guide/topics/resources/runtime-changes
+
+### android:screenOrientation
+
+??????
+Do not set android:screenOrientation (eg android:screenOrientation="landscape"), this may cause unity to freeze after orientation change?????
+
 ## Getting Started
 
 This project is a starting point for a Flutter
@@ -92,6 +131,8 @@ See See https://docs.unity3d.com/2022.3/Documentation/Manual/UnityasaLibrary-And
 https://docs.unity3d.com/2022.3/Documentation/Manual/UnityasaLibrary.html
 
 Old and outdated but still useful background: https://forum.unity.com/threads/using-unity-as-a-library-in-native-ios-android-apps.685195/
+
+https://github.com/Unity-Technologies/uaal-example/blob/master/docs/android.md
 
 UnityPlayerActivity source:
 <Unity hub editors install folder>\2022.3.7f1\Editor\Data\PlaybackEngines\AndroidPlayer\Source\com\unity3d\player\UnityPlayerActivity.java

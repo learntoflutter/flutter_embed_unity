@@ -1,7 +1,4 @@
 import 'package:flutter/material.dart';
-import 'dart:async';
-
-import 'package:flutter/services.dart';
 import 'package:flutter_embed_unity/flutter_embed_unity.dart';
 import 'package:flutter_embed_unity_android/flutter_embed_unity_android_platform_interface.dart';
 
@@ -17,10 +14,6 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-
-  final _flutterEmbedUnityAndroidPlugin = FlutterEmbedUnityAndroid();
-  double _rotationSpeed = 15;
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -28,34 +21,66 @@ class _MyAppState extends State<MyApp> {
         appBar: AppBar(
           title: const Text('Plugin example app'),
         ),
-        body: Column(
-          children: [
-            const Expanded(
-              child: FlutterEmbed(),
-            ),
-            ElevatedButton(
-              child: Text("Reset"),
+        body: Builder(
+          builder: (context) => Center(
+            child: ElevatedButton(
+              child: Text("Open unity screen"),
               onPressed: () {
-                _flutterEmbedUnityAndroidPlugin.reset();
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => const UnityScreen()));
               },
             ),
-            Slider(
-              min: -100,
-              max: 100,
-              value: _rotationSpeed,
-              onChanged: (value) {
-                setState(() {
-                  _rotationSpeed = value;
-                  _flutterEmbedUnityAndroidPlugin.sendToUnity(
-                    "Cube",
-                    "SetRotationSpeed",
-                    value.toStringAsFixed(2),
-                  );
-                });
-              },
-            )
-          ],
+          ),
         ),
+      ),
+    );
+  }
+}
+
+
+class UnityScreen extends StatefulWidget {
+
+  const UnityScreen();
+
+  @override
+  State<UnityScreen> createState() => _UnityScreenState();
+}
+
+class _UnityScreenState extends State<UnityScreen> {
+
+  double _rotationSpeed = 15;
+
+  @override
+  Widget build(BuildContext context) {
+    // final theme = Theme.of(context);
+    // final localisedText = AppLocalizations.of(context)!;
+    // final orientation = MediaQuery.of(context).orientation;
+
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Unity'),
+      ),
+      body: Column(
+        children: [
+          const Expanded(
+            child: FlutterEmbed(),
+          ),
+          Slider(
+            min: -100,
+            max: 100,
+            value: _rotationSpeed,
+            onChanged: (value) {
+              setState(() {
+                _rotationSpeed = value;
+                sendToUnity(
+                  "Cube",
+                  "SetRotationSpeed",
+                  value.toStringAsFixed(2),
+                );
+              });
+            },
+          )
+        ],
       ),
     );
   }

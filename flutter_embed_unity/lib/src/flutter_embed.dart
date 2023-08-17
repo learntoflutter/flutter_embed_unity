@@ -1,5 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_embed_unity/src/orientation_change_detector.dart';
+import 'package:flutter_embed_unity/flutter_embed_unity.dart';
 
 import 'constants.dart';
 
@@ -16,7 +18,7 @@ class _FlutterEmbedState extends State<FlutterEmbed> {
   @override
   void dispose() {
     if (defaultTargetPlatform == TargetPlatform.iOS) {
-      // TODO: Handle disposal on ios
+      // TODO: Handle disposal on ios?
       //controller?._channel?.invokeMethod('dispose');
     }
     super.dispose();
@@ -26,13 +28,19 @@ class _FlutterEmbedState extends State<FlutterEmbed> {
   Widget build(BuildContext context) {
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
-        return AndroidView(
-          viewType: Constants.uniqueViewIdentifier,
-          onPlatformViewCreated: (int id) {
-            debugPrint('FlutterEmbed: onPlatformViewCreated($id)');
+        return OrientationChangeDetector(
+          onBuildOrientationChanged: () {
+            orientationChanged();
           },
+          child: AndroidView(
+            viewType: Constants.uniqueViewIdentifier,
+            onPlatformViewCreated: (int id) {
+              debugPrint('FlutterEmbed: onPlatformViewCreated($id)');
+            },
+          ),
         );
       case TargetPlatform.iOS:
+        // TODO: is orientation changed also needed for ios?
         return UiKitView(
           viewType: Constants.uniqueViewIdentifier,
           onPlatformViewCreated: (int id) {

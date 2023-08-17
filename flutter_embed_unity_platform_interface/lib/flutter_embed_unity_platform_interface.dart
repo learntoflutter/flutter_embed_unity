@@ -17,7 +17,7 @@ abstract class FlutterEmbedUnityPlatform extends PlatformInterface {
 
   static final Object _token = Object();
 
-  static FlutterEmbedUnityPlatform _instance = new MethodChannelFlutterEmbedUnity();
+  static FlutterEmbedUnityPlatform _instance = MethodChannelFlutterEmbedUnity();
 
   /// The default instance of [FlutterEmbedUnityPlatform] to use,
   /// defaults to [FlutterEmbedUnityPlatformUnsupported].
@@ -31,6 +31,10 @@ abstract class FlutterEmbedUnityPlatform extends PlatformInterface {
   }
 
   void sendToUnity(String gameObjectName, String methodName, String data) {
-    throw UnimplementedError('canLaunch() has not been implemented.');
+    throw UnimplementedError('sendToUnity() has not been implemented.');
+  }
+
+  void orientationChanged() {
+    throw UnimplementedError('orientationChanged() has not been implemented.');
   }
 }

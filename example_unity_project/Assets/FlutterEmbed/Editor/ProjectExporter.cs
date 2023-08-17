@@ -76,12 +76,12 @@ internal class ProjectExporter
 
         // The launcher folder can now be deleted
         DirectoryInfo launcherDirectory = new DirectoryInfo(Path.Combine(exportPath, "launcher"));
-        FileIOHelpers.DeleteDirectoryAndContents(launcherDirectory);
+        Directory.Delete(launcherDirectory.FullName, true);
         Debug.Log($"Deleted {launcherDirectory.FullName}");
 
         // The gradle folder can be deleted
         DirectoryInfo gradleDirectory = new DirectoryInfo(Path.Combine(exportPath, "gradle"));
-        FileIOHelpers.DeleteDirectoryAndContents(gradleDirectory);
+        Directory.Delete(gradleDirectory.FullName, true);
         Debug.Log($"Deleted {gradleDirectory.FullName}");
 
         // The files at the root of exportPath can be deleted
@@ -100,7 +100,7 @@ internal class ProjectExporter
             ShowErrorMessage($"Unexpected error: '{unityLibrarySubModuleDirectory.FullName} not found");
             return;
         }
-        FileIOHelpers.MoveContentsOfDirectory(unityLibrarySubModuleDirectory, exportDirectory);
+        MoveContentsOfDirectory(unityLibrarySubModuleDirectory, exportDirectory);
         unityLibrarySubModuleDirectory.Delete(true);
         Debug.Log($"Moved {unityLibrarySubModuleDirectory.FullName} to {exportDirectory.FullName}");
 
@@ -132,7 +132,7 @@ internal class ProjectExporter
 
         DirectoryInfo burstDebugInformation = new DirectoryInfo(Path.Join(exportPath, "..", "unityLibrary_BurstDebugInformation_DoNotShip"));
         if(burstDebugInformation.Exists) {
-            FileIOHelpers.DeleteDirectoryAndContents(burstDebugInformation);
+            Directory.Delete(burstDebugInformation.FullName, true);
             Debug.Log($"Deleted {burstDebugInformation.FullName}");
         }
 
@@ -145,5 +145,23 @@ internal class ProjectExporter
                         "Export incomplete",
                         errorMessage,
                         "Okay");
+    }
+
+     private void MoveContentsOfDirectory(DirectoryInfo from, DirectoryInfo to) {
+        Directory.CreateDirectory(to.FullName);
+
+        // Copy each file into the new directory.
+        foreach (FileInfo fi in from.GetFiles())
+        {
+            fi.MoveTo(Path.Combine(to.FullName, fi.Name));
+        }
+
+        // Copy each subdirectory using recursion.
+        foreach (DirectoryInfo diSourceSubDir in from.GetDirectories())
+        {
+            DirectoryInfo nextTargetSubDir =
+                to.CreateSubdirectory(diSourceSubDir.Name);
+            MoveContentsOfDirectory(diSourceSubDir, nextTargetSubDir);
+        }   
     }
 }
