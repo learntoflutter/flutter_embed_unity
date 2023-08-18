@@ -34,6 +34,7 @@ class UnityPlatformView(private val unityPlayerCustom: UnityPlayerCustom, viewFa
         // It's important to call windowFocusChanged, otherwise unity will not start
         // (not sure why - UnityPlayer is undocumented)
         unityPlayerCustom.windowFocusChanged(unityPlayerCustom.requestFocus())
+        unityPlayerCustom.resume()  // UnityPlayer
     }
 
     override fun orientationChanged() {
@@ -60,7 +61,7 @@ class UnityPlatformView(private val unityPlayerCustom: UnityPlayerCustom, viewFa
     override fun onFlutterViewAttached(flutterView: View) {
         super.onFlutterViewAttached(flutterView)
         Log.d(logTag, "UnityPlatformView onFlutterViewAttached, resuming Unity")
-        unityPlayerCustom.resume()  // UnityPlayer
+
     }
 
     // PlatformView
@@ -74,8 +75,9 @@ class UnityPlatformView(private val unityPlayerCustom: UnityPlayerCustom, viewFa
     override fun dispose() {
         Log.d(logTag, "UnityPlatformView dispose, pausing Unity and detaching from view")
         baseView.removeView(unityPlayerCustom)
-        unityPlayerCustom.removeAllViews()
+//        unityPlayerCustom.removeAllViews()
         unityPlayerCustom.pause()
+//        unityPlayerCustom.unload()
         // DO NOT call unityPlayerCustom.destroy(). UnityPlayer will also kill the process it is
         // running in, because it was designed to be run within it's own activity launched in it's
         // own process. We can't make FlutterActivity launch in it's own process, because it's the
