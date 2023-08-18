@@ -16,14 +16,23 @@ class UnityPlayerCustom(activity: Activity) : UnityPlayer(activity) {
     // reused in multiple views. Calling unityPlayer.destroy() will kill the
     // whole process the FlutterActivity runs in. The workaround is to only
     // create UnityPlayer once, and keep it alive when the view is disposed
-    // so it can be reattach onto the next view
+    // so it can be reattach onto the next view. I think it's okay to suppress
+    // warning about static field leak because the UnityPlayer must be kept
+    // alive while the app is running
     companion object {
         @SuppressLint("StaticFieldLeak")
         private var singleton: UnityPlayerCustom? = null
         fun getInstance(activity: Activity) : UnityPlayerCustom {
-            val player = UnityPlayerCustom(activity)
-            singleton = player
-            return player
+            singleton.let{
+                if(it != null) {
+                    return it
+                }
+                else {
+                    val player = UnityPlayerCustom(activity)
+                    singleton = player
+                    return player
+                }
+            }
         }
     }
 

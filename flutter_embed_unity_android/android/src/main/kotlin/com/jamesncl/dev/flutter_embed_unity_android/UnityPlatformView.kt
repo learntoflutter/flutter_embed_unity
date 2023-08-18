@@ -61,7 +61,6 @@ class UnityPlatformView(private val unityPlayerCustom: UnityPlayerCustom, viewFa
     override fun onFlutterViewAttached(flutterView: View) {
         super.onFlutterViewAttached(flutterView)
         Log.d(logTag, "UnityPlatformView onFlutterViewAttached, resuming Unity")
-
     }
 
     // PlatformView

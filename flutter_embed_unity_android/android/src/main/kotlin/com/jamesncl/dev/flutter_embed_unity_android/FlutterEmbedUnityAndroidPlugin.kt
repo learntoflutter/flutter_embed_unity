@@ -21,6 +21,7 @@ class FlutterEmbedUnityAndroidPlugin: FlutterPlugin, ActivityAware {
   // the method call handler (so method calls can interact with the UnityPlayer) and to
   // the PlatformViewFactory (which will update the reference when a new PlatformView is created)
   private val platformViewRegistry = PlatformViewRegistry()
+  private val flutterActivityRegistry = FlutterActivityRegistry()
   private val methodCallHandler = FlutterMethodCallHandler(platformViewRegistry)
 
   override fun onAttachedToEngine(flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
@@ -39,7 +40,7 @@ class FlutterEmbedUnityAndroidPlugin: FlutterPlugin, ActivityAware {
       .platformViewRegistry
       .registerViewFactory(
         uniqueViewIdentifier,
-        UnityViewFactory(platformViewRegistry)
+        UnityViewFactory(flutterActivityRegistry, platformViewRegistry)
       )
   }
 
@@ -52,6 +53,7 @@ class FlutterEmbedUnityAndroidPlugin: FlutterPlugin, ActivityAware {
   // ActivityAware
   override fun onAttachedToActivity(binding: ActivityPluginBinding) {
     Log.d(logTag, "onAttachedToActivity")
+    flutterActivityRegistry.activity = binding.activity
   }
 
   // ActivityAware
@@ -70,11 +72,14 @@ class FlutterEmbedUnityAndroidPlugin: FlutterPlugin, ActivityAware {
     // activity, on a separate process, and not to be reused
     // See https://docs.unity3d.com/Manual/UnityasaLibrary-Android.html
     // TODO(Is there any way to handle FlutterActivity onDestroy()?)
+
+    flutterActivityRegistry.activity = null
   }
 
   // ActivityAware
   override fun onReattachedToActivityForConfigChanges(binding: ActivityPluginBinding) {
     Log.d(logTag, "onReattachedToActivityForConfigChanges")
+    flutterActivityRegistry.activity = binding.activity
   }
 
   // ActivityAware
@@ -82,5 +87,6 @@ class FlutterEmbedUnityAndroidPlugin: FlutterPlugin, ActivityAware {
     Log.w(logTag, "onDetachedFromActivity - this means the Flutter activity " +
             "for your app was destroyed. This scenario is not supported ")
     // TODO(Is there any way to handle FlutterActivity onDestroy()?)
+    flutterActivityRegistry.activity = null
   }
 }
