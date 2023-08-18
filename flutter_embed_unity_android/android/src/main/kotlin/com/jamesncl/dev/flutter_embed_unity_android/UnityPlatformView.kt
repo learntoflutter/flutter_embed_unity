@@ -1,13 +1,11 @@
 package com.jamesncl.dev.flutter_embed_unity_android
 
 import android.content.Context
-import android.content.pm.ActivityInfo
 import android.view.View
 import android.widget.FrameLayout
-import com.jamesncl.dev.flutter_embed_unity_android.Constants.Companion.logTag
+import com.jamesncl.dev.flutter_embed_unity_android.FlutterEmbedConstants.Companion.logTag
 import io.flutter.Log
 import io.flutter.plugin.platform.PlatformView
-import io.flutter.util.ViewUtils.getActivity
 
 
 class UnityPlatformView(private val unityPlayerCustom: UnityPlayerCustom, viewFactoryContext: Context) : PlatformView, IPlatformViewControl {

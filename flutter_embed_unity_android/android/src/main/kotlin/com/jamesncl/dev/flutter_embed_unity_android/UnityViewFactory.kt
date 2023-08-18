@@ -1,13 +1,11 @@
 package com.jamesncl.dev.flutter_embed_unity_android
 
-import android.app.Activity
 import android.content.Context
 import android.view.View
-import com.jamesncl.dev.flutter_embed_unity_android.Constants.Companion.logTag
+import com.jamesncl.dev.flutter_embed_unity_android.FlutterEmbedConstants.Companion.logTag
 import io.flutter.Log
 import io.flutter.plugin.platform.PlatformView
 import io.flutter.plugin.platform.PlatformViewFactory
-import io.flutter.util.ViewUtils.getActivity
 
 
 class UnityViewFactory(

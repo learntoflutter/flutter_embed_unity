@@ -2,9 +2,7 @@ package com.jamesncl.dev.flutter_embed_unity_android
 
 import android.annotation.SuppressLint
 import android.app.Activity
-import android.content.res.Configuration
-import android.os.Process
-import com.jamesncl.dev.flutter_embed_unity_android.Constants.Companion.logTag
+import com.jamesncl.dev.flutter_embed_unity_android.FlutterEmbedConstants.Companion.logTag
 import com.unity3d.player.UnityPlayer
 import io.flutter.Log
 

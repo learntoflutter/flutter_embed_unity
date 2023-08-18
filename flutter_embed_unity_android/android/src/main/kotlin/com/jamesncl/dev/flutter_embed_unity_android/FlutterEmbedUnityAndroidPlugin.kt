@@ -1,8 +1,7 @@
 package com.jamesncl.dev.flutter_embed_unity_android
 
-import com.jamesncl.dev.flutter_embed_unity_android.Constants.Companion.logTag
-import com.jamesncl.dev.flutter_embed_unity_android.Constants.Companion.methodChannelIdentifier
-import com.jamesncl.dev.flutter_embed_unity_android.Constants.Companion.uniqueViewIdentifier
+import com.jamesncl.dev.flutter_embed_unity_android.FlutterEmbedConstants.Companion.logTag
+import com.jamesncl.dev.flutter_embed_unity_android.FlutterEmbedConstants.Companion.uniqueIdentifier
 import io.flutter.embedding.engine.plugins.FlutterPlugin
 import io.flutter.embedding.engine.plugins.activity.ActivityAware
 import io.flutter.embedding.engine.plugins.activity.ActivityPluginBinding
@@ -26,7 +25,7 @@ class FlutterEmbedUnityAndroidPlugin: FlutterPlugin, ActivityAware {
 
   override fun onAttachedToEngine(flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
     Log.d(logTag, "onAttachedToEngine")
-    channel = MethodChannel(flutterPluginBinding.binaryMessenger, methodChannelIdentifier)
+    channel = MethodChannel(flutterPluginBinding.binaryMessenger, uniqueIdentifier)
     channel.setMethodCallHandler(methodCallHandler)
 
     // Register a view factory
@@ -39,7 +38,7 @@ class FlutterEmbedUnityAndroidPlugin: FlutterPlugin, ActivityAware {
     flutterPluginBinding
       .platformViewRegistry
       .registerViewFactory(
-        uniqueViewIdentifier,
+        uniqueIdentifier,
         UnityViewFactory(flutterActivityRegistry, platformViewRegistry)
       )
   }

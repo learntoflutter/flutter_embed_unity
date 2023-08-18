@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_embed_unity/src/orientation_change_detector.dart';
 import 'package:flutter_embed_unity/flutter_embed_unity.dart';
+import 'package:flutter_embed_unity_platform_interface/flutter_embed_constants.dart';
 
 import 'constants.dart';
 
@@ -33,7 +34,7 @@ class _FlutterEmbedState extends State<FlutterEmbed> {
             orientationChanged();
           },
           child: AndroidView(
-            viewType: Constants.uniqueViewIdentifier,
+            viewType: FlutterEmbedConstants.uniqueIdentifier,
             onPlatformViewCreated: (int id) {
               debugPrint('FlutterEmbed: onPlatformViewCreated($id)');
             },
@@ -42,7 +43,7 @@ class _FlutterEmbedState extends State<FlutterEmbed> {
       case TargetPlatform.iOS:
         // TODO: is orientation changed also needed for ios?
         return UiKitView(
-          viewType: Constants.uniqueViewIdentifier,
+          viewType: FlutterEmbedConstants.uniqueIdentifier,
           onPlatformViewCreated: (int id) {
             debugPrint('FlutterEmbed: onPlatformViewCreated($id)');
           },
