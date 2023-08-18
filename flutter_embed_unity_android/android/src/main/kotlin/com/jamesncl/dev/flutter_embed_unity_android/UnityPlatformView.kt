@@ -9,24 +9,25 @@ import io.flutter.Log
 import io.flutter.plugin.platform.PlatformView
 import io.flutter.util.ViewUtils.getActivity
 
-// UnityPlayerCustom extends UnityPlayer, which is itself a View. So in theory we could
-// just use UnityPlayerCustom as the view returned from this PlatformView. However there
-// a couple of problems:
-//
 
-//
-// - The view returned by PlatformView must be the same context which is passed to the
-//   PlatformViewFactory onCreate method, otherwise we get this warning:
-//   "Unexpected platform view context for view ID 0; some functionality may not work correctly.
-//   When constructing a platform view in the factory, ensure that the view returned from
-//   PlatformViewFactory#create returns the provided context from getContext()"
-//
-// The solution used here to resolve these conflicting requirements is to use an intermediate
-// View (a FrameLayout) which sits between the PlatformView and UnityPlayerCustom. Then we can construct
-// the FrameLayout using the context from the view factory, and add the UnityPlayer which is
-// constructed from the activity (which is retrieved from the context)
 class UnityPlatformView(private val unityPlayerCustom: UnityPlayerCustom, viewFactoryContext: Context) : PlatformView, IPlatformViewControl {
 
+    // UnityPlayerCustom extends UnityPlayer, which is itself a View. So in theory we could
+    // just use UnityPlayerCustom as the view returned from this PlatformView. However there
+    // is a problem:
+    //
+    // - The view returned by PlatformView must be the same context which is passed to the
+    //   PlatformViewFactory onCreate method, otherwise we get this warning:
+    //   "Unexpected platform view context for view ID 0; some functionality may not work correctly.
+    //   When constructing a platform view in the factory, ensure that the view returned from
+    //   PlatformViewFactory#create returns the provided context from getContext()"
+    // - The UnityPlayerCustom is created using the activity returned from the flutter
+    //   binding. This is not the same context, so adding the UnityPlayerCustom directly
+    //   results in the warning above
+    //
+    // The solution used here is to use an intermediate View (a FrameLayout) which sits between
+    // the PlatformView and UnityPlayerCustom. Then we can construct the FrameLayout using the
+    // context from the view factory, and add the UnityPlayer to that
     private val baseView: FrameLayout = FrameLayout(viewFactoryContext)
 
     init {
