@@ -37,12 +37,4 @@ abstract class FlutterEmbedUnityPlatform extends PlatformInterface {
   void orientationChanged() {
     throw UnimplementedError('orientationChanged() has not been implemented.');
   }
-
-  void addUnityMessageListener(Function(String) listener) {
-    throw UnimplementedError('addUnityMessageListener() has not been implemented.');
-  }
-
-  void removeUnityMessageListener(Function(String) listener) {
-    throw UnimplementedError('removeUnityMessageListener() has not been implemented.');
-  }
 }

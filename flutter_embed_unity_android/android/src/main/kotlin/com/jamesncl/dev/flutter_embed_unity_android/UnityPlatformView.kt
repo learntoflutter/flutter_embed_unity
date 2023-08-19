@@ -50,7 +50,6 @@ class UnityPlatformView(private val unityPlayerCustom: UnityPlayerCustom, viewFa
 
     // PlatformView
     override fun getView(): View {
-        Log.d(logTag, "UnityPlatformView getView")
         // The view returned by PlatformView must be created from the same context
         // which is passed to the PlatformViewFactory onCreate method
         return baseView

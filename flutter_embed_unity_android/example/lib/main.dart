@@ -47,21 +47,12 @@ class UnityScreen extends StatefulWidget {
 
 class _UnityScreenState extends State<UnityScreen> {
 
-  double _rotationSpeed = 100;
-
-  @override
-  void initState() {
-    addUnityMessageListener((String data) {
-      debugPrint("Received! $data");
-    });
-    super.initState();
-  }
+  double _rotationSpeed = 50;
+  int _numberOfTaps = 0;
 
   @override
   Widget build(BuildContext context) {
-    // final theme = Theme.of(context);
-    // final localisedText = AppLocalizations.of(context)!;
-    // final orientation = MediaQuery.of(context).orientation;
+    final theme = Theme.of(context);
 
     return Scaffold(
       appBar: AppBar(
@@ -69,23 +60,51 @@ class _UnityScreenState extends State<UnityScreen> {
       ),
       body: Column(
         children: [
-          const Expanded(
-            child: FlutterEmbed(),
+          Expanded(
+            child: FlutterEmbed(
+              onMessageFromUnity: (String data) {
+                if(data == "touch") {
+                  setState(() {
+                    _numberOfTaps++;
+                  });
+                }
+              },
+            ),
           ),
-          Slider(
-            min: -200,
-            max: 200,
-            value: _rotationSpeed,
-            onChanged: (value) {
-              setState(() {
-                _rotationSpeed = value;
-                sendToUnity(
-                  "FlutterLogo",
-                  "SetRotationSpeed",
-                  value.toStringAsFixed(2),
-                );
-              });
-            },
+          Padding(
+            padding: const EdgeInsets.all(16),
+            child: Text(
+              "Flutter logo has been touched $_numberOfTaps times",
+              textAlign: TextAlign.center,
+              style: theme.textTheme.titleMedium,
+            ),
+          ),
+          Row(
+            children: [
+              const Padding(
+                padding: EdgeInsets.only(left: 16),
+                child: Text(
+                  "Speed",
+                ),
+              ),
+              Expanded(
+                child: Slider(
+                  min: -200,
+                  max: 200,
+                  value: _rotationSpeed,
+                  onChanged: (value) {
+                    setState(() {
+                      _rotationSpeed = value;
+                      sendToUnity(
+                        "FlutterLogo",
+                        "SetRotationSpeed",
+                        value.toStringAsFixed(2),
+                      );
+                    });
+                  },
+                ),
+              ),
+            ],
           )
         ],
       ),
