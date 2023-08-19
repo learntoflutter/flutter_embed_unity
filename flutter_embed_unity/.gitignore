@@ -1,3 +1,6 @@
+# Example unity project build files
+example/android/unityLibrary/
+
 # FVM
 .fvm
 
