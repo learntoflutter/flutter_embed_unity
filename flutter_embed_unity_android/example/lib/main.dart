@@ -47,7 +47,7 @@ class UnityScreen extends StatefulWidget {
 
 class _UnityScreenState extends State<UnityScreen> {
 
-  double _rotationSpeed = 50;
+  double _rotationSpeed = 30;
   int _numberOfTaps = 0;
 
   @override
