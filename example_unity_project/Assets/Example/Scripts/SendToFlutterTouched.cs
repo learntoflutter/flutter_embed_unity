@@ -10,7 +10,6 @@ public class SendToFlutterTouched : MonoBehaviour
             RaycastHit hit;
             if (Physics.Raycast(ray, out hit))
             {
-                Debug.Log($"{gameObject.name} was touched");
                 SendToFlutter.Send("touch");
             }
         }

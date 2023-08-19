@@ -30,7 +30,6 @@ public class SendToFlutter {
    @Keep
    public static void sendToFlutter(String data) {
       new Handler(Looper.getMainLooper()).post(() -> {
-         Log.d(logTag,"Android received message from Unity, forwarding to Flutter");
          if(methodChannel != null) {
             methodChannel.invokeMethod(methodNameSendToFlutter, data);
          }
