@@ -25,8 +25,12 @@ class FlutterEmbedUnityAndroidPlugin: FlutterPlugin, ActivityAware {
 
   override fun onAttachedToEngine(flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
     Log.d(logTag, "onAttachedToEngine")
+    // Set up the method channel between flutter and android
     channel = MethodChannel(flutterPluginBinding.binaryMessenger, uniqueIdentifier)
     channel.setMethodCallHandler(methodCallHandler)
+    // Register the method channel with SendToFlutter static class (which is called by Unity)
+    // so messages from Unity can be forwarded on to Flutter
+    SendToFlutter.methodChannel = channel
 
     // Register a view factory
     // On the Flutter side, when we create a PlatformView with our unique identifier:
@@ -39,6 +43,9 @@ class FlutterEmbedUnityAndroidPlugin: FlutterPlugin, ActivityAware {
       .platformViewRegistry
       .registerViewFactory(
         uniqueIdentifier,
+        // The factory needs the activity which will be received in onAttachedToActivity
+        // so that the UnityPlayer can be created. It also needs to be able to update the
+        // platformViewRegistry with the current PlatformView each time a PlatformView is created
         UnityViewFactory(flutterActivityRegistry, platformViewRegistry)
       )
   }

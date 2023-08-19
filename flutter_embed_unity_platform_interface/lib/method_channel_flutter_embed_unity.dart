@@ -11,10 +11,16 @@ const MethodChannel _channel = MethodChannel(FlutterEmbedConstants.uniqueIdentif
 /// An implementation of [FlutterEmbedUnityPlatform] that uses method channels.
 class MethodChannelFlutterEmbedUnity extends FlutterEmbedUnityPlatform {
 
+  List<Function(String)> _listeners = [];
+
+  MethodChannelFlutterEmbedUnity() {
+    _channel.setMethodCallHandler(_methodCallHandler);
+  }
+
   @override
   void sendToUnity(String gameObjectName, String methodName, String data) {
     _channel.invokeMethod(
-      "sendToUnity",
+      FlutterEmbedConstants.methodNameSendToUnity,
       [gameObjectName, methodName, data],
     );
   }
@@ -22,7 +28,30 @@ class MethodChannelFlutterEmbedUnity extends FlutterEmbedUnityPlatform {
   @override
   void orientationChanged() {
     _channel.invokeMethod(
-      "orientationChanged",
+      FlutterEmbedConstants.methodNameOrientationChanged,
     );
+  }
+
+  @override
+  void addUnityMessageListener(Function(String) listener) {
+    _listeners.add(listener);
+  }
+
+  @override
+  void removeUnityMessageListener(Function(String) listener) {
+    _listeners.remove(listener);
+  }
+
+  Future<dynamic> _methodCallHandler(MethodCall call) async {
+    switch(call.method) {
+      case FlutterEmbedConstants.methodNameSendToFlutter: {
+        for(var listener in _listeners) {
+          listener(call.arguments.toString());
+        }
+      }
+      default: {
+        throw UnimplementedError();
+      }
+    }
   }
 }

@@ -2,6 +2,10 @@
 
 Embed Unity 3D into Flutter apps. Designed to offer more basic functionality than other packages, but be more stable and maintainable
 
+# 3D
+
+See https://www.youtube.com/watch?v=zKQYGKAe5W8&t=7067s&ab_channel=Flutter
+
 ## Limitations
 
 Breaking many of these rules, which is why this library is brittle / has workarounds:

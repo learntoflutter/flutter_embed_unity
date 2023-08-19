@@ -4,8 +4,6 @@ import 'package:flutter_embed_unity/src/orientation_change_detector.dart';
 import 'package:flutter_embed_unity/flutter_embed_unity.dart';
 import 'package:flutter_embed_unity_platform_interface/flutter_embed_constants.dart';
 
-import 'constants.dart';
-
 class FlutterEmbed extends StatefulWidget {
 
   const FlutterEmbed({super.key});

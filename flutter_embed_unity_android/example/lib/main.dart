@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_embed_unity/flutter_embed_unity.dart';
-import 'package:flutter_embed_unity_android/flutter_embed_unity_android_platform_interface.dart';
 
 void main() {
   runApp(const MyApp());
@@ -49,6 +48,14 @@ class UnityScreen extends StatefulWidget {
 class _UnityScreenState extends State<UnityScreen> {
 
   double _rotationSpeed = 15;
+
+  @override
+  void initState() {
+    addUnityMessageListener((String data) {
+      debugPrint("Received! $data");
+    });
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
