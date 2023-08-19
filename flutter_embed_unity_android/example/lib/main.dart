@@ -47,7 +47,7 @@ class UnityScreen extends StatefulWidget {
 
 class _UnityScreenState extends State<UnityScreen> {
 
-  double _rotationSpeed = 15;
+  double _rotationSpeed = 100;
 
   @override
   void initState() {
@@ -73,14 +73,14 @@ class _UnityScreenState extends State<UnityScreen> {
             child: FlutterEmbed(),
           ),
           Slider(
-            min: -100,
-            max: 100,
+            min: -200,
+            max: 200,
             value: _rotationSpeed,
             onChanged: (value) {
               setState(() {
                 _rotationSpeed = value;
                 sendToUnity(
-                  "Cube",
+                  "FlutterLogo",
                   "SetRotationSpeed",
                   value.toStringAsFixed(2),
                 );
