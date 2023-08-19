@@ -1,4 +1,4 @@
-package com.jamesncl.dev.flutter_embed_unity_android
+package com.jamesncl.dev.flutter_embed_unity_android.view
 
 import android.content.Context
 import android.view.View
@@ -8,7 +8,8 @@ import io.flutter.Log
 import io.flutter.plugin.platform.PlatformView
 
 
-class UnityPlatformView(private val unityPlayerCustom: UnityPlayerCustom, viewFactoryContext: Context) : PlatformView, IPlatformViewControl {
+class UnityPlatformView(private val unityPlayerCustom: UnityPlayerCustom, viewFactoryContext: Context) : PlatformView,
+    IPlatformViewControl {
 
     // UnityPlayerCustom extends UnityPlayer, which is itself a View. So in theory we could
     // just use UnityPlayerCustom as the view returned from this PlatformView. However there

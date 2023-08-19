@@ -2,6 +2,8 @@ package com.jamesncl.dev.flutter_embed_unity_android
 
 import com.jamesncl.dev.flutter_embed_unity_android.FlutterEmbedConstants.Companion.logTag
 import com.jamesncl.dev.flutter_embed_unity_android.FlutterEmbedConstants.Companion.uniqueIdentifier
+import com.jamesncl.dev.flutter_embed_unity_android.view.PlatformViewRegistry
+import com.jamesncl.dev.flutter_embed_unity_android.view.UnityViewFactory
 import io.flutter.embedding.engine.plugins.FlutterPlugin
 import io.flutter.embedding.engine.plugins.activity.ActivityAware
 import io.flutter.embedding.engine.plugins.activity.ActivityPluginBinding

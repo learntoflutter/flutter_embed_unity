@@ -1,4 +1,4 @@
-package com.jamesncl.dev.flutter_embed_unity_android
+package com.jamesncl.dev.flutter_embed_unity_android.view
 
 import android.annotation.SuppressLint
 import android.app.Activity

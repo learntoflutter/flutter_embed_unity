@@ -1,7 +1,8 @@
-package com.jamesncl.dev.flutter_embed_unity_android
+package com.jamesncl.dev.flutter_embed_unity_android.view
 
 import android.content.Context
 import android.view.View
+import com.jamesncl.dev.flutter_embed_unity_android.FlutterActivityRegistry
 import com.jamesncl.dev.flutter_embed_unity_android.FlutterEmbedConstants.Companion.logTag
 import io.flutter.Log
 import io.flutter.plugin.platform.PlatformView

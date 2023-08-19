@@ -3,6 +3,7 @@ package com.jamesncl.dev.flutter_embed_unity_android
 import com.jamesncl.dev.flutter_embed_unity_android.FlutterEmbedConstants.Companion.logTag
 import com.jamesncl.dev.flutter_embed_unity_android.FlutterEmbedConstants.Companion.methodNameOrientationChanged
 import com.jamesncl.dev.flutter_embed_unity_android.FlutterEmbedConstants.Companion.methodNameSendToUnity
+import com.jamesncl.dev.flutter_embed_unity_android.view.PlatformViewRegistry
 import com.unity3d.player.UnityPlayer
 import io.flutter.Log
 import io.flutter.plugin.common.MethodCall
@@ -29,5 +30,4 @@ class FlutterMethodCallHandler(private val platformViewRegistry: PlatformViewReg
             }
         }
     }
-
 }
