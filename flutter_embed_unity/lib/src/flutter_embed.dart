@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_embed_unity/src/orientation_change_detector.dart';
 import 'package:flutter_embed_unity/flutter_embed_unity.dart';
+import 'package:flutter_embed_unity/src/orientation_change_notifier.dart';
 import 'package:flutter_embed_unity_platform_interface/flutter_embed_constants.dart';
 
 class FlutterEmbed extends StatefulWidget {
@@ -27,10 +27,7 @@ class _FlutterEmbedState extends State<FlutterEmbed> {
   Widget build(BuildContext context) {
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
-        return OrientationChangeDetector(
-          onBuildOrientationChanged: () {
-            orientationChanged();
-          },
+        return OrientationChangeNotifier(
           child: AndroidView(
             viewType: FlutterEmbedConstants.uniqueIdentifier,
             onPlatformViewCreated: (int id) {

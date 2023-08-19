@@ -12,10 +12,6 @@ void sendToUnity(String gameObjectName, String methodName, String data) {
   _platform.sendToUnity(gameObjectName, methodName, data);
 }
 
-void orientationChanged() {
-  _platform.orientationChanged();
-}
-
 void addUnityMessageListener(Function(String) listener) {
   _platform.addUnityMessageListener(listener);
 }
