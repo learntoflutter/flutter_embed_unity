@@ -77,7 +77,7 @@ packages:
   flutter_embed_unity_android:
     dependency: transitive
     description:
-      path: "../../flutter_embed_unity_android"
+      path: "../../flutter_embed_unity_2022_3_android"
       relative: true
     source: path
     version: "0.0.1"

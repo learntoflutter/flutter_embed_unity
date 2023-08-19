@@ -23,7 +23,7 @@ class _MyAppState extends State<MyApp> {
         body: Builder(
           builder: (context) => Center(
             child: ElevatedButton(
-              child: Text("Open unity screen"),
+              child: const Text("Open unity screen"),
               onPressed: () {
                 Navigator.push(context,
                     MaterialPageRoute(builder: (context) => const UnityScreen()));
