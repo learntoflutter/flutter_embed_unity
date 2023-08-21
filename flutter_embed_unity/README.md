@@ -90,19 +90,22 @@ Our project is now configured and ready to use, but we still haven't actually li
 > java.lang.NoClassDefFoundError: Failed resolution of: Lcom/unity3d/player/UnityPlayer
 
 
-First add the exported unity project to the gradle build using an `include` in android/settings.gradle:
+tell our project to depend on it:
+
+- Add to android/app/build.gradle (add to any existing dependencies block, or create one if it doesn't exist):
+
+dependencies {
+    implementation project(':unityLibrary')
+}
+
+
+add the exported unity project to the gradle build using an `include` in android/settings.gradle:
 - Add to android/settings.gradle:
 
 include ':unityLibrary'
 
 
-And then tell our project to depend on it:
-
-- Add to android/app/build.gradle at the bottom on its own:
-
-dependencies {
-    implementation project(':unityLibrary')
-}
+And then 
 
 
 By default, Unity has this in it's exported project build.gradle:

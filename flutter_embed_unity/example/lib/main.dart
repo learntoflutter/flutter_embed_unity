@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_embed_unity/flutter_embed_unity.dart';
+import 'package:intl/intl.dart';
 
 void main() {
   runApp(const MyApp());
@@ -47,6 +48,15 @@ class UnityScreen extends StatefulWidget {
 
 class _UnityScreenState extends State<UnityScreen> {
 
+  // When converting between strings and numbers in a message protocol
+  // always use a fixed locale, to prevent unexpected parsing errors when
+  // the user's locale is different to the locale used by the developer
+  // (eg the decimal separator might be different)
+  final _fixedLocaleNumberFormatter = NumberFormat.decimalPatternDigits(
+    locale: 'en_gb',
+    decimalDigits: 2,
+  );
+
   double _rotationSpeed = 30;
   int _numberOfTaps = 0;
 
@@ -63,10 +73,17 @@ class _UnityScreenState extends State<UnityScreen> {
           Expanded(
             child: FlutterEmbed(
               onMessageFromUnity: (String data) {
-                if(data == "touch") {
-                  setState(() {
-                    _numberOfTaps++;
-                  });
+                switch(data) {
+                  case "touch": {
+                    setState(() {
+                      _numberOfTaps++;
+                    });
+                    break;
+                  }
+                  case "scene_loaded": {
+                    _setRotationSpeed();
+                    break;
+                  }
                 }
               },
             ),
@@ -95,11 +112,7 @@ class _UnityScreenState extends State<UnityScreen> {
                   onChanged: (value) {
                     setState(() {
                       _rotationSpeed = value;
-                      sendToUnity(
-                        "FlutterLogo",
-                        "SetRotationSpeed",
-                        value.toStringAsFixed(2),
-                      );
+                      _setRotationSpeed();
                     });
                   },
                 ),
@@ -108,6 +121,14 @@ class _UnityScreenState extends State<UnityScreen> {
           )
         ],
       ),
+    );
+  }
+
+  void _setRotationSpeed() {
+    sendToUnity(
+      "FlutterLogo",
+      "SetRotationSpeed",
+      _fixedLocaleNumberFormatter.format(_rotationSpeed),
     );
   }
 }

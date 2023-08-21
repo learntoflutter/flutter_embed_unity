@@ -639,6 +639,7 @@ GameObject:
   - component: {fileID: 1213816885}
   - component: {fileID: 1213816886}
   - component: {fileID: 1213816887}
+  - component: {fileID: 1213816888}
   m_Layer: 0
   m_Name: FlutterLogo
   m_TagString: Untagged
@@ -684,6 +685,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 915b1b9c07848394c9932bfc30eeda64, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1213816888
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1213816884}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 358915f3f06aba9418a6baec89c1f77a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!4 &1299606670 stripped
