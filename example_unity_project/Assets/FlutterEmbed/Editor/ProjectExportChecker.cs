@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 using UnityEditor;
@@ -27,43 +28,86 @@ internal class ProjectExportCheckerResult
 
 internal class ProjectExportChecker
 {
-    internal ProjectExportCheckerResult PreCheck()
+    internal ProjectExportCheckerResult PreCheckAndroid()
     {
         // Because Debug.Log does not work until after the build, collect any log messages to show at the end:
         List<string> precheckWarnings = new();
 
-        // Check this is the supported version of Unity
+        // Carry out checks common to Android and iOS. May add precheckWarnings to the list (hence using ref)
+        bool passedCommonChecks = PreCheckCommon(ref precheckWarnings, NamedBuildTarget.Android, BuildTargetGroup.Android);
+
+        if (passedCommonChecks)
+        {
+            // Check various build settings
+            if (EditorUserBuildSettings.activeBuildTarget != BuildTarget.Android)
+            {
+                ProjectExportHelpers.ShowErrorMessage("Can't export until you change the build target to Android: see File -> Build settings -> Platform, then Switch Target");
+                return ProjectExportCheckerResult.Failure();
+            }
+
+            if (!EditorUserBuildSettings.exportAsGoogleAndroidProject)
+            {
+                ProjectExportHelpers.ShowErrorMessage("Can't export until you tick 'Export project': see File -> Build settings");
+                return ProjectExportCheckerResult.Failure();
+            }
+
+            AndroidArchitecture architectures = PlayerSettings.Android.targetArchitectures;
+            if (!architectures.HasFlag(AndroidArchitecture.ARMv7) || !architectures.HasFlag(AndroidArchitecture.ARM64))
+            {
+                ProjectExportHelpers.ShowErrorMessage("You must include ARMv7 and ARM64 as target architectures " +
+                    "(see File -> Build settings -> Player Settings -> Other Settings -> Target architectures)");
+                return ProjectExportCheckerResult.Failure();
+            }
+
+            return PrepareExportDirectory("android", "unityLibrary", precheckWarnings);
+        }
+        else
+        {
+            return ProjectExportCheckerResult.Failure();
+        }
+    }
+
+    internal ProjectExportCheckerResult PreCheckIos()
+    {
+        // Because Debug.Log does not work until after the build, collect any log messages to show at the end:
+        List<string> precheckWarnings = new();
+
+        // Carry out checks common to Android and iOS. May add precheckWarnings to the list (hence using ref)
+        bool passedCommonChecks = PreCheckCommon(ref precheckWarnings, NamedBuildTarget.iOS, BuildTargetGroup.iOS);
+
+        if (passedCommonChecks)
+        {
+            // Check various build settings
+            if (EditorUserBuildSettings.activeBuildTarget != BuildTarget.iOS)
+            {
+                ProjectExportHelpers.ShowErrorMessage("Can't export until you change the build target to iOS: see File -> Build settings -> Platform, then Switch Target");
+                return ProjectExportCheckerResult.Failure();
+            }
+
+            if(EditorUserBuildSettings.iOSXcodeBuildConfig == XcodeBuildConfig.Debug) {
+                precheckWarnings.Add("iOS XCode build configuration is set to 'debug'. This should be set to 'release' for release builds");
+            }
+
+            return PrepareExportDirectory("ios", "unityLibrary", precheckWarnings);
+        }
+        else
+        {
+            return ProjectExportCheckerResult.Failure();
+        }
+    }
+
+    private bool PreCheckCommon(ref List<string> precheckWarnings, NamedBuildTarget namedBuildTarget, BuildTargetGroup buildTargetGroup)
+    {
 #if !UNITY_2022_3
         ShowErrorMessage("This plugin only supports Unity 2022.3 LTS (Long Term Support).");
         return ProjectExportCheckerResult.Failure();
 #endif
 
-        // Check various build settings
-        if (EditorUserBuildSettings.activeBuildTarget != BuildTarget.Android)
-        {
-            ShowErrorMessage("Can't export until you change the build target to Android: see File -> Build settings -> Platform, then Switch Target");
-            return ProjectExportCheckerResult.Failure();
-        }
-
-        if (!EditorUserBuildSettings.exportAsGoogleAndroidProject)
-        {
-            ShowErrorMessage("Can't export until you tick 'Export project': see File -> Build settings");
-            return ProjectExportCheckerResult.Failure();
-        }
-
-        AndroidArchitecture architectures = PlayerSettings.Android.targetArchitectures;
-        if (!architectures.HasFlag(AndroidArchitecture.ARMv7) || !architectures.HasFlag(AndroidArchitecture.ARM64))
-        {
-            ShowErrorMessage("You must include ARMv7 and ARM64 as target architectures " +
-                "(see File -> Build settings -> Player Settings -> Other Settings -> Target architectures)");
-            return ProjectExportCheckerResult.Failure();
-        }
-
         if (PlayerSettings.GetScriptingBackend(EditorUserBuildSettings.selectedBuildTargetGroup) != ScriptingImplementation.IL2CPP)
         {
-            ShowErrorMessage("You must set IL2CPP as the scripting backend " +
+            ProjectExportHelpers.ShowErrorMessage("You must set IL2CPP as the scripting backend " +
                 "(see File -> Build settings -> Player Settings -> Other Settings -> Scripting backend)");
-            return ProjectExportCheckerResult.Failure();
+            return false;
         }
 
         if (EditorUserBuildSettings.allowDebugging)
@@ -72,7 +116,7 @@ internal class ProjectExportChecker
                 "(see File -> Build settings -> Player settings -> untick 'Development build' and 'Script debugging')");
         }
 
-        Il2CppCodeGeneration il2CppCodeGeneration = PlayerSettings.GetIl2CppCodeGeneration(NamedBuildTarget.Android);
+        Il2CppCodeGeneration il2CppCodeGeneration = PlayerSettings.GetIl2CppCodeGeneration(namedBuildTarget);
         if (il2CppCodeGeneration == Il2CppCodeGeneration.OptimizeSize)
         {
             precheckWarnings.Add($"'IL2CPP code generation' is set to 'Faster (smaller) builds'. This can improve build time (useful for development) " +
@@ -80,7 +124,7 @@ internal class ProjectExportChecker
                 "(see File -> Build settings -> Player Settings -> Other Settings -> IL2CPP code generation)");
         }
 
-        Il2CppCompilerConfiguration il2CppCompilerConfiguration = PlayerSettings.GetIl2CppCompilerConfiguration(BuildTargetGroup.Android);
+        Il2CppCompilerConfiguration il2CppCompilerConfiguration = PlayerSettings.GetIl2CppCompilerConfiguration(buildTargetGroup);
         if (il2CppCompilerConfiguration == Il2CppCompilerConfiguration.Debug)
         {
             precheckWarnings.Add($"'C++ compiler configuration' is set to 'Debug'. This can be useful for debugging during development " +
@@ -88,12 +132,17 @@ internal class ProjectExportChecker
                 "(see File -> Build settings -> Player Settings -> Other Settings -> C++ compiler configuration)");
         }
 
+        return true;
+    }
+
+    private ProjectExportCheckerResult PrepareExportDirectory(String subfolderName, String folderName, List<string> precheckWarnings)
+    {
         bool confirmOpenFolderSelection = EditorUtility.DisplayDialog(
-                "Select export directory",
-                "In the next window, select the export directory. This should be " +
-                "'<your flutter project>/android/unityLibrary'",
-                "Select folder",
-                "Cancel");
+                    "Select export directory",
+                    "In the next window, select the export directory. This should be " +
+                    $"'<your flutter project>/{subfolderName}/{folderName}'",
+                    "Select folder",
+                    "Cancel");
 
         if (!confirmOpenFolderSelection)
         {
@@ -105,17 +154,18 @@ internal class ProjectExportChecker
             BuildPlayerOptions buildPlayerOptions = BuildPlayerWindow.DefaultBuildMethods.GetBuildPlayerOptions(new BuildPlayerOptions());
             DirectoryInfo selectedDirectory = new DirectoryInfo(buildPlayerOptions.locationPathName);
 
-            if (selectedDirectory.Name.Equals("android"))
+            if (selectedDirectory.Name.Equals(subfolderName))
             {
                 bool createUnityLibrarySubfolder = EditorUtility.DisplayDialog(
                     "Create subfolder?",
-                    "It looks like you selected the 'android' folder instead of 'android/unityLibrary'. Use 'android/unityLibrary' instead?",
+                    $"It looks like you selected the '{subfolderName}' folder instead of '{subfolderName}/{folderName}'. " +
+                        $"Use '{subfolderName}/{folderName}' instead?",
                     "Yes",
                     "Cancel");
 
                 if (createUnityLibrarySubfolder)
                 {
-                    buildPlayerOptions.locationPathName = Path.Combine(buildPlayerOptions.locationPathName, "unityLibrary");
+                    buildPlayerOptions.locationPathName = Path.Combine(buildPlayerOptions.locationPathName, folderName);
                     selectedDirectory = new DirectoryInfo(buildPlayerOptions.locationPathName);
                     Directory.CreateDirectory(buildPlayerOptions.locationPathName);
                 }
@@ -125,10 +175,10 @@ internal class ProjectExportChecker
                 }
             }
 
-            if (!selectedDirectory.Name.Equals("unityLibrary") || selectedDirectory.Parent == null || selectedDirectory.Parent.Name != "android")
+            if (!selectedDirectory.Name.Equals(folderName) || selectedDirectory.Parent == null || selectedDirectory.Parent.Name != subfolderName)
             {
-                ShowErrorMessage("Expected a folder named 'unityLibrary' inside 'android' folder. " +
-                    "Check the plugin documentation: you need to select '<your flutter project>/android/unityLibrary'. " +
+                ProjectExportHelpers.ShowErrorMessage($"Expected a folder named {folderName} inside '{subfolderName}' folder. " +
+                    $"Check the plugin documentation: you need to select '<your flutter project>/{subfolderName}/{folderName}'. " +
                     "Aborting export");
                 return ProjectExportCheckerResult.Failure();
             }
@@ -151,13 +201,5 @@ internal class ProjectExportChecker
                 return ProjectExportCheckerResult.Success(buildPlayerOptions, precheckWarnings);
             }
         }
-    }
-
-    private void ShowErrorMessage(string errorMessage)
-    {
-        EditorUtility.DisplayDialog(
-                        "Export aborted",
-                        errorMessage,
-                        "Okay");
     }
 }

@@ -83,11 +83,16 @@ Optional:
 Export project to ??????
 Check Unity console says Build completed with a result of 'Succeeded'
 
+Our Unity project is now ready to use, but we still haven't actually linked it to our app
+
+### iOS
+
+Open your app's `ios/Runner.xcworkspace` in Xcode (Note: open the workspace, not the project)
+
+Add Files to "Runner" -> select `ios/UnityLibrary/Unity-Iphone.xcodeproj`
 
 
-Our project is now configured and ready to use, but we still haven't actually linked it to our app, so if we run it now, we will get:
-
-> java.lang.NoClassDefFoundError: Failed resolution of: Lcom/unity3d/player/UnityPlayer
+### Android
 
 
 tell our project to depend on it:
