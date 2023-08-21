@@ -28,7 +28,7 @@ class FlutterEmbedUnityAndroidPlugin : FlutterPlugin, ActivityAware {
 
     override fun onAttachedToEngine(flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
         Log.d(logTag, "onAttachedToEngine")
-        // Set up the method channel between flutter and android
+        // Register the method call handler
         channel = MethodChannel(flutterPluginBinding.binaryMessenger, uniqueIdentifier)
         channel.setMethodCallHandler(methodCallHandler)
         // Register the method channel with SendToFlutter static class (which is called by Unity)
@@ -40,7 +40,6 @@ class FlutterEmbedUnityAndroidPlugin : FlutterPlugin, ActivityAware {
         // AndroidView(
         //    viewType: Constants.uniqueViewIdentifier,
         // )
-        //
         // the UnityViewFactory will be invoked to create a UnityPlatformView:
         flutterPluginBinding
             .platformViewRegistry

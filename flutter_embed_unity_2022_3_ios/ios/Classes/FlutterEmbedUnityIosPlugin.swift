@@ -3,17 +3,18 @@ import UIKit
 
 public class FlutterEmbedUnityIosPlugin: NSObject, FlutterPlugin {
   public static func register(with registrar: FlutterPluginRegistrar) {
-    let channel = FlutterMethodChannel(name: "com.jamesncl.dev/flutter_embed_unity", binaryMessenger: registrar.messenger())
-    let instance = FlutterEmbedUnityIosPlugin()
-    registrar.addMethodCallDelegate(instance, channel: channel)
-  }
+    // Register the method call handler
+    let channel = FlutterMethodChannel(name: FlutterEmbedConstants.uniqueIdentifier, binaryMessenger: registrar.messenger())
+    let methodCallHandler = FlutterMethodCallHandler()
+    registrar.addMethodCallDelegate(methodCallHandler, channel: channel)
 
-  public func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
-    switch call.method {
-    case "canLaunch":
-      result(true)
-    default:
-      result(FlutterMethodNotImplemented)
-    }
+    // Register a view factory
+    // On the Flutter side, when we create a PlatformView with our unique identifier:
+    // UiKitView(
+    //    viewType: Constants.uniqueViewIdentifier,
+    // )
+    // the UnityViewFactory will be invoked to create a UnityPlatformView:
+    let platformViewFactory = UnityViewFactory(messenger: registrar.messenger())
+    registrar.register(fuwFactory, withId: FlutterEmbedConstants.uniqueIdentifier, gestureRecognizersBlockingPolicy: FlutterPlatformViewGestureRecognizersBlockingPolicyWaitUntilTouchesEnded)
   }
 }
