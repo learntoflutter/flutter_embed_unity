@@ -30,6 +30,12 @@ internal class ProjectExportChecker
 {
     internal ProjectExportCheckerResult PreCheckAndroid()
     {
+        if (EditorUserBuildSettings.activeBuildTarget != BuildTarget.Android)
+        {
+            ProjectExportHelpers.ShowErrorMessage("Can't export until you change the build target to Android: see File -> Build settings -> Platform, then Switch Target");
+            return ProjectExportCheckerResult.Failure();
+        }
+
         // Because Debug.Log does not work until after the build, collect any log messages to show at the end:
         List<string> precheckWarnings = new();
 
@@ -38,13 +44,6 @@ internal class ProjectExportChecker
 
         if (passedCommonChecks)
         {
-            // Check various build settings
-            if (EditorUserBuildSettings.activeBuildTarget != BuildTarget.Android)
-            {
-                ProjectExportHelpers.ShowErrorMessage("Can't export until you change the build target to Android: see File -> Build settings -> Platform, then Switch Target");
-                return ProjectExportCheckerResult.Failure();
-            }
-
             if (!EditorUserBuildSettings.exportAsGoogleAndroidProject)
             {
                 ProjectExportHelpers.ShowErrorMessage("Can't export until you tick 'Export project': see File -> Build settings");
@@ -69,6 +68,12 @@ internal class ProjectExportChecker
 
     internal ProjectExportCheckerResult PreCheckIos()
     {
+        if (EditorUserBuildSettings.activeBuildTarget != BuildTarget.iOS)
+        {
+            ProjectExportHelpers.ShowErrorMessage("Can't export until you change the build target to iOS: see File -> Build settings -> Platform, then Switch Target");
+            return ProjectExportCheckerResult.Failure();
+        }
+
         // Because Debug.Log does not work until after the build, collect any log messages to show at the end:
         List<string> precheckWarnings = new();
 
@@ -77,13 +82,6 @@ internal class ProjectExportChecker
 
         if (passedCommonChecks)
         {
-            // Check various build settings
-            if (EditorUserBuildSettings.activeBuildTarget != BuildTarget.iOS)
-            {
-                ProjectExportHelpers.ShowErrorMessage("Can't export until you change the build target to iOS: see File -> Build settings -> Platform, then Switch Target");
-                return ProjectExportCheckerResult.Failure();
-            }
-
             if(EditorUserBuildSettings.iOSXcodeBuildConfig == XcodeBuildConfig.Debug) {
                 precheckWarnings.Add("iOS XCode build configuration is set to 'debug'. This should be set to 'release' for release builds");
             }

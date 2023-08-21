@@ -141,6 +141,7 @@ PlayerSettings.SetIl2CppCompilerConfiguration(BuildTargetGroup.Android, isReleas
 
 See See https://docs.unity3d.com/2022.3/Documentation/Manual/UnityasaLibrary-Android.html
 https://docs.unity3d.com/2022.3/Documentation/Manual/UnityasaLibrary.html
+https://docs.unity3d.com/Manual/UnityasaLibrary-iOS.html
 
 Old and outdated but still useful background: https://forum.unity.com/threads/using-unity-as-a-library-in-native-ios-android-apps.685195/
 

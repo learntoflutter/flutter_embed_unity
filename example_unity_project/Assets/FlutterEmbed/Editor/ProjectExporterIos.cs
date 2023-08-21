@@ -23,12 +23,20 @@ internal class ProjectExporterIos : ProjectExporter
         }
 
         // Add UnityFramework to the build
-        var pbx = new PBXProject();
-        pbx.ReadFromFile(pbxProjFileInfo.FullName);
-        var unityFrameworkGuid = pbx.TargetGuidByName("UnityFramework");
-        var dataFolderGuid = pbx.AddFolderReference(Path.Combine(exportPath, "Data"), "Data");
-        pbx.AddFileToBuild(unityFrameworkGuid, dataFolderGuid);
-        pbx.WriteToFile(pbxProjFileInfo.FullName);
+        // var pbx = new PBXProject();
+        // pbx.ReadFromFile(pbxProjFileInfo.FullName);
+        // var unityFrameworkGuid = pbx.TargetGuidByName("UnityFramework");
+        // var dataFolderGuid = pbx.AddFolderReference(Path.Combine(exportPath, "Data"), "Data");
+        // pbx.AddFileToBuild(unityFrameworkGuid, dataFolderGuid);
+        // pbx.WriteToFile(pbxProjFileInfo.FullName);
+
+        DirectoryInfo burstDebugInformation = new DirectoryInfo(Path.Join(exportPath, "..", "unityLibrary_BurstDebugInformation_DoNotShip"));
+        if(burstDebugInformation.Exists) {
+            Directory.Delete(burstDebugInformation.FullName, true);
+            Debug.Log($"Deleted {burstDebugInformation.FullName}");
+        }
+
+        Debug.Log("Transforming Unity export for Flutter integration complete");
     }
 }
 
