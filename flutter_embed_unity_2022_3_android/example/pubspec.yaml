@@ -1,13 +1,10 @@
 name: flutter_embed_unity_android_example
 description: Demonstrates how to use the flutter_embed_unity_android plugin.
-# The following line prevents the package from being accidentally published to
-# pub.dev using `flutter pub publish`. This is preferred for private packages.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
 environment:
   sdk: '>=3.0.6 <4.0.0'
   flutter: ">=3.3.0"
-
 
 dependencies:
   flutter:

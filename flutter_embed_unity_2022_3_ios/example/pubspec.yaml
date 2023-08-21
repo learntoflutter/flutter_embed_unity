@@ -1,19 +1,11 @@
 name: flutter_embed_unity_ios_example
-description: Demonstrates how to use the flutter_embed_unity_ios plugin.
-# The following line prevents the package from being accidentally published to
-# pub.dev using `flutter pub publish`. This is preferred for private packages.
+description: Demonstrates how to use the flutter_embed_unity_android plugin.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
 environment:
   sdk: '>=3.0.6 <4.0.0'
   flutter: ">=3.3.0"
 
-# Dependencies specify other packages that your package needs in order to work.
-# To automatically upgrade your package dependencies to the latest versions
-# consider running `flutter pub upgrade --major-versions`. Alternatively,
-# dependencies can be manually updated by changing the version numbers below to
-# the latest version available on pub.dev. To see which dependencies have newer
-# versions available, run `flutter pub outdated`.
 dependencies:
   flutter:
     sdk: flutter
@@ -25,7 +17,9 @@ dependencies:
     # The example app is bundled with the plugin so we use a path dependency on
     # the parent directory to use the current plugin's version.
     path: ../
-
+  flutter_embed_unity:
+    path: ../../flutter_embed_unity
+  intl: any
 
 dev_dependencies:
   integration_test:
