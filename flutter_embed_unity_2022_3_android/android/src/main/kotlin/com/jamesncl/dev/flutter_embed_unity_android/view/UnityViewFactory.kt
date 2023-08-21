@@ -63,11 +63,11 @@ class UnityViewFactory(
         return object : PlatformView {
             override fun getView(): View {
                 val layout = RelativeLayout(context)
-                layout.setBackgroundColor(Color.parseColor("#FFFB49"))
+                layout.setBackgroundColor(Color.YELLOW)
                 if(BuildConfig.DEBUG) {
                     val textView = TextView(context)
                     textView.text = errorMessage
-                    textView.setTextColor(Color.parseColor("#000000"))
+                    textView.setTextColor(Color.BLACK)
                     val params: RelativeLayout.LayoutParams =
                         RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
                     params.addRule(RelativeLayout.CENTER_IN_PARENT)

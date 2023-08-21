@@ -1,6 +1,7 @@
 package com.jamesncl.dev.flutter_embed_unity_android.view
 
 import android.content.Context
+import android.graphics.Color
 import android.view.View
 import android.widget.FrameLayout
 import com.jamesncl.dev.flutter_embed_unity_android.FlutterEmbedConstants.Companion.logTag
@@ -30,6 +31,9 @@ class UnityPlatformView(private val unityPlayerCustom: UnityPlayerCustom, viewFa
     private val baseView: FrameLayout = FrameLayout(viewFactoryContext)
 
     init {
+        // Setting background colour might help when things go wrong: if users report seeing
+        // green, they are seeing the base view
+        baseView.setBackgroundColor(Color.GREEN)
         baseView.addView(unityPlayerCustom)
         // It's important to call windowFocusChanged, otherwise unity will not start
         // (not sure why - UnityPlayer is undocumented)
