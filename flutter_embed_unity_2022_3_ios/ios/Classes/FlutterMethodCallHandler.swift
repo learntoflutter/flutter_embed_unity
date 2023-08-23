@@ -9,8 +9,8 @@ class FlutterMethodCallHandler {
                 if(UnityPlayerCustom.isInitialised) {
                     UnityPlayerCustom.getInstance().sendMessageToGO(
                         withName: gameObjectMethodNameData[0],
-                        functionName: gameObjectMethodNameData[2],
-                        message: gameObjectMethodNameData[3])
+                        functionName: gameObjectMethodNameData[1],
+                        message: gameObjectMethodNameData[2])
                     result(true)
                 }
                 else {

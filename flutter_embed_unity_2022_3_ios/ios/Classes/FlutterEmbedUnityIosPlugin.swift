@@ -13,6 +13,9 @@ public class FlutterEmbedUnityIosPlugin: NSObject, FlutterPlugin {
         let instance = FlutterEmbedUnityIosPlugin()
         registrar.addMethodCallDelegate(instance, channel: channel)
         
+        // Register with SendToFlutter so it can send messages back to Flutter
+        SendToFlutter.methodChannel = channel
+        
         // Register a view factory
         // On the Flutter side, when we create a PlatformView with our unique identifier:
         // UiKitView(
