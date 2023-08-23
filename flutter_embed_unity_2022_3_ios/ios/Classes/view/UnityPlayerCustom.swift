@@ -29,6 +29,7 @@ class UnityPlayerCustom {
             return unityFramework
         }
         else {
+            // Load the Unity engine
             let bundlePath = Bundle.main.bundlePath.appending(frameworkPath)
             let unityBundle = Bundle.init(path: bundlePath)!
             let unityFramework = unityBundle.principalClass!.getInstance()!
@@ -38,6 +39,15 @@ class UnityPlayerCustom {
                 argv: CommandLine.unsafeArgv,
                 appLaunchOpts: nil
             )
+            
+            // This is needed to allow touch events to work
+            // I have no idea why touches do not work, what this does and
+            // why it resolves the problem: got this hack from
+            // https://github.com/juicycleff/flutter-unity-view-widget/blob/master/ios/Classes/UnityPlayerUtils.swift
+            // appController window level is UIWindow.Level.normal (rawValue: 0),
+            // so this makes it -1
+            unityFramework.appController()?.window?.windowLevel = UIWindow.Level(UIWindow.Level.normal.rawValue - 1)
+            
             self.unityFramework = unityFramework
             return unityFramework
         }
