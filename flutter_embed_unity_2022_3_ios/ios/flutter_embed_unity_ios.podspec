@@ -20,4 +20,12 @@ A new Flutter plugin project.
   # Flutter.framework does not contain a i386 slice.
   s.pod_target_xcconfig = { 'DEFINES_MODULE' => 'YES', 'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'i386' }
   s.swift_version = '5.0'
+  
+  # Add UnityFramework
+  s.vendored_frameworks = 'UnityFramework.framework'
+  
+  # Add bridging header for Swift / objective C interop
+  # See https://stackoverflow.com/questions/52932436/how-to-add-bridging-header-to-flutter-plugin
+#  s.public_header_files = 'Classes/**/*.h'
+  s.xcconfig = { 'SWIFT_OBJC_BRIDGING_HEADER' => '../../../ios/Classes/flutter_embed_unity_ios-Bridging-Header.h' }
 end

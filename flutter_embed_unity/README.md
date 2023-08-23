@@ -14,6 +14,9 @@ https://docs.unity3d.com/Manual/UnityasaLibrary.html
 https://docs.unity3d.com/Manual/UnityasaLibrary-Android.html
 
 
+Real device only, not simulator? Test iOS: Build Settings -> Target SDK -> Simulator SDK
+
+
 On Android and iOS:
 Only full-screen rendering is supported. It’s not possible to render only on a part of the screen.
 When Unity is in an unloaded state (after calling Application.Unload), it retains some amount of memory (between 80–180Mb) to be able to instantly switch back and run again in the same process. The amount of memory that’s not released largely depends on the device’s graphics resolution.
@@ -87,9 +90,31 @@ Our Unity project is now ready to use, but we still haven't actually linked it t
 
 ### iOS
 
-Open your app's `ios/Runner.xcworkspace` in Xcode (Note: open the workspace, not the project)
+As per https://docs.unity3d.com/Manual/UnityasaLibrary-iOS.html we need to:
 
-Add Files to "Runner" -> select `ios/UnityLibrary/Unity-Iphone.xcodeproj`
+> To integrate Unity into another Xcode project, you need to combine both Xcode projects (the native one and the one Unity generates) into a single Xcode workspace, and add the UnityFramework.framework file to the Embedded Binaries section of the Application target for the native Xcode project. 
+
+So open your app's `ios/Runner.xcworkspace` in Xcode
+
+In the project navigator, make sure nothing is selected
+
+From Xcode toolbar, select File -> Add files to "Runner" -> select `ios/UnityLibrary/Unity-Iphone.xcodeproj`. This should add the Unity-iPhone project to your workspace at the same level as the Runner and Pods projects (if you accidentally added it as a child of Runner, right-click Unity-iPhone, choose Delete, then choose Remove Reference. Then *make sure nothing is selected* and try again). Alternatively, you can drag-and-drop Unity-Iphone.xcodeproj into the project navigator, again ensuring that you drop it at the root of the tree (at the same level as Runner and Pods)
+
+In Xcode project navigator, select Runner, then in the editor select the Runner target under TARGETS, then select the General tab. Scroll down to Frameworks, Libraries, and Embedded Content. Click the + button to add. In the window which opens to select a framework, you should be able to find Workspace -> Unity-iPhone -> UnityFramework.framework. Select this and click Add. Make sure the Embed option is set to 'Embed & Sign'.
+
+
+-------- Must be done after every export --------
+In project navigator, expand Unity-iPhone project, and select the Data folder. In the Inspector, under Target Membership, enable UnityFramework.
+
+In project navigator, select Unity-iPhone project, then in the editor select the Unity-iPhone project under PROJECTS, then select the Build Settings tab. In the Build Settings tab, find the 'Other linker Flags' setting (you can use the search box to help you find it). Add the following as a setting: `-Wl,-U,_FlutterEmbedUnityIosSendToFlutter`
+-----------------
+
+
+Common error: “No such module UnityFramework”
+
+1. Make sure you have carefully done all the steps outlined here
+2. In Xcode, in the top bar to the right of the Run button (the one shaped like a triangular Play button), change the target from Runner to UnityFramework. Then press ⌘+B to build UnityFramework. Then do the same for the Unity-iPhone target. Finally, change back to the Runner target and attempt to build again.
+3. See https://stackoverflow.com/questions/29500227/getting-error-no-such-module-using-xcode-but-the-framework-is-there
 
 
 ### Android
@@ -176,3 +201,15 @@ android {
     namespace 'com.unity3d.player'
 	...
 }
+
+# Developer notes
+
+Android: explain the classes.jar
+
+iOS: built UnityFramework.framework (by building the exported Unity project), extract it from DerivedData, copied to flutter_embed_unity_2022_3_ios/ios, edited flutter_embed_unity_2022_3_ios/ios/flutter_embed_unity_ios.podspec to include: 
+
+```
+# Add UnityFramework
+s.vendored_frameworks = 'UnityFramework.framework'
+```
+Then run `pod install` from flutter_embed_unity_2022_3_ios/example/iOS

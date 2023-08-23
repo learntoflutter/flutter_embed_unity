@@ -17,18 +17,18 @@ public class SendToFlutter
         else
         {
 #if UNITY_IOS
-            // Call a Swift function name
+            // Call an obj-C function name
             FlutterEmbedUnityIosSendToFlutter(data);
 #endif
         }
     }
 
-// The Swift function name must exist somewhere in the iOS Flutter Runner project.
-// Use The following setting in XCode to make the compiler ignore the fact that this 
-// method definition does not exist in the Unity project - it will be linked later
-// Linking -> Other Linker Flags -> -Wl,-U,_FlutterEmbedUnityIosSendToFlutter
 #if UNITY_IOS
+    // On iOS plugins are statically linked into
+    // the executable, so we have to use __Internal as the
+    // library name.
     [DllImport("__Internal")]
+    // This function is defined in flutter_embed_unity_2022_3_ios/ios/Classes/FlutterEmbedUnityIosSendToFlutter.m
     private static extern void FlutterEmbedUnityIosSendToFlutter(string data);
 #endif
 }
