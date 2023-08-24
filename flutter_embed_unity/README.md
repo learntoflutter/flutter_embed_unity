@@ -104,9 +104,15 @@ In Xcode project navigator, select Runner, then in the editor select the Runner 
 
 
 -------- Must be done after every export --------
-In project navigator, expand Unity-iPhone project, and select the Data folder. In the Inspector, under Target Membership, enable UnityFramework.
+The exported Unity project contains a project and target called Unity-iPhone, which is a thin 'launcher' app for Unity which you can build and deploy as a stand-alone app. Instead, we want to embed everything (the Unity engine and our Unity game) into our own Flutter app as a single framework file (UnityFramework). To do that, we need to change the Target Membership of the Data folder to be UnityFramework instead of the default Unity-iPhone:
+In project navigator, expand Unity-iPhone project, and select the Data folder. In the Inspector, under Target Membership, change the target membership to UnityFramework.
 
-In project navigator, select Unity-iPhone project, then in the editor select the Unity-iPhone project under PROJECTS, then select the Build Settings tab. In the Build Settings tab, find the 'Other linker Flags' setting (you can use the search box to help you find it). Add the following as a setting: `-Wl,-U,_FlutterEmbedUnityIosSendToFlutter`
+To be able to pass messages from Unity C# to the iOS part of the plugin (which then passes the message on to Flutter) the C# file you include in your Unity project declares (but does not define) a function called `FlutterEmbedUnityIos_sendToFlutter`. This function is instead defined in the plugin. To join these two things together, we need to tell Xcode to ignore the fact that `FlutterEmbedUnityIos_sendToFlutter` is not defined in the Unity module, and instead link it to the definition in the plugin:
+
+In project navigator, select Unity-iPhone project, then in the editor select the Unity-iPhone project under PROJECTS, then select the Build Settings tab. In the Build Settings tab, find the 'Other linker Flags' setting (you can use the search box to help you find it). Add the following as a setting: `-Wl,-U,_FlutterEmbedUnityIos_sendToFlutter`
+
+> `-Wl` allows us to pass additional options to the linker when it is invoked
+> `-U` tells the linker to force the symbol `_FlutterEmbedUnityIos_sendToFlutter` to be entered in the output file as an undefined symbol. It will be linked instead to a function defined in the plugin.
 -----------------
 
 
@@ -213,3 +219,11 @@ iOS: built UnityFramework.framework (by building the exported Unity project), ex
 s.vendored_frameworks = 'UnityFramework.framework'
 ```
 Then run `pod install` from flutter_embed_unity_2022_3_ios/example/iOS
+
+
+`-Wl,-U,_FlutterEmbedUnityIos_sendToFlutter`
+
+> `-Wl` allows us to pass additional options to the linker (`ld`) when it is invoked
+> `-U` tells the linker to force the symbol `_FlutterEmbedUnityIos_sendToFlutter` to be entered in the output file as an undefined symbol. It will be linked instead to a C function defined in `flutter_embed_unity_2022_3_ios/ios/Classes/SendToFlutter.swift`
+
+See https://linux.die.net/man/1/ld

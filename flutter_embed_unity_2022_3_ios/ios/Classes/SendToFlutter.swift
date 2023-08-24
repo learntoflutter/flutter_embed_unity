@@ -11,7 +11,7 @@ import Flutter
 // DO NOT change @_cdecl: it is referenced in C# Unity scripts
 // (<unity project>/Assets/FlutterEmbed/SendToFlutter/SendToFlutter.cs)
 // @_cdecl allows C# to call a top level function by the name specified
-@_cdecl("FlutterEmbedUnityIosSendToFlutter")
+@_cdecl("FlutterEmbedUnityIos_sendToFlutter")
 public func sendToFlutter(_ dataAsUnsafePointer: UnsafePointer<CChar>) {
     let data = String(cString: UnsafePointer<CChar>(dataAsUnsafePointer))
     SendToFlutter.sendToFlutter(data)
