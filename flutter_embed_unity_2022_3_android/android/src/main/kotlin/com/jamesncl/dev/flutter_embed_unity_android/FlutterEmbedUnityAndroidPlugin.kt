@@ -4,7 +4,6 @@ import com.jamesncl.dev.flutter_embed_unity_android.constants.FlutterEmbedConsta
 import com.jamesncl.dev.flutter_embed_unity_android.constants.FlutterEmbedConstants.Companion.uniqueIdentifier
 import com.jamesncl.dev.flutter_embed_unity_android.messaging.SendToFlutter
 import com.jamesncl.dev.flutter_embed_unity_android.messaging.SendToUnity
-import com.jamesncl.dev.flutter_embed_unity_android.view.PlatformViewRegistry
 import com.jamesncl.dev.flutter_embed_unity_android.view.UnityPlatformViewFactory
 import io.flutter.embedding.engine.plugins.FlutterPlugin
 import io.flutter.embedding.engine.plugins.activity.ActivityAware
@@ -20,13 +19,8 @@ import io.flutter.Log
 class FlutterEmbedUnityAndroidPlugin : FlutterPlugin, ActivityAware {
     // The MethodChannel that will the communication between Flutter and native Android
     private lateinit var channel: MethodChannel
-
-    // This is a simple reference holder for the currently active PlatformView, which we can pass to
-    // the method call handler (so method calls can interact with the UnityPlayer) and to
-    // the PlatformViewFactory (which will update the reference when a new PlatformView is created)
-    private val platformViewRegistry = PlatformViewRegistry()
-    private val flutterActivityRegistry = FlutterActivityRegistry()
-    private val methodCallHandler = SendToUnity(platformViewRegistry)
+    private var unityPlatformViewFactory = UnityPlatformViewFactory()
+    private val methodCallHandler = SendToUnity()
 
     override fun onAttachedToEngine(flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
         Log.d(logTag, "onAttachedToEngine")
@@ -47,13 +41,9 @@ class FlutterEmbedUnityAndroidPlugin : FlutterPlugin, ActivityAware {
             .platformViewRegistry
             .registerViewFactory(
                 uniqueIdentifier,
-                // The factory needs the activity which will be received in onAttachedToActivity
-                // so that the UnityPlayer can be created. It also needs to be able to update the
-                // platformViewRegistry with the current PlatformView each time a PlatformView is created
-                UnityPlatformViewFactory(flutterActivityRegistry, platformViewRegistry)
+                unityPlatformViewFactory
             )
     }
-
 
     override fun onDetachedFromEngine(binding: FlutterPlugin.FlutterPluginBinding) {
         Log.d(logTag, "onDetachedFromEngine")
@@ -63,7 +53,9 @@ class FlutterEmbedUnityAndroidPlugin : FlutterPlugin, ActivityAware {
     // ActivityAware
     override fun onAttachedToActivity(binding: ActivityPluginBinding) {
         Log.d(logTag, "onAttachedToActivity")
-        flutterActivityRegistry.activity = binding.activity
+        // The factory needs the activity which will be received in onAttachedToActivity
+        // so that the UnityPlayer can be created
+        unityPlatformViewFactory.flutterActivity = binding.activity
     }
 
     // ActivityAware
@@ -85,13 +77,13 @@ class FlutterEmbedUnityAndroidPlugin : FlutterPlugin, ActivityAware {
         // See https://docs.unity3d.com/Manual/UnityasaLibrary-Android.html
         // TODO(Is there any way to handle FlutterActivity onDestroy()?)
 
-        flutterActivityRegistry.activity = null
+        unityPlatformViewFactory.flutterActivity = null
     }
 
     // ActivityAware
     override fun onReattachedToActivityForConfigChanges(binding: ActivityPluginBinding) {
         Log.d(logTag, "onReattachedToActivityForConfigChanges")
-        flutterActivityRegistry.activity = binding.activity
+        unityPlatformViewFactory.flutterActivity = binding.activity
     }
 
     // ActivityAware
@@ -101,6 +93,6 @@ class FlutterEmbedUnityAndroidPlugin : FlutterPlugin, ActivityAware {
                     "for your app was destroyed. This scenario is not supported "
         )
         // TODO(Is there any way to handle FlutterActivity onDestroy()?)
-        flutterActivityRegistry.activity = null
+        unityPlatformViewFactory.flutterActivity = null
     }
 }

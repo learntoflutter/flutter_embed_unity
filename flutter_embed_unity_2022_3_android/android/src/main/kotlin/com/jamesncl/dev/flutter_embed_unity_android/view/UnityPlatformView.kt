@@ -10,8 +10,7 @@ import io.flutter.Log
 import io.flutter.plugin.platform.PlatformView
 
 
-class UnityPlatformView(private val unityEngineSingleton: UnityEngineSingleton, viewFactoryContext: Context) : PlatformView,
-    IPlatformViewControl {
+class UnityPlatformView(private val unityEngineSingleton: UnityEngineSingleton, viewFactoryContext: Context) : PlatformView {
 
     // UnityPlayerCustom extends UnityPlayer, which is itself a View. So in theory we could
     // just use UnityPlayerCustom as the view returned from this PlatformView. However there
@@ -40,18 +39,6 @@ class UnityPlatformView(private val unityEngineSingleton: UnityEngineSingleton, 
         // (not sure why - UnityPlayer is undocumented)
         unityEngineSingleton.windowFocusChanged(unityEngineSingleton.requestFocus())
         unityEngineSingleton.resume()  // UnityPlayer
-    }
-
-    override fun orientationChanged() {
-        Log.d(logTag, "UnityPlatformView orientationChanged: pausing and resuming")
-        // For some unknown reason, when orientation changes, Unity rendering appears to
-        // freeze (not always, but usually). The underlying UnityPlayer is still active and
-        // still responds to messages, so it is purely a UI thing. Presumably a bug, although
-        // using UnityPlayer to render in a View is not supported anyway (see
-        // https://docs.unity3d.com/Manual/UnityasaLibrary-Android.html)
-        // As a workaround, pause and resume the player seems to work
-        unityEngineSingleton.pause()
-        unityEngineSingleton.resume()
     }
 
     // PlatformView

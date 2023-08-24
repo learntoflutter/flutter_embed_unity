@@ -5,13 +5,13 @@ import com.jamesncl.dev.flutter_embed_unity_android.constants.FlutterEmbedConsta
 import com.jamesncl.dev.flutter_embed_unity_android.constants.FlutterEmbedConstants.Companion.methodNamePauseUnity
 import com.jamesncl.dev.flutter_embed_unity_android.constants.FlutterEmbedConstants.Companion.methodNameResumeUnity
 import com.jamesncl.dev.flutter_embed_unity_android.constants.FlutterEmbedConstants.Companion.methodNameSendToUnity
-import com.jamesncl.dev.flutter_embed_unity_android.view.PlatformViewRegistry
+import com.jamesncl.dev.flutter_embed_unity_android.unity.UnityEngineSingleton
 import com.unity3d.player.UnityPlayer
 import io.flutter.Log
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
 
-class SendToUnity(private val platformViewRegistry: PlatformViewRegistry): MethodChannel.MethodCallHandler {
+class SendToUnity: MethodChannel.MethodCallHandler {
 
     override fun onMethodCall(call: MethodCall, result: MethodChannel.Result) {
         Log.i(logTag, call.method)
@@ -25,13 +25,13 @@ class SendToUnity(private val platformViewRegistry: PlatformViewRegistry): Metho
                     gameObjectMethodNameData[2]) // Data
             }
             methodNameOrientationChanged -> {
-                platformViewRegistry.activePlatformView?.orientationChanged()
+                UnityEngineSingleton.getInstance()?.orientationChanged()
             }
             methodNamePauseUnity -> {
-                //platformViewRegistry.activePlatformView?.pause()
+                UnityEngineSingleton.getInstance()?.pause()
             }
             methodNameResumeUnity -> {
-//                platformViewRegistry.activePlatformView?.resume()
+                UnityEngineSingleton.getInstance()?.resume()
             }
             else -> {
                 result.notImplemented()

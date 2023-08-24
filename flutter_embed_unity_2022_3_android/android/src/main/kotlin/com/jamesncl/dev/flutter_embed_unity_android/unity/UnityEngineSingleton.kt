@@ -22,7 +22,8 @@ class UnityEngineSingleton private constructor (activity: Activity) : UnityPlaye
     companion object {
         @SuppressLint("StaticFieldLeak")
         private var singleton: UnityEngineSingleton? = null
-        fun getInstance(activity: Activity) : UnityEngineSingleton {
+
+        fun getOrCreateInstance(activity: Activity) : UnityEngineSingleton {
             singleton.let{
                 if(it != null) {
                     return it
@@ -34,6 +35,11 @@ class UnityEngineSingleton private constructor (activity: Activity) : UnityPlaye
                 }
             }
         }
+
+        // should only be called after getOrCreateInstance!
+        fun getInstance(): UnityEngineSingleton? {
+            return singleton
+        }
     }
 
     // This is required for Unity to receive touch events
@@ -43,6 +49,17 @@ class UnityEngineSingleton private constructor (activity: Activity) : UnityPlaye
         return super.onTouchEvent(motionEvent)
     }
 
+    fun orientationChanged() {
+        Log.d(logTag, "UnityPlatformView orientationChanged: pausing and resuming")
+        // For some unknown reason, when orientation changes, Unity rendering appears to
+        // freeze (not always, but usually). The underlying UnityPlayer is still active and
+        // still responds to messages, so it is purely a UI thing. Presumably a bug, although
+        // using UnityPlayer to render in a View is not supported anyway (see
+        // https://docs.unity3d.com/Manual/UnityasaLibrary-Android.html)
+        // As a workaround, pause and resume the player seems to work
+        pause()
+        resume()
+    }
 
     // Overriding kill() was an experiment to try to resolve app closing / crashing when
     // player.destroy() is called. It didn't work. The problem is that calling player.destroy() also

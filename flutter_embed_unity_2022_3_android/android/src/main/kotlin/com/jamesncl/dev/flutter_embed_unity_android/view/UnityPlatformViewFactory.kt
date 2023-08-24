@@ -1,12 +1,12 @@
 package com.jamesncl.dev.flutter_embed_unity_android.view
 
+import android.app.Activity
 import android.content.Context
 import android.graphics.Color
 import android.view.View
 import android.view.ViewGroup
 import android.widget.RelativeLayout
 import android.widget.TextView
-import com.jamesncl.dev.flutter_embed_unity_android.FlutterActivityRegistry
 import com.jamesncl.dev.flutter_embed_unity_android.constants.FlutterEmbedConstants.Companion.logTag
 import com.jamesncl.dev.flutter_embed_unity_android.unity.UnityEngineSingleton
 import io.flutter.BuildConfig
@@ -15,24 +15,23 @@ import io.flutter.plugin.platform.PlatformView
 import io.flutter.plugin.platform.PlatformViewFactory
 
 
-class UnityPlatformViewFactory(
-    private val flutterActivityRegistry: FlutterActivityRegistry,
-    private val platformViewRegistry: PlatformViewRegistry
-) : PlatformViewFactory(null) {
+class UnityPlatformViewFactory : PlatformViewFactory(null) {
+
+    var flutterActivity: Activity? = null
+
     override fun create(context: Context, viewId: Int, args: Any?): PlatformView {
         Log.d(this.toString(), "UnityViewFactory creating view $viewId")
 
         try {
-            // UnityPlayer expects to be passed a context which is an Activity. It will crash during
-            // resume() if it isn't (NullPointerException: Attempt to invoke virtual method
-            // 'android.content.ContentResolver android.content.Context.getContentResolver()' on a null
-            // object reference)
-            flutterActivityRegistry.activity.let { activity ->
+            // UnityEngineSingleton expects to be passed a context which is an Activity.
+            // UnityPlayer will crash during resume() if it isn't (NullPointerException: Attempt
+            // to invoke virtual method
+            // 'android.content.ContentResolver android.content.Context.getContentResolver()'
+            // on a null object reference)
+            flutterActivity.let { activity ->
                 if (activity != null) {
-                    val unityEngineSingleton = UnityEngineSingleton.getInstance(activity)
-                    val unityPlatformView = UnityPlatformView(unityEngineSingleton, context)
-                    platformViewRegistry.activePlatformView = unityPlatformView
-                    return unityPlatformView
+                    val unityEngineSingleton = UnityEngineSingleton.getOrCreateInstance(activity)
+                    return UnityPlatformView(unityEngineSingleton, context)
                 }
                 else {
                     val errorMessage = "Error creating UnityPlatformView: an activity is not available"
