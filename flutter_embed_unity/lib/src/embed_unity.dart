@@ -1,22 +1,21 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_embed_unity/flutter_embed_unity.dart';
 import 'package:flutter_embed_unity/src/orientation_change_notifier.dart';
 import 'package:flutter_embed_unity/src/pause_on_view_dispose_notifier.dart';
 import 'package:flutter_embed_unity_platform_interface/flutter_embed_constants.dart';
 
-class FlutterEmbed extends StatefulWidget {
+class EmbedUnity extends StatefulWidget {
 
   final Function(String)? onMessageFromUnity;
 
-  const FlutterEmbed({this.onMessageFromUnity, super.key});
+  const EmbedUnity({this.onMessageFromUnity, super.key});
 
   @override
-  State<FlutterEmbed> createState() => _FlutterEmbedState();
+  State<EmbedUnity> createState() => _EmbedUnityState();
 }
 
-class _FlutterEmbedState extends State<FlutterEmbed> {
+class _EmbedUnityState extends State<EmbedUnity> {
 
   static const MethodChannel _channel = MethodChannel(FlutterEmbedConstants.uniqueIdentifier);
 

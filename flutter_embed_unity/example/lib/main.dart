@@ -71,7 +71,7 @@ class _UnityScreenState extends State<UnityScreen> {
       body: Column(
         children: [
           Expanded(
-            child: FlutterEmbed(
+            child: EmbedUnity(
               onMessageFromUnity: (String data) {
                 switch(data) {
                   case "touch": {
