@@ -1,7 +1,7 @@
 import Flutter
 import Foundation
 
-class UnityViewFactory : NSObject, FlutterPlatformViewFactory {
+class UnityPlatformViewFactory : NSObject, FlutterPlatformViewFactory {
     
     private var messenger: FlutterBinaryMessenger
 

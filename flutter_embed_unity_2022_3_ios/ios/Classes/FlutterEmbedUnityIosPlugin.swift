@@ -3,7 +3,7 @@ import UIKit
 
 public class FlutterEmbedUnityIosPlugin: NSObject, FlutterPlugin {
     
-    private let flutterMethodCallHandler = FlutterMethodCallHandler()
+    private let sendToUnity = SendToUnity()
     
     public static func register(with registrar: FlutterPluginRegistrar) {
         // Register the method call handler
@@ -13,7 +13,7 @@ public class FlutterEmbedUnityIosPlugin: NSObject, FlutterPlugin {
         let instance = FlutterEmbedUnityIosPlugin()
         registrar.addMethodCallDelegate(instance, channel: channel)
         
-        // Register with SendToFlutter so it can send messages back to Flutter
+        // Register channel with SendToFlutter so it can send messages back to Flutter
         SendToFlutter.methodChannel = channel
         
         // Register a view factory
@@ -22,7 +22,7 @@ public class FlutterEmbedUnityIosPlugin: NSObject, FlutterPlugin {
         //    viewType: Constants.uniqueViewIdentifier,
         // )
         // the UnityViewFactory will be invoked to create a UnityPlatformView:
-        let platformViewFactory = UnityViewFactory(messenger: registrar.messenger())
+        let platformViewFactory = UnityPlatformViewFactory(messenger: registrar.messenger())
         registrar.register(
             platformViewFactory,
             withId: FlutterEmbedConstants.uniqueIdentifier,
@@ -30,6 +30,6 @@ public class FlutterEmbedUnityIosPlugin: NSObject, FlutterPlugin {
     }
     
     public func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
-        flutterMethodCallHandler.handle(call, result: result)
+        sendToUnity.handle(call, result: result)
     }
 }

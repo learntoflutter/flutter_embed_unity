@@ -1,14 +1,7 @@
-//
-//  UnityPlayerCustom.swift
-//  flutter_embed_unity_ios
-//
-//  Created by James Allen on 23/08/2023.
-//
-
 import Foundation
 import UnityFramework
 
-class UnityPlayerCustom {
+class UnityEngineSingleton{
     private static let dataBundleId: String = "com.unity3d.framework"
     private static let frameworkPath: String = "/Frameworks/UnityFramework.framework"
     
@@ -40,14 +33,18 @@ class UnityPlayerCustom {
                 appLaunchOpts: nil
             )
             
-            // This is needed to allow touch events to work
-            // I have no idea why touches do not work, what this does and
-            // why it resolves the problem: got this hack from
+            // Got this hack from
             // https://github.com/juicycleff/flutter-unity-view-widget/blob/master/ios/Classes/UnityPlayerUtils.swift
-            // appController window level is UIWindow.Level.normal (rawValue: 0),
-            // so this makes it -1
-            unityFramework.appController()?.window?.windowLevel = UIWindow.Level(UIWindow.Level.normal.rawValue - 1)
-            
+            // Without this, touches do not register in Flutter. Not sure why - I think the Unity
+            // view is set to a level above Flutter and captures all touches?
+            // There are 3 defined levels:
+            // UIWindow.Level.normal (rawValue: 0.0)
+            // UIWindow.Level.statusBar (rawValue: 1000.0)
+            // UIWindow.Level.alert (rawValue: 2000.0)
+            // appController window level is UIWindow.Level.normal (rawValue: 0.0),
+            // so setting to -1 should put it to a level underneath normal?
+            unityFramework.appController()?.window?.windowLevel = UIWindow.Level(-1)
+
             self.unityFramework = unityFramework
             return unityFramework
         }

@@ -1,13 +1,12 @@
 import Flutter
 
-class FlutterMethodCallHandler {
-    
+class SendToUnity {
     public func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
             switch call.method {
             case FlutterEmbedConstants.methodNameSendToUnity:
                 let gameObjectMethodNameData = call.arguments as! [String]
-                if(UnityPlayerCustom.isInitialised) {
-                    UnityPlayerCustom.getInstance().sendMessageToGO(
+                if(UnityEngineSingleton.isInitialised) {
+                    UnityEngineSingleton.getInstance().sendMessageToGO(
                         withName: gameObjectMethodNameData[0],
                         functionName: gameObjectMethodNameData[1],
                         message: gameObjectMethodNameData[2])
@@ -18,8 +17,8 @@ class FlutterMethodCallHandler {
                     result(false)
                 }
             case FlutterEmbedConstants.methodNamePauseUnity:
-                if(UnityPlayerCustom.isInitialised) {
-                    UnityPlayerCustom.getInstance().pause(true)
+                if(UnityEngineSingleton.isInitialised) {
+                    UnityEngineSingleton.getInstance().pause(true)
                     result(true)
                 }
                 else {
@@ -27,8 +26,8 @@ class FlutterMethodCallHandler {
                     result(false)
                 }
             case FlutterEmbedConstants.methodNameResumeUnity:
-                if(UnityPlayerCustom.isInitialised) {
-                    UnityPlayerCustom.getInstance().pause(false)
+                if(UnityEngineSingleton.isInitialised) {
+                    UnityEngineSingleton.getInstance().pause(false)
                     result(true)
                 }
                 else {

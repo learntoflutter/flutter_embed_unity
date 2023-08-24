@@ -1,15 +1,10 @@
-//
-//  SendToFlutter.swift
-//  flutter_embed_unity_ios
-//
-//  Created by James Allen on 23/08/2023.
-//
-
 import Foundation
 import Flutter
 
-// DO NOT change @_cdecl: it is referenced in C# Unity scripts
-// (<unity project>/Assets/FlutterEmbed/SendToFlutter/SendToFlutter.cs)
+
+// This is called by Unity script to pass messages from Unity to Flutter
+// DO NOT change @_cdecl: it is referenced in C# script
+// <unity project>/Assets/FlutterEmbed/SendToFlutter/SendToFlutter.cs
 // @_cdecl allows C# to call a top level function by the name specified
 @_cdecl("FlutterEmbedUnityIos_sendToFlutter")
 public func sendToFlutter(_ dataAsUnsafePointer: UnsafePointer<CChar>) {

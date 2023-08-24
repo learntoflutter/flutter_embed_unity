@@ -12,13 +12,13 @@ class UnityPlatformView : NSObject, FlutterPlatformView {
         arguments args: Any?,
         binaryMessenger messenger: FlutterBinaryMessenger?
     ) {
-        self.unityAppController = UnityPlayerCustom.getInstance().appController()
+        self.unityAppController = UnityEngineSingleton.getInstance().appController()
         // When the FlutterEmbed widget is disposed, it calls unityPause
         // so that the Unity engine is paused while in the background
         // TODO: is there a way to detect when unityAppController.rootView
         // is dismissed so that we don't have to call unityPause on the Flutter side?
         // Resume Unity:
-        UnityPlayerCustom.getInstance().pause(false)
+        UnityEngineSingleton.getInstance().pause(false)
         super.init()
     }
 
