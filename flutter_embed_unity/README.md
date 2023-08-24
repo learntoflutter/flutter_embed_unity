@@ -17,6 +17,10 @@ https://docs.unity3d.com/Manual/UnityasaLibrary-Android.html
 Real device only, not simulator? Test iOS: Build Settings -> Target SDK -> Simulator SDK
 
 
+Gradle: https://docs.unity3d.com/Manual/android-gradle-overview.html
+
+
+
 On Android and iOS:
 Only full-screen rendering is supported. It’s not possible to render only on a part of the screen.
 When Unity is in an unloaded state (after calling Application.Unload), it retains some amount of memory (between 80–180Mb) to be able to instantly switch back and run again in the same process. The amount of memory that’s not released largely depends on the device’s graphics resolution.
@@ -141,7 +145,23 @@ add the exported unity project to the gradle build using an `include` in android
 include ':unityLibrary'
 
 
-And then 
+Add to `android\build.gradle`:
+
+
+```
+allprojects {
+    repositories {
+        google()
+        mavenCentral()
+		// Add this:
+        flatDir {
+            dirs "${project(':unityLibrary').projectDir}/libs"
+        }
+    }
+}
+```
+
+so it becomes
 
 
 By default, Unity has this in it's exported project build.gradle:
@@ -159,6 +179,26 @@ Fix this by:
 - Add to android/gradle.properties:
 
 unityStreamingAssets=.unity3d, google-services-desktop.json, google-services.json, GoogleService-Info.plist
+
+
+##### If you're using XR / AR
+
+If you are using XR features in Unity (eg ARFoundation), some additional configuration is required.
+
+In your exported `unityLibrary` you may find a folder called `xrmanifest.androidlib`. This needs to be included in your app's build. Do this by adding the following to settings.gradle:
+
+include ':unityLibrary:xrmanifest.androidlib'
+
+
+In addition, some changes need to be made to the `MainActivity` of your app (using Kotlin for example, this is located at `<flutter project>\android\app\src\main\kotlin\com\<your org>\MainActivity.kt`). This is to work around the fact that Unity as a library was designed to run in a custom activity made by Unity (you can find this in `unityLibrary\src\main\java\com\unity3d\player\UnityPlayerActivity.java`). Unfortunately, some Unity code expects to be able to find some properties in the activity hosting the Unity player - specifically, a property called `mUnityPlayer`. If it doesn't find this property, your app will crash when your XR code initialises with the following error:
+
+> `Non-fatal Exception: java.lang.Exception: AndroidJavaException : java.lang.NoSuchFieldError: no "Ljava/lang/Object;" field "mUnityPlayer" in class "Lcom/example/app/MainActivity;" or its superclasses`
+
+Because this plugin is designed to embed Unity in a widget, not in an activity, we need to implement a workaround which is quite 'hacky'. 
+
+If you are using Kotlin in your project, make the following changes to your `MainActivity.kt`:
+
+
 
 
 
