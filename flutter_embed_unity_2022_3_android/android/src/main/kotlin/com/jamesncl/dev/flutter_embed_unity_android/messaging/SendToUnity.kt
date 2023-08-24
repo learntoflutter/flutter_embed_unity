@@ -1,15 +1,17 @@
-package com.jamesncl.dev.flutter_embed_unity_android
+package com.jamesncl.dev.flutter_embed_unity_android.messaging
 
-import com.jamesncl.dev.flutter_embed_unity_android.FlutterEmbedConstants.Companion.logTag
-import com.jamesncl.dev.flutter_embed_unity_android.FlutterEmbedConstants.Companion.methodNameOrientationChanged
-import com.jamesncl.dev.flutter_embed_unity_android.FlutterEmbedConstants.Companion.methodNameSendToUnity
+import com.jamesncl.dev.flutter_embed_unity_android.constants.FlutterEmbedConstants.Companion.logTag
+import com.jamesncl.dev.flutter_embed_unity_android.constants.FlutterEmbedConstants.Companion.methodNameOrientationChanged
+import com.jamesncl.dev.flutter_embed_unity_android.constants.FlutterEmbedConstants.Companion.methodNamePauseUnity
+import com.jamesncl.dev.flutter_embed_unity_android.constants.FlutterEmbedConstants.Companion.methodNameResumeUnity
+import com.jamesncl.dev.flutter_embed_unity_android.constants.FlutterEmbedConstants.Companion.methodNameSendToUnity
 import com.jamesncl.dev.flutter_embed_unity_android.view.PlatformViewRegistry
 import com.unity3d.player.UnityPlayer
 import io.flutter.Log
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
 
-class FlutterMethodCallHandler(private val platformViewRegistry: PlatformViewRegistry): MethodChannel.MethodCallHandler {
+class SendToUnity(private val platformViewRegistry: PlatformViewRegistry): MethodChannel.MethodCallHandler {
 
     override fun onMethodCall(call: MethodCall, result: MethodChannel.Result) {
         Log.i(logTag, call.method)
@@ -24,6 +26,12 @@ class FlutterMethodCallHandler(private val platformViewRegistry: PlatformViewReg
             }
             methodNameOrientationChanged -> {
                 platformViewRegistry.activePlatformView?.orientationChanged()
+            }
+            methodNamePauseUnity -> {
+                platformViewRegistry.activePlatformView?.pause()
+            }
+            methodNameResumeUnity -> {
+                platformViewRegistry.activePlatformView?.resume()
             }
             else -> {
                 result.notImplemented()

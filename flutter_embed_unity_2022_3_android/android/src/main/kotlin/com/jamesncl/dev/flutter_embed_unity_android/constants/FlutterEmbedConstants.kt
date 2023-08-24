@@ -1,4 +1,4 @@
-package com.jamesncl.dev.flutter_embed_unity_android
+package com.jamesncl.dev.flutter_embed_unity_android.constants
 
 class FlutterEmbedConstants {
     companion object {
@@ -10,5 +10,7 @@ class FlutterEmbedConstants {
         const val methodNameSendToUnity = "sendToUnity"
         const val methodNameSendToFlutter = "sendToFlutter"
         const val methodNameOrientationChanged = "orientationChanged"
+        const val methodNamePauseUnity = "pauseUnity"
+        const val methodNameResumeUnity = "resumeUnity"
     }
 }

@@ -1,9 +1,11 @@
 package com.jamesncl.dev.flutter_embed_unity_android
 
-import com.jamesncl.dev.flutter_embed_unity_android.FlutterEmbedConstants.Companion.logTag
-import com.jamesncl.dev.flutter_embed_unity_android.FlutterEmbedConstants.Companion.uniqueIdentifier
+import com.jamesncl.dev.flutter_embed_unity_android.constants.FlutterEmbedConstants.Companion.logTag
+import com.jamesncl.dev.flutter_embed_unity_android.constants.FlutterEmbedConstants.Companion.uniqueIdentifier
+import com.jamesncl.dev.flutter_embed_unity_android.messaging.SendToFlutter
+import com.jamesncl.dev.flutter_embed_unity_android.messaging.SendToUnity
 import com.jamesncl.dev.flutter_embed_unity_android.view.PlatformViewRegistry
-import com.jamesncl.dev.flutter_embed_unity_android.view.UnityViewFactory
+import com.jamesncl.dev.flutter_embed_unity_android.view.UnityPlatformViewFactory
 import io.flutter.embedding.engine.plugins.FlutterPlugin
 import io.flutter.embedding.engine.plugins.activity.ActivityAware
 import io.flutter.embedding.engine.plugins.activity.ActivityPluginBinding
@@ -24,7 +26,7 @@ class FlutterEmbedUnityAndroidPlugin : FlutterPlugin, ActivityAware {
     // the PlatformViewFactory (which will update the reference when a new PlatformView is created)
     private val platformViewRegistry = PlatformViewRegistry()
     private val flutterActivityRegistry = FlutterActivityRegistry()
-    private val methodCallHandler = FlutterMethodCallHandler(platformViewRegistry)
+    private val methodCallHandler = SendToUnity(platformViewRegistry)
 
     override fun onAttachedToEngine(flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
         Log.d(logTag, "onAttachedToEngine")
@@ -48,7 +50,7 @@ class FlutterEmbedUnityAndroidPlugin : FlutterPlugin, ActivityAware {
                 // The factory needs the activity which will be received in onAttachedToActivity
                 // so that the UnityPlayer can be created. It also needs to be able to update the
                 // platformViewRegistry with the current PlatformView each time a PlatformView is created
-                UnityViewFactory(flutterActivityRegistry, platformViewRegistry)
+                UnityPlatformViewFactory(flutterActivityRegistry, platformViewRegistry)
             )
     }
 

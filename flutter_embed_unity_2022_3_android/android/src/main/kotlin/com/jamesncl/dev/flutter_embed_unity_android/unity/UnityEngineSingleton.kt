@@ -1,16 +1,16 @@
-package com.jamesncl.dev.flutter_embed_unity_android.view
+package com.jamesncl.dev.flutter_embed_unity_android.unity
 
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.view.InputDevice
 import android.view.MotionEvent
-import com.jamesncl.dev.flutter_embed_unity_android.FlutterEmbedConstants.Companion.logTag
+import com.jamesncl.dev.flutter_embed_unity_android.constants.FlutterEmbedConstants.Companion.logTag
 import com.unity3d.player.UnityPlayer
 import io.flutter.Log
 
 
 @SuppressLint("ViewConstructor")
-class UnityPlayerCustom(activity: Activity) : UnityPlayer(activity) {
+class UnityEngineSingleton private constructor (activity: Activity) : UnityPlayer(activity) {
 
     // We must use a singleton UnityPlayer, because it was never designed to be
     // reused in multiple views. Calling unityPlayer.destroy() will kill the
@@ -21,14 +21,14 @@ class UnityPlayerCustom(activity: Activity) : UnityPlayer(activity) {
     // alive while the app is running
     companion object {
         @SuppressLint("StaticFieldLeak")
-        private var singleton: UnityPlayerCustom? = null
-        fun getInstance(activity: Activity) : UnityPlayerCustom {
+        private var singleton: UnityEngineSingleton? = null
+        fun getInstance(activity: Activity) : UnityEngineSingleton {
             singleton.let{
                 if(it != null) {
                     return it
                 }
                 else {
-                    val player = UnityPlayerCustom(activity)
+                    val player = UnityEngineSingleton(activity)
                     singleton = player
                     return player
                 }
@@ -43,16 +43,6 @@ class UnityPlayerCustom(activity: Activity) : UnityPlayer(activity) {
         return super.onTouchEvent(motionEvent)
     }
 
-    // IUnityPlayerLifecycleEvents
-    override fun onUnityPlayerUnloaded() {
-        Log.d(logTag, "UnityPlayerCustom onUnityPlayerUnloaded")
-    }
-
-    // IUnityPlayerLifecycleEvents
-    // Callback before Unity player process is killed
-    override fun onUnityPlayerQuitted() {
-        Log.d(logTag, "UnityPlayerCustom onUnityPlayerQuitted")
-    }
 
     // Overriding kill() was an experiment to try to resolve app closing / crashing when
     // player.destroy() is called. It didn't work. The problem is that calling player.destroy() also

@@ -1,7 +1,7 @@
-package com.jamesncl.dev.flutter_embed_unity_android;
+package com.jamesncl.dev.flutter_embed_unity_android.messaging;
 
-import static com.jamesncl.dev.flutter_embed_unity_android.FlutterEmbedConstants.logTag;
-import static com.jamesncl.dev.flutter_embed_unity_android.FlutterEmbedConstants.methodNameSendToFlutter;
+import static com.jamesncl.dev.flutter_embed_unity_android.constants.FlutterEmbedConstants.logTag;
+import static com.jamesncl.dev.flutter_embed_unity_android.constants.FlutterEmbedConstants.methodNameSendToFlutter;
 
 import android.os.Handler;
 import android.os.Looper;

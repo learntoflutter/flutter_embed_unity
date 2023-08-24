@@ -2,21 +2,20 @@ package com.jamesncl.dev.flutter_embed_unity_android.view
 
 import android.content.Context
 import android.graphics.Color
-import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
 import android.widget.RelativeLayout
 import android.widget.TextView
-import com.jamesncl.dev.flutter_embed_unity_android.BuildConfig
 import com.jamesncl.dev.flutter_embed_unity_android.FlutterActivityRegistry
-import com.jamesncl.dev.flutter_embed_unity_android.FlutterEmbedConstants.Companion.logTag
+import com.jamesncl.dev.flutter_embed_unity_android.constants.FlutterEmbedConstants.Companion.logTag
+import com.jamesncl.dev.flutter_embed_unity_android.unity.UnityEngineSingleton
+import io.flutter.BuildConfig
 import io.flutter.Log
 import io.flutter.plugin.platform.PlatformView
 import io.flutter.plugin.platform.PlatformViewFactory
 
 
-class UnityViewFactory(
+class UnityPlatformViewFactory(
     private val flutterActivityRegistry: FlutterActivityRegistry,
     private val platformViewRegistry: PlatformViewRegistry
 ) : PlatformViewFactory(null) {
@@ -30,8 +29,8 @@ class UnityViewFactory(
             // object reference)
             flutterActivityRegistry.activity.let { activity ->
                 if (activity != null) {
-                    val unityPlayerCustom = UnityPlayerCustom.getInstance(activity)
-                    val unityPlatformView = UnityPlatformView(unityPlayerCustom, context)
+                    val unityEngineSingleton = UnityEngineSingleton.getInstance(activity)
+                    val unityPlatformView = UnityPlatformView(unityEngineSingleton, context)
                     platformViewRegistry.activePlatformView = unityPlatformView
                     return unityPlatformView
                 }

@@ -4,12 +4,13 @@ import android.content.Context
 import android.graphics.Color
 import android.view.View
 import android.widget.FrameLayout
-import com.jamesncl.dev.flutter_embed_unity_android.FlutterEmbedConstants.Companion.logTag
+import com.jamesncl.dev.flutter_embed_unity_android.constants.FlutterEmbedConstants.Companion.logTag
+import com.jamesncl.dev.flutter_embed_unity_android.unity.UnityEngineSingleton
 import io.flutter.Log
 import io.flutter.plugin.platform.PlatformView
 
 
-class UnityPlatformView(private val unityPlayerCustom: UnityPlayerCustom, viewFactoryContext: Context) : PlatformView,
+class UnityPlatformView(private val unityEngineSingleton: UnityEngineSingleton, viewFactoryContext: Context) : PlatformView,
     IPlatformViewControl {
 
     // UnityPlayerCustom extends UnityPlayer, which is itself a View. So in theory we could
@@ -34,11 +35,11 @@ class UnityPlatformView(private val unityPlayerCustom: UnityPlayerCustom, viewFa
         // Setting background colour might help when things go wrong: if users report seeing
         // green, they are seeing the base view
         baseView.setBackgroundColor(Color.GREEN)
-        baseView.addView(unityPlayerCustom)
+        baseView.addView(unityEngineSingleton)
         // It's important to call windowFocusChanged, otherwise unity will not start
         // (not sure why - UnityPlayer is undocumented)
-        unityPlayerCustom.windowFocusChanged(unityPlayerCustom.requestFocus())
-        unityPlayerCustom.resume()  // UnityPlayer
+        unityEngineSingleton.windowFocusChanged(unityEngineSingleton.requestFocus())
+        unityEngineSingleton.resume()  // UnityPlayer
     }
 
     override fun orientationChanged() {
@@ -49,8 +50,8 @@ class UnityPlatformView(private val unityPlayerCustom: UnityPlayerCustom, viewFa
         // using UnityPlayer to render in a View is not supported anyway (see
         // https://docs.unity3d.com/Manual/UnityasaLibrary-Android.html)
         // As a workaround, pause and resume the player seems to work
-        unityPlayerCustom.pause()
-        unityPlayerCustom.resume()
+        unityEngineSingleton.pause()
+        unityEngineSingleton.resume()
     }
 
     // PlatformView
@@ -69,16 +70,16 @@ class UnityPlatformView(private val unityPlayerCustom: UnityPlayerCustom, viewFa
     // PlatformView
     override fun onFlutterViewDetached() {
         Log.d(logTag, "UnityPlayerCustom onFlutterViewDetached, pausing Unity")
-        unityPlayerCustom.pause()  // UnityPlayer
+        unityEngineSingleton.pause()  // UnityPlayer
         super.onFlutterViewDetached()
     }
 
     // PlatformView
     override fun dispose() {
         Log.d(logTag, "UnityPlatformView dispose, pausing Unity and detaching from view")
-        baseView.removeView(unityPlayerCustom)
+        baseView.removeView(unityEngineSingleton)
 //        unityPlayerCustom.removeAllViews()
-        unityPlayerCustom.pause()
+        unityEngineSingleton.pause()
 //        unityPlayerCustom.unload()
         // DO NOT call unityPlayerCustom.destroy(). UnityPlayer will also kill the process it is
         // running in, because it was designed to be run within it's own activity launched in it's
