@@ -17,6 +17,24 @@ class FlutterMethodCallHandler {
                     debugPrint("Dropped message to Unity: Unity is not loaded yet")
                     result(false)
                 }
+            case FlutterEmbedConstants.methodNamePauseUnity:
+                if(UnityPlayerCustom.isInitialised) {
+                    UnityPlayerCustom.getInstance().pause(true)
+                    result(true)
+                }
+                else {
+                    debugPrint("Didn't pause Unity: Unity is not loaded yet")
+                    result(false)
+                }
+            case FlutterEmbedConstants.methodNameResumeUnity:
+                if(UnityPlayerCustom.isInitialised) {
+                    UnityPlayerCustom.getInstance().pause(false)
+                    result(true)
+                }
+                else {
+                    debugPrint("Didn't resume Unity: Unity is not loaded yet")
+                    result(false)
+                }
             default:
               result(FlutterMethodNotImplemented)
             }

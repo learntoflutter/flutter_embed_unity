@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_embed_unity/flutter_embed_unity.dart';
 import 'package:flutter_embed_unity/src/orientation_change_notifier.dart';
+import 'package:flutter_embed_unity/src/pause_on_view_dispose_notifier.dart';
 import 'package:flutter_embed_unity_platform_interface/flutter_embed_constants.dart';
 
 class FlutterEmbed extends StatefulWidget {
@@ -25,15 +26,6 @@ class _FlutterEmbedState extends State<FlutterEmbed> {
     super.initState();
   }
 
-  @override
-  void dispose() {
-    if (defaultTargetPlatform == TargetPlatform.iOS) {
-      // TODO: Handle disposal on ios?
-      //controller?._channel?.invokeMethod('dispose');
-    }
-    super.dispose();
-  }
-
   Future<dynamic> _methodCallHandler(MethodCall call) async {
     if(call.method == FlutterEmbedConstants.methodNameSendToFlutter) {
       widget.onMessageFromUnity?.call(call.arguments.toString());
@@ -44,8 +36,10 @@ class _FlutterEmbedState extends State<FlutterEmbed> {
   Widget build(BuildContext context) {
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
-        // For Android only, we need to notify the platform of orientation change.
-        // See OrientationChangeNotifier documentation
+        // For Android only, we need to notify the platform of orientation change
+        // because I couldn't figure out how to do it on native side (see
+        // OrientationChangeNotifier documentation)
+        // TODO: is there a way to detect orientation change on native side?
         return OrientationChangeNotifier(
           child: AndroidView(
             viewType: FlutterEmbedConstants.uniqueIdentifier,
@@ -55,12 +49,16 @@ class _FlutterEmbedState extends State<FlutterEmbed> {
           ),
         );
       case TargetPlatform.iOS:
-        // TODO: is orientation changed also needed for ios?
-        return UiKitView(
-          viewType: FlutterEmbedConstants.uniqueIdentifier,
-          onPlatformViewCreated: (int id) {
-            debugPrint('FlutterEmbed: onPlatformViewCreated($id)');
-          },
+        // For iOS only, pause Unity when view is disposed,
+        // because I couldn't figure out how to detect view disposal on native side
+        // TODO: is there a way to pause Unity on view disposal on native side?
+        return PauseOnViewDisposeNotifier(
+          child: UiKitView(
+            viewType: FlutterEmbedConstants.uniqueIdentifier,
+            onPlatformViewCreated: (int id) {
+              debugPrint('FlutterEmbed: onPlatformViewCreated($id)');
+            },
+          ),
         );
       default:
         throw UnsupportedError('Unsupported platform: $defaultTargetPlatform');

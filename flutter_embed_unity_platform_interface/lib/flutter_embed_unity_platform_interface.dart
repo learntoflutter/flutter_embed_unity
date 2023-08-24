@@ -37,4 +37,12 @@ abstract class FlutterEmbedUnityPlatform extends PlatformInterface {
   void orientationChanged() {
     throw UnimplementedError('orientationChanged() has not been implemented.');
   }
+
+  void pauseUnity() {
+    throw UnimplementedError('pauseUnity() has not been implemented.');
+  }
+
+  void resumeUnity() {
+    throw UnimplementedError('resumeUnity() has not been implemented.');
+  }
 }

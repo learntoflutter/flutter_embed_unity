@@ -3,4 +3,6 @@ struct FlutterEmbedConstants {
     static let methodNameSendToUnity = "sendToUnity"
     static let methodNameSendToFlutter = "sendToFlutter"
     static let methodNameOrientationChanged = "orientationChanged"
+    static let methodNamePauseUnity = "pauseUnity"
+    static let methodNameResumeUnity = "resumeUnity"
 }

@@ -10,3 +10,11 @@ FlutterEmbedUnityPlatform get _platform => FlutterEmbedUnityPlatform.instance;
 void sendToUnity(String gameObjectName, String methodName, String data) {
   _platform.sendToUnity(gameObjectName, methodName, data);
 }
+
+void pauseUnity() {
+  _platform.pauseUnity();
+}
+
+void resumeUnity() {
+  _platform.resumeUnity();
+}

@@ -118,6 +118,32 @@ class _UnityScreenState extends State<UnityScreen> {
                 ),
               ),
             ],
+          ),
+          Row(
+            children: [
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: ElevatedButton(
+                    onPressed: () {
+                      pauseUnity();
+                    },
+                    child: const Text("Pause"),
+                  ),
+                ),
+              ),
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: ElevatedButton(
+                    onPressed: () {
+                      resumeUnity();
+                    },
+                    child: const Text("Resume"),
+                  ),
+                ),
+              ),
+            ],
           )
         ],
       ),
