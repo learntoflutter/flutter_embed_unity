@@ -28,10 +28,10 @@ class SendToUnity(private val platformViewRegistry: PlatformViewRegistry): Metho
                 platformViewRegistry.activePlatformView?.orientationChanged()
             }
             methodNamePauseUnity -> {
-                platformViewRegistry.activePlatformView?.pause()
+                //platformViewRegistry.activePlatformView?.pause()
             }
             methodNameResumeUnity -> {
-                platformViewRegistry.activePlatformView?.resume()
+//                platformViewRegistry.activePlatformView?.resume()
             }
             else -> {
                 result.notImplemented()
