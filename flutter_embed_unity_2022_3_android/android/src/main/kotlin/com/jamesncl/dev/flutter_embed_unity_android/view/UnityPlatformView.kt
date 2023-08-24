@@ -1,13 +1,18 @@
 package com.jamesncl.dev.flutter_embed_unity_android.view
 
+import android.app.Activity
 import android.content.Context
 import android.graphics.Color
+import android.os.Build
 import android.view.View
+import android.view.WindowInsets
+import android.view.WindowManager
 import android.widget.FrameLayout
 import com.jamesncl.dev.flutter_embed_unity_android.constants.FlutterEmbedConstants.Companion.logTag
 import com.jamesncl.dev.flutter_embed_unity_android.unity.UnityEngineSingleton
 import io.flutter.Log
 import io.flutter.plugin.platform.PlatformView
+import io.flutter.util.ViewUtils.getActivity
 
 
 class UnityPlatformView(private val unityEngineSingleton: UnityEngineSingleton, viewFactoryContext: Context) : PlatformView {
@@ -35,10 +40,23 @@ class UnityPlatformView(private val unityEngineSingleton: UnityEngineSingleton, 
         // green, they are seeing the base view
         baseView.setBackgroundColor(Color.GREEN)
         baseView.addView(unityEngineSingleton)
+
         // It's important to call windowFocusChanged, otherwise unity will not start
         // (not sure why - UnityPlayer is undocumented)
         unityEngineSingleton.windowFocusChanged(unityEngineSingleton.requestFocus())
         unityEngineSingleton.resume()  // UnityPlayer
+
+        // Unity on Android always forces hiding the status bar.
+        // See https://forum.unity.com/threads/status-bar-always-hidden-on-android.362779
+        // See https://github.com/Over17/UnityShowAndroidStatusBar
+        // This is a workaround to show the status bar:
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            unityEngineSingleton.windowInsetsController?.show(WindowInsets.Type.statusBars())
+        }
+        else {
+            @Suppress("DEPRECATION")
+            getActivity(unityEngineSingleton.context)?.window?.clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        }
     }
 
     // PlatformView
