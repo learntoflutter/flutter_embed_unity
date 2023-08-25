@@ -208,20 +208,51 @@ If your `MainActivity` extends `FlutterActivity`, you can simply change it to ex
 
 
 ```java
+import com.jamesncl.dev.flutter_embed_unity_android.unity.FakeUnityPlayerActivity;
+
 public class MainActivity extends FakeUnityPlayerActivity {
 	
 }
 ```
 
-```
+```kotlin
+import com.jamesncl.dev.flutter_embed_unity_android.unity.FakeUnityPlayerActivity
+
+class MainActivity: FakeUnityPlayerActivity() {
+    
+}
 
 ```
 
-Otherwise, if your `MainActivity` extends something else (for example `FlutterFragmentActivity` or your own custom Activity) it may be easier to make your `MainActivity` implement `IFakeUnityPlayerActivity`. If you do this, you MUST also create a public field of type `Object` in your `MainActivity` called `mUnityPlayer`, and set this via the interface function:
+Otherwise, if your `MainActivity` extends something else (for example `FlutterFragmentActivity` or your own custom Activity) it may be easier to make your `MainActivity` implement `IFakeUnityPlayerActivity`. If you do this, you MUST also create a public field of type `Object` (for Java) or `Any?` (for Kotlin) in your `MainActivity` called `mUnityPlayer`, and set this via the interface function:
 
 ```java
+import com.jamesncl.dev.flutter_embed_unity_android.unity.IFakeUnityPlayerActivity;
+
+public class MainActivity implements IFakeUnityPlayerActivity {
+
+	// Don't change the name of this variable; referenced from native code
+    public Object mUnityPlayer;
+    
+    @Override
+    public void setmUnityPlayer(Object mUnityPlayer) {
+        this.mUnityPlayer = mUnityPlayer;
+    }
+}
 
 ``` 
+
+```kotlin
+class Thing: IFakeUnityPlayerActivity {
+    
+	// Don't change the name of this variable; referenced from native code
+    var mUnityPlayer: Any? = null
+	
+    override fun setmUnityPlayer(mUnityPlayer: Any?) {
+        this.mUnityPlayer = mUnityPlayer
+    }
+}
+```
 
 
 ## Optional adjustments
