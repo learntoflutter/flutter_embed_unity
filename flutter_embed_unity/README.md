@@ -181,25 +181,47 @@ Fix this by:
 unityStreamingAssets=.unity3d, google-services-desktop.json, google-services.json, GoogleService-Info.plist
 
 
-##### If you're using XR / AR
+##### If you're using XR (VR / AR)
 
-If you are using XR features in Unity (eg ARFoundation), some additional configuration is required.
+If you are using XR features in Unity (eg ARFoundation), make sure you check Unity's project validation checks: in your Unity project, go to Project Settings -> XR Plug-in Management -> Project Validation, and fix any problems.
 
-In your exported `unityLibrary` you may find a folder called `xrmanifest.androidlib`. This needs to be included in your app's build. Do this by adding the following to settings.gradle:
+Then we need to perform some additional configuration on your project.
 
+###### Android
+
+In your exported `unityLibrary` you may find an extra project folder called `xrmanifest.androidlib`. The Unity project depends on this, so you need to inlcude it in your app's build. Do this by adding the following to your `android/settings.gradle`:
+
+```
+// This additional project is required to build with Unity XR:
 include ':unityLibrary:xrmanifest.androidlib'
+```
 
-
-In addition, some changes need to be made to the `MainActivity` of your app (using Kotlin for example, this is located at `<flutter project>\android\app\src\main\kotlin\com\<your org>\MainActivity.kt`). This is to work around the fact that Unity as a library was designed to run in a custom activity made by Unity (you can find this in `unityLibrary\src\main\java\com\unity3d\player\UnityPlayerActivity.java`). Unfortunately, some Unity code expects to be able to find some properties in the activity hosting the Unity player - specifically, a property called `mUnityPlayer`. If it doesn't find this property, your app will crash when your XR code initialises with the following error:
+In addition, some changes need to be made to the `MainActivity` of your app. This is to work around the fact that Unity as a library was designed to run in a custom activity made by Unity (you can find this in `unityLibrary\src\main\java\com\unity3d\player\UnityPlayerActivity.java`). Unfortunately, some Unity code expects to be able to find some properties in the activity hosting the Unity player - specifically, a field called `mUnityPlayer`. If it doesn't find this field, your app will crash when your XR code initialises with the following error:
 
 > `Non-fatal Exception: java.lang.Exception: AndroidJavaException : java.lang.NoSuchFieldError: no "Ljava/lang/Object;" field "mUnityPlayer" in class "Lcom/example/app/MainActivity;" or its superclasses`
 
-Because this plugin is designed to embed Unity in a widget, not in an activity, we need to implement a workaround which is quite 'hacky'. 
+Because this plugin is designed to embed Unity in a widget, not in an activity, we need to make our MainActivity 'pretend' like it's a `UnityPlayerActivity` by giving it a `mUnityPlayer` field which can be set by the plugin when the `UnityPlayer` is created. 
 
-If you are using Kotlin in your project, make the following changes to your `MainActivity.kt`:
+Find your `MainActivity` class (this is usually located at `<flutter project>\android\app\src\main\kotlin\com\<your org>\MainActivity.kt` or `<flutter project>\android\app\src\main\java\com\<your org>\MainActivity.java`)
+
+If your `MainActivity` extends `FlutterActivity`, you can simply change it to extend `FakeUnityPlayerActivity` instead of `FlutterActivity` (`FakeUnityPlayerActivity` also extends `FlutterActivity`). This is the simplest option, as nothing else needs to be done:
 
 
+```java
+public class MainActivity extends FakeUnityPlayerActivity {
+	
+}
+```
 
+```
+
+```
+
+Otherwise, if your `MainActivity` extends something else (for example `FlutterFragmentActivity` or your own custom Activity) it may be easier to make your `MainActivity` implement `IFakeUnityPlayerActivity`. If you do this, you MUST also create a public field of type `Object` in your `MainActivity` called `mUnityPlayer`, and set this via the interface function:
+
+```java
+
+``` 
 
 
 ## Optional adjustments

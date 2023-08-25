@@ -1,5 +1,7 @@
 include ':app'
 include ':unityLibrary'
+// This additional project is required to build with Unity XR:
+include ':unityLibrary:xrmanifest.androidlib'
 
 def localPropertiesFile = new File(rootProject.projectDir, "local.properties")
 def properties = new Properties()

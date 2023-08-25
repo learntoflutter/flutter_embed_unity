@@ -59,10 +59,24 @@ class _UnityScreenState extends State<UnityScreen> {
 
   double _rotationSpeed = 30;
   int _numberOfTaps = 0;
+  bool? _isUnityArSupportedOnDevice;
+  bool _isArSceneActive = false;
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+
+    final String arStatusMessage;
+    final bool? isUnityArSupportedOnDevice = _isUnityArSupportedOnDevice;
+    if(isUnityArSupportedOnDevice == null) {
+      arStatusMessage = "checking...";
+    }
+    else if(isUnityArSupportedOnDevice) {
+      arStatusMessage = "supported";
+    }
+    else {
+      arStatusMessage = "not supported on this device";
+    }
 
     return Scaffold(
       appBar: AppBar(
@@ -73,17 +87,23 @@ class _UnityScreenState extends State<UnityScreen> {
           Expanded(
             child: EmbedUnity(
               onMessageFromUnity: (String data) {
-                switch(data) {
-                  case "touch": {
-                    setState(() {
-                      _numberOfTaps++;
-                    });
-                    break;
-                  }
-                  case "scene_loaded": {
-                    _setRotationSpeed();
-                    break;
-                  }
+                if(data == "touch"){
+                  setState(() {
+                    _numberOfTaps++;
+                  });
+                }
+                else if(data == "scene_loaded") {
+                  _setRotationSpeed();
+                }
+                else if(data == "ar:true") {
+                  setState(() {
+                    _isUnityArSupportedOnDevice = true;
+                  });
+                }
+                else if(data == "ar:false") {
+                  setState(() {
+                    _isUnityArSupportedOnDevice = false;
+                  });
                 }
               },
             ),
@@ -94,6 +114,27 @@ class _UnityScreenState extends State<UnityScreen> {
               "Flutter logo has been touched $_numberOfTaps times",
               textAlign: TextAlign.center,
               style: theme.textTheme.titleMedium,
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: Row(
+              children: [
+                Text("Activate AR ($arStatusMessage)"),
+                Switch(
+                  value: _isArSceneActive,
+                  onChanged: isUnityArSupportedOnDevice != null && isUnityArSupportedOnDevice ? (value) {
+                    sendToUnity(
+                      "SceneSwitcher",
+                      "SwitchToScene",
+                      _isArSceneActive ? "FlutterEmbedExampleScene" : "FlutterEmbedExampleSceneAR",
+                    );
+                    setState(() {
+                      _isArSceneActive = value;
+                    });
+                  } : null,
+                ),
+              ],
             ),
           ),
           Row(

@@ -1,6 +1,7 @@
 package com.jamesncl.dev.flutter_embed_unity_android_example;
 
-import io.flutter.embedding.android.FlutterActivity;
+import com.jamesncl.dev.flutter_embed_unity_android.unity.FakeUnityPlayerActivity;
 
-public class MainActivity extends FlutterActivity {
+public class MainActivity extends FakeUnityPlayerActivity {
+
 }

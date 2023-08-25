@@ -30,6 +30,12 @@ class UnityEngineSingleton private constructor (activity: Activity) : UnityPlaye
                 }
                 else {
                     val player = UnityEngineSingleton(activity)
+                    // This is to work around issue when using Unity AR features
+                    // See comments on IUnityPlayerActivity for explanation
+                    if(activity is IFakeUnityPlayerActivity) {
+                        activity.setmUnityPlayer(player)
+                    }
+
                     singleton = player
                     return player
                 }

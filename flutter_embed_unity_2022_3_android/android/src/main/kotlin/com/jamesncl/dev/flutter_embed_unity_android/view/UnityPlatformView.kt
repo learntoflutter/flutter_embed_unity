@@ -26,8 +26,8 @@ class UnityPlatformView(private val unityEngineSingleton: UnityEngineSingleton, 
     //   "Unexpected platform view context for view ID 0; some functionality may not work correctly.
     //   When constructing a platform view in the factory, ensure that the view returned from
     //   PlatformViewFactory#create returns the provided context from getContext()"
-    // - The UnityPlayerCustom is created using the activity returned from the flutter
-    //   binding. This is not the same context, so adding the UnityPlayerCustom directly
+    // - The unityEngineSingleton is created using the activity returned from the flutter
+    //   binding. This is not the same context, so adding the unityEngineSingleton directly
     //   results in the warning above
     //
     // The solution used here is to use an intermediate View (a FrameLayout) which sits between
@@ -83,9 +83,7 @@ class UnityPlatformView(private val unityEngineSingleton: UnityEngineSingleton, 
     override fun dispose() {
         Log.d(logTag, "UnityPlatformView dispose, pausing Unity and detaching from view")
         baseView.removeView(unityEngineSingleton)
-//        unityPlayerCustom.removeAllViews()
         unityEngineSingleton.pause()
-//        unityPlayerCustom.unload()
         // DO NOT call unityPlayerCustom.destroy(). UnityPlayer will also kill the process it is
         // running in, because it was designed to be run within it's own activity launched in it's
         // own process. We can't make FlutterActivity launch in it's own process, because it's the
