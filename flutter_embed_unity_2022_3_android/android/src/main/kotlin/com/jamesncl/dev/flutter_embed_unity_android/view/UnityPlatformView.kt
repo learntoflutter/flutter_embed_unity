@@ -50,13 +50,9 @@ class UnityPlatformView(private val unityEngineSingleton: UnityEngineSingleton, 
         // See https://forum.unity.com/threads/status-bar-always-hidden-on-android.362779
         // See https://github.com/Over17/UnityShowAndroidStatusBar
         // This is a workaround to show the status bar:
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            unityEngineSingleton.windowInsetsController?.show(WindowInsets.Type.statusBars())
-        }
-        else {
-            @Suppress("DEPRECATION")
-            getActivity(unityEngineSingleton.context)?.window?.clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        }
+        // TODO: FLAG_FULLSCREEN is deprecated, what to replace it with?
+        // unityEngineSingleton.windowInsetsController?.show(WindowInsets.Type.statusBars()) doesn't seem to work...
+        getActivity(unityEngineSingleton.context)?.window?.clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
     }
 
     // PlatformView
