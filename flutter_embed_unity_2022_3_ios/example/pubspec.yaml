@@ -20,6 +20,7 @@ dependencies:
   flutter_embed_unity:
     path: ../../flutter_embed_unity
   intl: any
+  provider: ^6.0.5
 
 dev_dependencies:
   integration_test:

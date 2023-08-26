@@ -303,6 +303,13 @@ android {
 	...
 }
 
+
+# Misc notes
+
+Wait for scene load the first time you create an EmbedUnity widget before sending message. After that, you can send message at any time (even without EmbedUnity widget in the widget tree and even after pausing Unity) and it will be received, because Unity is still active in the background.
+
+
+
 # Developer notes
 
 Android: explain the classes.jar
