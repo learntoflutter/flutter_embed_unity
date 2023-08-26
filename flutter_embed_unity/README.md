@@ -178,7 +178,9 @@ When we try to build, this error will happen:
 Fix this by:
 - Add to android/gradle.properties:
 
-unityStreamingAssets=.unity3d, google-services-desktop.json, google-services.json, GoogleService-Info.plist
+```
+unityStreamingAssets=
+```
 
 
 ##### If you're using XR (VR / AR)
