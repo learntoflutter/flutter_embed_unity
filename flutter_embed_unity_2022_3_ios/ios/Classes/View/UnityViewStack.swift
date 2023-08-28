@@ -19,13 +19,13 @@ class UnityViewStack: NSObject {
     // This could possibly be implemented as a Queue / Stack collection, but it may
     // be possible that a view which isn't the topmost one gets disposed (eg during
     // a Navigator.of(contect).pushAndRemoveUntil ?) so safest just to use a list
-    private var viewStack = [IUnityViewStackable]()
+    private var viewStack = [UnityView]()
     
     private var isObservingUnityControllerIsDisposing = false
     @objc private var unityViewController: UIViewController? = nil
     private var             isBeingDismissedObservation: NSKeyValueObservation? = nil
     
-    func pushView(view: IUnityViewStackable) {
+    func pushView(view: UnityView) {
         // Unity can only be attached to one view at a time. Therefore, check
         // if there are any other active views, and detatch Unity from them first
         viewStack.forEach { existingView in
@@ -49,59 +49,38 @@ class UnityViewStack: NSObject {
         
         // Then attach Unity to the new view
         view.attachUnity(unityPlayerSingleton)
-        
-        
         debugPrint("Attached Unity to new view")
         
         // Resume unity
-        UnityPlayerSingleton.getInstance().pause(false)
+        unityPlayerSingleton.pause(false)
         
-        
-
-        // Register for onDispose event so we can pop the stack when this view is disposed
-//        view.onDispose = {
-//            popView(view)
-//        }
-
         // Add view to the stack
         viewStack.append(view)
     }
 
-    private func popView(_ view: IUnityViewStackable) {
-        
-        got up to here
-//        // Detatch Unity from the view
-//        view.detachUnity()
-//
-//        // Remove from the stack
-//        viewStack.remove(view)
-//
-//        if(viewStack.isNotEmpty()) {
-//            // If there are any remaining views in the stack, attach Unity to the last view to be
-//            // added to the stack
-//            val unityPlayerSingleton = UnityPlayerSingleton.getInstance()
-//            if(unityPlayerSingleton != null) {
-//                viewStack.last().attachUnity(unityPlayerSingleton)
-//                Log.i(logTag, "Reattached Unity to existing view")
-//                // I don't know why, but when Unity is reattached to an existing view
-//                // we need to pause AND resume (even though Unity was never paused?):
-////                unityPlayerSingleton.windowFocusChanged(unityPlayerSingleton.requestFocus())
-//                unityPlayerSingleton.pause()
-//                unityPlayerSingleton.resume()
-//            }
-//            else {
-//                Log.e(logTag, "Unity hasn't been reattached to the last view in the " +
-//                        "stack because UnityPlayer was null")
-//            }
-//        }
-//        else {
-//            // No more Unity views, so pause
-//            UnityPlayerSingleton.getInstance()?.pause()
-//            // DO NOT call unityPlayerCustom.destroy(). UnityPlayer will also kill the process it is
-//            // running in, because it was designed to be run within it's own activity launched in it's
-//            // own process. We can't make FlutterActivity launch in it's own process, because it's the
-//            // main (and usually the only) activity.
-//        }
-    }
+    private func popView(_ view: UnityView) {
+        // Detatch Unity from the view
+        view.detachUnity()
 
+        // Remove from the stack
+        viewStack = viewStack.filter { $0 != view }
+
+        let unityPlayerSingleton = UnityPlayerSingleton.getInstance()
+        
+        if(!viewStack.isEmpty) {
+            // If there are any remaining views in the stack, attach Unity to the last view to be
+            // added to the stack
+            
+            viewStack.last?.attachUnity(unityPlayerSingleton)
+            debugPrint("Reattached Unity to existing view")
+            // I don't know why, but when Unity is reattached to an existing view
+            // we need to pause AND resume (even though Unity was never paused?):
+//            unityPlayerSingleton.pause()
+//            unityPlayerSingleton.resume()
+        }
+        else {
+            // No more Unity views, so pause
+            unityPlayerSingleton.pause(true)
+        }
+    }
 }
