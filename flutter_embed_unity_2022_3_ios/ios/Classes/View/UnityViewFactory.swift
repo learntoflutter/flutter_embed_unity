@@ -1,7 +1,7 @@
 import Flutter
 import Foundation
 
-class UnityPlatformViewFactory : NSObject, FlutterPlatformViewFactory {
+class UnityViewFactory : NSObject, FlutterPlatformViewFactory {
     
     private var messenger: FlutterBinaryMessenger
 
@@ -11,7 +11,7 @@ class UnityPlatformViewFactory : NSObject, FlutterPlatformViewFactory {
     }
 
     func create(withFrame frame: CGRect, viewIdentifier viewId: Int64, arguments args: Any?) -> FlutterPlatformView {
-        return UnityPlatformView(
+        return UnityView(
             frame: frame,
             viewIdentifier: viewId,
             arguments: args,

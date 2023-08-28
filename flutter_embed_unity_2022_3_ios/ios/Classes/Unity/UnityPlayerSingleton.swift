@@ -1,7 +1,7 @@
 import Foundation
 import UnityFramework
 
-class UnityEngineSingleton{
+class UnityPlayerSingleton {
     private static let dataBundleId: String = "com.unity3d.framework"
     private static let frameworkPath: String = "/Frameworks/UnityFramework.framework"
     

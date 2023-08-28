@@ -22,7 +22,7 @@ public class FlutterEmbedUnityIosPlugin: NSObject, FlutterPlugin {
         //    viewType: Constants.uniqueViewIdentifier,
         // )
         // the UnityViewFactory will be invoked to create a UnityPlatformView:
-        let platformViewFactory = UnityPlatformViewFactory(messenger: registrar.messenger())
+        let platformViewFactory = UnityViewFactory(messenger: registrar.messenger())
         registrar.register(
             platformViewFactory,
             withId: FlutterEmbedConstants.uniqueIdentifier,

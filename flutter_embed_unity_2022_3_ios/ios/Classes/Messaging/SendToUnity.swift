@@ -5,8 +5,8 @@ class SendToUnity {
             switch call.method {
             case FlutterEmbedConstants.methodNameSendToUnity:
                 let gameObjectMethodNameData = call.arguments as! [String]
-                if(UnityEngineSingleton.isInitialised) {
-                    UnityEngineSingleton.getInstance().sendMessageToGO(
+                if(UnityPlayerSingleton.isInitialised) {
+                    UnityPlayerSingleton.getInstance().sendMessageToGO(
                         withName: gameObjectMethodNameData[0],
                         functionName: gameObjectMethodNameData[1],
                         message: gameObjectMethodNameData[2])
@@ -17,8 +17,8 @@ class SendToUnity {
                     result(false)
                 }
             case FlutterEmbedConstants.methodNamePauseUnity:
-                if(UnityEngineSingleton.isInitialised) {
-                    UnityEngineSingleton.getInstance().pause(true)
+                if(UnityPlayerSingleton.isInitialised) {
+                    UnityPlayerSingleton.getInstance().pause(true)
                     result(true)
                 }
                 else {
@@ -26,8 +26,8 @@ class SendToUnity {
                     result(false)
                 }
             case FlutterEmbedConstants.methodNameResumeUnity:
-                if(UnityEngineSingleton.isInitialised) {
-                    UnityEngineSingleton.getInstance().pause(false)
+                if(UnityPlayerSingleton.isInitialised) {
+                    UnityPlayerSingleton.getInstance().pause(false)
                     result(true)
                 }
                 else {
