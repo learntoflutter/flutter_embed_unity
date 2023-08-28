@@ -87,6 +87,7 @@ class UnityScreen extends StatelessWidget {
               Expanded(
                 child: EmbedUnity(
                   onMessageFromUnity: (String data) {
+                    debugPrint("onMessageFromUnity $data");
                     if(data == "touch"){
                       appState.update(numberOfTaps: appState.numberOfTaps + 1);
                     }
@@ -171,6 +172,36 @@ class UnityScreen extends StatelessWidget {
                           resumeUnity();
                         },
                         child: const Text("Resume"),
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: ElevatedButton(
+                        onPressed: () {
+                          showDialog(context: context, builder: (context) =>
+                            const AlertDialog(
+                              content: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  SizedBox(
+                                    height: 100,
+                                    width: 80,
+                                    child: EmbedUnity(),
+                                  ),
+                                  Text(
+                                    "Unity can only be shown in 1 widget at a time. If a new route "
+                                    "with a FlutterEmbed is pushed onto the stack, the one underneath is "
+                                    "'detached' from Unity, and restored when the route is popped",
+                                    textAlign: TextAlign.center,
+                                  ),
+                                ],
+                              ),
+                            )
+                          );
+                        },
+                        child: const Text("Open dialog"),
                       ),
                     ),
                   ),
