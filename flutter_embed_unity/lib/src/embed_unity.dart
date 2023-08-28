@@ -3,7 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_embed_unity/src/orientation_change_notifier.dart';
 import 'package:flutter_embed_unity/src/pause_on_view_dispose_notifier.dart';
+import 'package:flutter_embed_unity/src/unity_message_listener.dart';
+import 'package:flutter_embed_unity/src/unity_message_listeners.dart';
 import 'package:flutter_embed_unity_platform_interface/flutter_embed_constants.dart';
+
 
 class EmbedUnity extends StatefulWidget {
 
@@ -15,20 +18,23 @@ class EmbedUnity extends StatefulWidget {
   State<EmbedUnity> createState() => _EmbedUnityState();
 }
 
-class _EmbedUnityState extends State<EmbedUnity> {
-
-  static const MethodChannel _channel = MethodChannel(FlutterEmbedConstants.uniqueIdentifier);
+class _EmbedUnityState extends State<EmbedUnity> implements UnityMessageListener {
 
   @override
   void initState() {
-    _channel.setMethodCallHandler(_methodCallHandler);
+    UnityMessageListeners.instance.addListener(this);
     super.initState();
   }
 
-  Future<dynamic> _methodCallHandler(MethodCall call) async {
-    if(call.method == FlutterEmbedConstants.methodNameSendToFlutter) {
-      widget.onMessageFromUnity?.call(call.arguments.toString());
-    }
+  @override
+  void dispose() {
+    UnityMessageListeners.instance.removeListener(this);
+    super.dispose();
+  }
+
+  @override
+  void onMessageFromUnity(String data ) {
+    widget.onMessageFromUnity?.call(data);
   }
 
   @override

@@ -5,7 +5,7 @@ import com.jamesncl.dev.flutter_embed_unity_android.constants.FlutterEmbedConsta
 import com.jamesncl.dev.flutter_embed_unity_android.constants.FlutterEmbedConstants.Companion.methodNamePauseUnity
 import com.jamesncl.dev.flutter_embed_unity_android.constants.FlutterEmbedConstants.Companion.methodNameResumeUnity
 import com.jamesncl.dev.flutter_embed_unity_android.constants.FlutterEmbedConstants.Companion.methodNameSendToUnity
-import com.jamesncl.dev.flutter_embed_unity_android.unity.UnityEngineSingleton
+import com.jamesncl.dev.flutter_embed_unity_android.unity.UnityPlayerSingleton
 import com.unity3d.player.UnityPlayer
 import io.flutter.Log
 import io.flutter.plugin.common.MethodCall
@@ -25,13 +25,13 @@ class SendToUnity: MethodChannel.MethodCallHandler {
                     gameObjectMethodNameData[2]) // Data
             }
             methodNameOrientationChanged -> {
-                UnityEngineSingleton.getInstance()?.orientationChanged()
+                UnityPlayerSingleton.getInstance()?.orientationChanged()
             }
             methodNamePauseUnity -> {
-                UnityEngineSingleton.getInstance()?.pause()
+                UnityPlayerSingleton.getInstance()?.pause()
             }
             methodNameResumeUnity -> {
-                UnityEngineSingleton.getInstance()?.resume()
+                UnityPlayerSingleton.getInstance()?.resume()
             }
             else -> {
                 result.notImplemented()

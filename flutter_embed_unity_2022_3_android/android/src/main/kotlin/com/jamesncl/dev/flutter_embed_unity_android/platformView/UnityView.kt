@@ -1,21 +1,16 @@
-package com.jamesncl.dev.flutter_embed_unity_android.view
+package com.jamesncl.dev.flutter_embed_unity_android.platformView
 
-import android.app.Activity
 import android.content.Context
 import android.graphics.Color
-import android.os.Build
 import android.view.View
-import android.view.WindowInsets
-import android.view.WindowManager
 import android.widget.FrameLayout
 import com.jamesncl.dev.flutter_embed_unity_android.constants.FlutterEmbedConstants.Companion.logTag
-import com.jamesncl.dev.flutter_embed_unity_android.unity.UnityEngineSingleton
+import com.jamesncl.dev.flutter_embed_unity_android.unity.UnityPlayerSingleton
 import io.flutter.Log
 import io.flutter.plugin.platform.PlatformView
-import io.flutter.util.ViewUtils.getActivity
 
 
-class UnityPlatformView(private val unityEngineSingleton: UnityEngineSingleton, viewFactoryContext: Context) : PlatformView {
+class UnityView(viewFactoryContext: Context) : PlatformView, IUnityViewStackable {
 
     // UnityPlayerCustom extends UnityPlayer, which is itself a View. So in theory we could
     // just use UnityPlayerCustom as the view returned from this PlatformView. However there
@@ -35,25 +30,24 @@ class UnityPlatformView(private val unityEngineSingleton: UnityEngineSingleton, 
     // context from the view factory, and add the UnityPlayer to that
     private val baseView: FrameLayout = FrameLayout(viewFactoryContext)
 
+    override var onDispose: (() -> Unit)? = null
+
     init {
         // Setting background colour might help when things go wrong: if users report seeing
         // green, they are seeing the base view
         baseView.setBackgroundColor(Color.GREEN)
-        baseView.addView(unityEngineSingleton)
-
-        // It's important to call windowFocusChanged, otherwise unity will not start
-        // (not sure why - UnityPlayer is undocumented)
-        unityEngineSingleton.windowFocusChanged(unityEngineSingleton.requestFocus())
-        unityEngineSingleton.resume()  // UnityPlayer
-
-        // Unity on Android always forces hiding the status bar.
-        // See https://forum.unity.com/threads/status-bar-always-hidden-on-android.362779
-        // See https://github.com/Over17/UnityShowAndroidStatusBar
-        // This is a workaround to show the status bar:
-        // TODO: FLAG_FULLSCREEN is deprecated, what to replace it with?
-        // unityEngineSingleton.windowInsetsController?.show(WindowInsets.Type.statusBars()) doesn't seem to work...
-        getActivity(unityEngineSingleton.context)?.window?.clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
     }
+
+    override fun attachUnity(unityPlayerSingleton: UnityPlayerSingleton) {
+        baseView.addView(unityPlayerSingleton)
+    }
+
+    override fun detachUnity() {
+        if(baseView.childCount > 0) {
+            baseView.removeViewAt(0)
+        }
+    }
+
 
     // PlatformView
     override fun getView(): View {
@@ -65,24 +59,19 @@ class UnityPlatformView(private val unityEngineSingleton: UnityEngineSingleton, 
     // PlatformView
     override fun onFlutterViewAttached(flutterView: View) {
         super.onFlutterViewAttached(flutterView)
-        Log.d(logTag, "UnityPlatformView onFlutterViewAttached, resuming Unity")
+        Log.d(logTag, "UnityPlatformView onFlutterViewAttached")
     }
 
     // PlatformView
     override fun onFlutterViewDetached() {
-        Log.d(logTag, "UnityPlayerCustom onFlutterViewDetached, pausing Unity")
-        unityEngineSingleton.pause()  // UnityPlayer
+        Log.d(logTag, "UnityPlayerCustom onFlutterViewDetached")
+        UnityPlayerSingleton.getInstance()?.pause()
         super.onFlutterViewDetached()
     }
 
     // PlatformView
     override fun dispose() {
-        Log.d(logTag, "UnityPlatformView dispose, pausing Unity and detaching from view")
-        baseView.removeView(unityEngineSingleton)
-        unityEngineSingleton.pause()
-        // DO NOT call unityPlayerCustom.destroy(). UnityPlayer will also kill the process it is
-        // running in, because it was designed to be run within it's own activity launched in it's
-        // own process. We can't make FlutterActivity launch in it's own process, because it's the
-        // main (and usually the only) activity.
+        Log.d(logTag, "UnityPlatformView dispose")
+        onDispose?.invoke()
     }
 }

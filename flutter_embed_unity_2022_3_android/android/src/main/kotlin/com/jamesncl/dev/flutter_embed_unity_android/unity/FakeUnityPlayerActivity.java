@@ -7,8 +7,7 @@ import io.flutter.embedding.android.FlutterActivity;
  * interface for you. If your MainActivity cannot extend this class
  * (for example, because your MainActivity is already extending a different
  * class), your MainActivity should implement IFakeUnityPlayerActivity
- * and MUST store the provided object as a member variable called
- * mUnityPlayer.
+ * and MUST store the provided object as a public field called mUnityPlayer.
  * See comments on IFakeUnityPlayer for more details.
  */
 public class FakeUnityPlayerActivity extends FlutterActivity implements IFakeUnityPlayerActivity {

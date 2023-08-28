@@ -1,6 +1,5 @@
-package com.jamesncl.dev.flutter_embed_unity_android.view
+package com.jamesncl.dev.flutter_embed_unity_android.platformView
 
-import android.app.Activity
 import android.content.Context
 import android.graphics.Color
 import android.view.View
@@ -8,37 +7,25 @@ import android.view.ViewGroup
 import android.widget.RelativeLayout
 import android.widget.TextView
 import com.jamesncl.dev.flutter_embed_unity_android.constants.FlutterEmbedConstants.Companion.logTag
-import com.jamesncl.dev.flutter_embed_unity_android.unity.UnityEngineSingleton
+import com.jamesncl.dev.flutter_embed_unity_android.unity.UnityPlayerSingleton
 import io.flutter.BuildConfig
 import io.flutter.Log
 import io.flutter.plugin.platform.PlatformView
 import io.flutter.plugin.platform.PlatformViewFactory
 
 
-class UnityPlatformViewFactory : PlatformViewFactory(null) {
+class UnityViewFactory : PlatformViewFactory(null) {
 
-    var flutterActivity: Activity? = null
+
+    private val unityViewStack = UnityViewStack()
 
     override fun create(context: Context, viewId: Int, args: Any?): PlatformView {
         Log.d(this.toString(), "UnityViewFactory creating view $viewId")
 
         try {
-            // UnityEngineSingleton expects to be passed a context which is an Activity.
-            // UnityPlayer will crash during resume() if it isn't (NullPointerException: Attempt
-            // to invoke virtual method
-            // 'android.content.ContentResolver android.content.Context.getContentResolver()'
-            // on a null object reference)
-            flutterActivity.let { activity ->
-                if (activity != null) {
-                    val unityEngineSingleton = UnityEngineSingleton.getOrCreateInstance(activity)
-                    return UnityPlatformView(unityEngineSingleton, context)
-                }
-                else {
-                    val errorMessage = "Error creating UnityPlatformView: an activity is not available"
-                    Log.e(logTag, errorMessage)
-                    return createErrorView(context, errorMessage)
-                }
-            }
+            val view = UnityView(context)
+            unityViewStack.pushView(view)
+            return view
         }
         catch (e: NoClassDefFoundError) {
             val errorMessage = "Unity library not found. Your exported Unity " +
