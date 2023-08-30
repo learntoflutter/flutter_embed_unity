@@ -44,20 +44,17 @@ Flutter Forward 2023 demonstrated [an early preview of 3D support directly in Da
 
 - Install [the latest Unity 2022.3 LTS](https://unity.com/releases/lts) (See limitations above - you MUST use this version of Unity)
 - Either open an existing Unity project (it must be configured to use [the Universal Render Pipeline](https://docs.unity3d.com/Manual/universal-render-pipeline.html)), or create a new one using the `3D (URP) Core` template
-
+- In Unity, make sure to select the appropriate build platform: go to `File -> Build Settings` and select either Android or iOS, then click `Switch Platform`
+- TODO import the package from tag release
   
-Create anywhere (recommend outside project, separate github repo)
-Build settings: android, switch platform
+### Additional Unity configuration for Android
+- In Unity, go to `File -> Build Settings`, and [enable the `Export project` tickbox](https://docs.unity3d.com/2022.1/Documentation/Manual/android-export-process.html). This means that when Unity builds, it builds as a library which we can import into Flutter.
+- In Unity, go to `File -> Build Settings -> Player Settings -> Other settings`, and make the d following changes:
+  - Find `Target API level`: it's not required, but recommended, to set this to the same target API level of your Flutter project's `android` app (this is usually set in `<your flutter project>/android/app/build.grade` as `targetSdkVersion`)
 
-Check 'Export project'
-See https://docs.unity3d.com/2022.1/Documentation/Manual/android-export-process.html
-
-
-Target API level: select the same level your project is targeting
-
-Player Settings -> Other settings -> Scripting backend: select IL2CPP
-See https://docs.unity3d.com/Manual/scripting-backends.html
-https://docs.unity3d.com/Manual/IL2CPP.html
+TODO: Is this required? Is it needed in iOS?
+  - In `File -> Build Settings -> Player Settings -> Other settings`, look for [`Scripting backend`](https://docs.unity3d.com/Manual/scripting-backends.html): this needs to be set to [`IL2CPP`](https://docs.unity3d.com/Manual/IL2CPP.html) so that the build can be integrated into your app.
+  - In 
 
 Recommended on Android:
 
