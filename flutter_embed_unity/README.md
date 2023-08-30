@@ -1,73 +1,49 @@
 # flutter_embed_unity
 
-Embed Unity 3D into Flutter apps. Designed to offer more basic functionality than other packages, but be more stable and maintainable
-
-# 3D
-
-See https://www.youtube.com/watch?v=zKQYGKAe5W8&t=7067s&ab_channel=Flutter
-
-## Limitations
-
-Breaking many of these rules, which is why this library is brittle / has workarounds:
-
-https://docs.unity3d.com/Manual/UnityasaLibrary.html
-https://docs.unity3d.com/Manual/UnityasaLibrary-Android.html
+Embed Unity 3D into Flutter apps using [Unity as a library](https://docs.unity3d.com/Manual/UnityasaLibrary.html)
 
 
+# Important limitations
+
+## Only supports Unity 2022.3 LTS
+[Unity as a library](https://docs.unity3d.com/Manual/UnityasaLibrary.html) was only intended by Unity to be used fullscreen (running in it's own `UnityPlayerActivity.java` Activity on Android, or using `UnityAppController.mm` as the root UIViewController on iOS). By embedding Unity into a Flutter widget, this plugin breaks this assumption, calls undocumented functions written by Unity.
+
+It is therefore **very important that you only use the Unity version which this plugin supports**, which is currently [Unity 2022.3 LTS (Long Term Support)](https://unity.com/releases/lts). Failure to do this will likely lead to crashes at runtime, because the undocumented functions this plugin calls can change and the workarounds it implements may not work as expected.
+
+## Only 1 instance
+Unity can only render in 1 widget at a time. Therefore, you can only use one `EmbedUnity` widget on a Flutter screen. If another screen is pushed onto the navigator stack, Unity will be detatched from the first screen and attached to the second screen. If the second screen is popped, Unity will be reattached back to the first screen.
+
+## Memory usage
+After the first `EmbedUnity` widget is shown on screen and Unity loads, Unity will remain in memory in the background (but paused) even after the widget has been disposed. Unity does not support shutting down without shutting down the entire app. See [the official limitations for more details](https://docs.unity3d.com/Manual/UnityasaLibrary.html).
+
+## android:configChanges
+[Unity as a library](https://docs.unity3d.com/Manual/UnityasaLibrary.html) is not designed to be shown again after it is shut down. On Android, if the Activity it runs in is destroyed, Unity will kill the entire app. As a consequence, we cannot handle the main FlutterActivity being destroyed, for example on orientation change. Therefore you must make sure that `android:configChanges` on the `MainActivity` of the app in the `android` subfolder of your Flutter project includes at least orientation, screenLayout, screenSize and keyboardHidden (to prevent the Activity being destroyed when these events occur) and ideally all the values included in the default configuration:
+
+```
+android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
+```
+
+Failure to do this will mean your app will crash on orientation change. See [the `android:configChanges` documentation](https://developer.android.com/guide/topics/manifest/activity-element#config) and [Android configuration changes documentation](https://developer.android.com/guide/topics/resources/runtime-changes) for more.
+
+
+## TODO:
 Real device only, not simulator? Test iOS: Build Settings -> Target SDK -> Simulator SDK
 
-
+## TODO:
 Gradle: https://docs.unity3d.com/Manual/android-gradle-overview.html
 
+## Alternatives
+If you need to support other versions of unity, consider using [flutter_unity_widget](https://pub.dev/packages/flutter_unity_widget)
+
+Flutter Forward 2023 demonstrated [an early preview of 3D support directly in Dart using Impeller](https://www.youtube.com/watch?v=zKQYGKAe5W8&t=7067s&ab_channel=Flutter).
 
 
-On Android and iOS:
-Only full-screen rendering is supported. It’s not possible to render only on a part of the screen.
-When Unity is in an unloaded state (after calling Application.Unload), it retains some amount of memory (between 80–180Mb) to be able to instantly switch back and run again in the same process. The amount of memory that’s not released largely depends on the device’s graphics resolution.
-On iOS, if the Unity runtime quits entirely (after calling Application.Quit), it’s not possible to reload Unity again in the same app session.
-You can’t load more than one instance of the Unity runtime, or integrate more than one Unity runtime.
-
-
-
-
-## Required configurations
-
-### android:configChanges
-
-
-The UnityPlayer is not designed to be shown again after it is shut down, or used in Flutter widgets. 
-
-See https://docs.unity3d.com/Manual/UnityasaLibrary-Android.html
-> Quit - The application calls IUnityPlayerLifecycleEvents.onUnityPlayerQuitted when the Unity Player quits. The process that was running Unity ends after this call.
-
-Workarounds. One limitation is that we cannot handle the main FlutterActivity being destroyed (eg on orientation change). Therefore you must make sure that android:configChanges includes at least orientation, screenLayout, screenSize and keyboardHidden (to prevent crashes during orientation change) and ideally all the values included in the default configuration:
-
-android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
-
-See https://developer.android.com/guide/topics/manifest/activity-element#config
-https://developer.android.com/guide/topics/resources/runtime-changes
-
-### android:screenOrientation
-
-??????
-Do not set android:screenOrientation (eg android:screenOrientation="landscape"), this may cause unity to freeze after orientation change?????
-
-## Getting Started
-
-This project is a starting point for a Flutter
-[plug-in package](https://flutter.dev/developing-packages/),
-a specialized package that includes platform-specific implementation code for
-Android and/or iOS.
-
-For help getting started with Flutter development, view the
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
-
+# Setup
 
 ## Unity
 
-2022.3 LTS latest
-
+- Install [the latest Unity 2022.3 LTS](https://unity.com/releases/lts) (See limitations above - you MUST use this version of Unity)
+- Either open an existing Unity project (it must be configured to use [the Universal Render Pipeline](https://docs.unity3d.com/Manual/universal-render-pipeline.html)), or create a new one
 From hub: new project, 3D (URP) Core
 Create anywhere (recommend outside project, separate github repo)
 Build settings: android, switch platform
@@ -144,11 +120,16 @@ dependencies {
     implementation project(':unityLibrary')
 }
 
+![image](https://github.com/jamesncl/flutter_embed_unity/assets/15979056/1b1d5378-c4fc-4a39-b930-ec7626a44f7d)
+
 
 add the exported unity project to the gradle build using an `include` in android/settings.gradle:
 - Add to android/settings.gradle:
 
 include ':unityLibrary'
+
+
+![image](https://github.com/jamesncl/flutter_embed_unity/assets/15979056/dea1b772-1a81-4083-8637-f99cfb9759cd)
 
 
 Add to `android\build.gradle`:
@@ -159,7 +140,7 @@ allprojects {
     repositories {
         google()
         mavenCentral()
-		// Add this:
+        // Add this:
         flatDir {
             dirs "${project(':unityLibrary').projectDir}/libs"
         }
@@ -167,7 +148,8 @@ allprojects {
 }
 ```
 
-so it becomes
+![image](https://github.com/jamesncl/flutter_embed_unity/assets/15979056/6492c00b-defb-470b-9ca7-b94aedbb6e2d)
+
 
 
 By default, Unity has this in it's exported project build.gradle:
@@ -187,6 +169,8 @@ Fix this by:
 ```
 unityStreamingAssets=
 ```
+
+![image](https://github.com/jamesncl/flutter_embed_unity/assets/15979056/ad9b7a2c-0e1e-4c57-8be5-fc78bbb6cce0)
 
 
 ##### If you're using XR (VR / AR)
