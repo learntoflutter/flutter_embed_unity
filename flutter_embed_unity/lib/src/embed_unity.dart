@@ -1,8 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_embed_unity/src/orientation_change_notifier.dart';
-import 'package:flutter_embed_unity/src/pause_on_view_dispose_notifier.dart';
 import 'package:flutter_embed_unity/src/unity_message_listener.dart';
 import 'package:flutter_embed_unity/src/unity_message_listeners.dart';
 import 'package:flutter_embed_unity_platform_interface/flutter_embed_constants.dart';
@@ -54,16 +52,11 @@ class _EmbedUnityState extends State<EmbedUnity> implements UnityMessageListener
           ),
         );
       case TargetPlatform.iOS:
-        // For iOS only, pause Unity when view is disposed,
-        // because I couldn't figure out how to detect view disposal on native side
-        // TODO: is there a way to pause Unity on view disposal on native side?
-        return PauseOnViewDisposeNotifier(
-          child: UiKitView(
-            viewType: FlutterEmbedConstants.uniqueIdentifier,
-            onPlatformViewCreated: (int id) {
-              debugPrint('FlutterEmbed: onPlatformViewCreated($id)');
-            },
-          ),
+        return UiKitView(
+          viewType: FlutterEmbedConstants.uniqueIdentifier,
+          onPlatformViewCreated: (int id) {
+            debugPrint('FlutterEmbed: onPlatformViewCreated($id)');
+          },
         );
       default:
         throw UnsupportedError('Unsupported platform: $defaultTargetPlatform');
