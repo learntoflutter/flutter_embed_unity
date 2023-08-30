@@ -43,8 +43,9 @@ Flutter Forward 2023 demonstrated [an early preview of 3D support directly in Da
 ## Unity
 
 - Install [the latest Unity 2022.3 LTS](https://unity.com/releases/lts) (See limitations above - you MUST use this version of Unity)
-- Either open an existing Unity project (it must be configured to use [the Universal Render Pipeline](https://docs.unity3d.com/Manual/universal-render-pipeline.html)), or create a new one
-From hub: new project, 3D (URP) Core
+- Either open an existing Unity project (it must be configured to use [the Universal Render Pipeline](https://docs.unity3d.com/Manual/universal-render-pipeline.html)), or create a new one using the `3D (URP) Core` template
+
+  
 Create anywhere (recommend outside project, separate github repo)
 Build settings: android, switch platform
 
