@@ -7,18 +7,18 @@
 
 import Foundation
 
-/**
- * This class is responsible for making sure that Unity is only ever attached to the
- * topmost view in the stack. Unity cannot be attached to more than one view, so there
- * should only ever be one EmbedUnity widget on a Flutter screen - however we still
- * need to account for the fact that when pushing a new Flutter route / screen onto
- * the Navigator stack, both screens are still alive and so we can end up with more
- * than one PlatformView at the same time (but only the top one will be visible)
- *  See https://developer.apple.com/documentation/uikit/uiviewcontroller
- *  See https://developer.apple.com/documentation/uikit/uiview
- *  See https://developer.apple.com/documentation/swift/using-key-value-observing-in-swift
- */
+
+// This class is responsible for making sure that Unity is only ever attached to the
+// topmost view in the stack. Unity cannot be attached to more than one view, so there
+// should only ever be one EmbedUnity widget on a Flutter screen - however we still
+// need to account for the fact that when pushing a new Flutter route / screen onto
+// the Navigator stack, both screens are still alive and so we can end up with more
+// than one PlatformView at the same time (but only the top one will be visible)
+// See https://developer.apple.com/documentation/uikit/uiviewcontroller
+// See https://developer.apple.com/documentation/uikit/uiview
+// See https://developer.apple.com/documentation/swift/using-key-value-observing-in-swift
 class UnityViewStack: NSObject {
+    
     // This could possibly be implemented as a Queue / Stack collection, but it may
     // be possible that a view which isn't the topmost one gets disposed (eg during
     // a Navigator.of(contect).pushAndRemoveUntil ?) so safest just to use a list

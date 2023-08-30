@@ -9,8 +9,9 @@ import Foundation
 import UnityFramework
 
 // The purpose of this class is simply to provide a way to override
-// viewDidDisappear, so we can signal to UnityViewStack that it needs
-// to detach Unity from the view, and possibly reattach to a different view
+// viewDidDisappear, so we can signal to UnityViewStack that UnityView
+// is being disposed, so it can detach Unity from the view, and
+// possibly reattach to a different view
 class UnityViewController : UIViewController {
     
     private var unityView: UnityView
