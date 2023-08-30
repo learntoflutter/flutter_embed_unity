@@ -82,6 +82,8 @@ Player Settings -> Other settings -> Scripting backend: select IL2CPP
 See https://docs.unity3d.com/Manual/scripting-backends.html
 https://docs.unity3d.com/Manual/IL2CPP.html
 
+Recommended on Android:
+
 Player Settings -> Other settings -> Target Architechtures: enable ARMv7 and ARM64
 
 Optional:
@@ -104,16 +106,20 @@ In the project navigator, make sure nothing is selected
 
 From Xcode toolbar, select File -> Add files to "Runner" -> select `ios/UnityLibrary/Unity-Iphone.xcodeproj`. This should add the Unity-iPhone project to your workspace at the same level as the Runner and Pods projects (if you accidentally added it as a child of Runner, right-click Unity-iPhone, choose Delete, then choose Remove Reference. Then *make sure nothing is selected* and try again). Alternatively, you can drag-and-drop Unity-Iphone.xcodeproj into the project navigator, again ensuring that you drop it at the root of the tree (at the same level as Runner and Pods)
 
-In Xcode project navigator, select Runner, then in the editor select the Runner target under TARGETS, then select the General tab. Scroll down to Frameworks, Libraries, and Embedded Content. Click the + button to add. In the window which opens to select a framework, you should be able to find Workspace -> Unity-iPhone -> UnityFramework.framework. Select this and click Add. Make sure the Embed option is set to 'Embed & Sign'.
+![image](https://github.com/jamesncl/flutter_embed_unity/assets/15979056/72dfc0dd-9b68-4c4f-ae6f-5a2c6de2feae)
 
 
 -------- Must be done after every export --------
 The exported Unity project contains a project and target called Unity-iPhone, which is a thin 'launcher' app for Unity which you can build and deploy as a stand-alone app. Instead, we want to embed everything (the Unity engine and our Unity game) into our own Flutter app as a single framework file (UnityFramework). To do that, we need to change the Target Membership of the Data folder to be UnityFramework instead of the default Unity-iPhone:
 In project navigator, expand Unity-iPhone project, and select the Data folder. In the Inspector, under Target Membership, change the target membership to UnityFramework.
 
+![image](https://github.com/jamesncl/flutter_embed_unity/assets/15979056/005ff072-46a0-48fe-8ba9-9c82f36fa835)
+
 To be able to pass messages from Unity C# to the iOS part of the plugin (which then passes the message on to Flutter) the C# file you include in your Unity project declares (but does not define) a function called `FlutterEmbedUnityIos_sendToFlutter`. This function is instead defined in the plugin. To join these two things together, we need to tell Xcode to ignore the fact that `FlutterEmbedUnityIos_sendToFlutter` is not defined in the Unity module, and instead link it to the definition in the plugin:
 
 In project navigator, select Unity-iPhone project, then in the editor select the Unity-iPhone project under PROJECTS, then select the Build Settings tab. In the Build Settings tab, find the 'Other linker Flags' setting (you can use the search box to help you find it). Add the following as a setting: `-Wl,-U,_FlutterEmbedUnityIos_sendToFlutter`
+
+![image](https://github.com/jamesncl/flutter_embed_unity/assets/15979056/28d59a25-7b2a-4f7e-b70e-2611830bf8a9)
 
 > `-Wl` allows us to pass additional options to the linker when it is invoked
 > `-U` tells the linker to force the symbol `_FlutterEmbedUnityIos_sendToFlutter` to be entered in the output file as an undefined symbol. It will be linked instead to a function defined in the plugin.
