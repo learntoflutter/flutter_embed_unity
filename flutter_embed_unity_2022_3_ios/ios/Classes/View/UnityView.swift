@@ -2,10 +2,10 @@ import Flutter
 import Foundation
 import UnityFramework
 
-class UnityView : NSObject, FlutterPlatformView, IUnityViewStackable {
+class UnityView : NSObject, FlutterPlatformView {
     
     private var unityRootView: UIView? = nil
-    private let baseView: UIView = UIView()
+    private let baseView: UIView
     
     init(
         frame: CGRect,
@@ -13,6 +13,7 @@ class UnityView : NSObject, FlutterPlatformView, IUnityViewStackable {
         arguments args: Any?,
         binaryMessenger messenger: FlutterBinaryMessenger?
     ) {
+        baseView = UIView(frame: frame)
         // This might help debugging: if the user reports seeing
         // green, they are seeing the base view:
         baseView.backgroundColor = UIColor.green
@@ -20,7 +21,10 @@ class UnityView : NSObject, FlutterPlatformView, IUnityViewStackable {
     }
     
     func attachUnity(_ unityPlayerSingleton: UnityFramework) {
-        baseView.addSubview(unityPlayerSingleton.appController().rootView)
+        let unityRootView = unityPlayerSingleton.appController().rootView!
+        unityRootView.frame = baseView.bounds
+        unityRootView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        baseView.addSubview(unityRootView)
     }
     
     func detachUnity() {

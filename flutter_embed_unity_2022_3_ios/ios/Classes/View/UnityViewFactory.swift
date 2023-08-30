@@ -4,6 +4,7 @@ import Foundation
 class UnityViewFactory : NSObject, FlutterPlatformViewFactory {
     
     private var messenger: FlutterBinaryMessenger
+    private let viewStack = UnityViewStack()
 
     init(messenger: FlutterBinaryMessenger) {
         self.messenger = messenger
@@ -11,10 +12,14 @@ class UnityViewFactory : NSObject, FlutterPlatformViewFactory {
     }
 
     func create(withFrame frame: CGRect, viewIdentifier viewId: Int64, arguments args: Any?) -> FlutterPlatformView {
-        return UnityView(
+        let view = UnityView(
             frame: frame,
             viewIdentifier: viewId,
             arguments: args,
             binaryMessenger: messenger)
+        
+        viewStack.pushView(view)
+        
+        return view
     }
 }
