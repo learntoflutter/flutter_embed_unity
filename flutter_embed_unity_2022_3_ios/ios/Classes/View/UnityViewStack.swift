@@ -22,46 +22,39 @@ class UnityViewStack: NSObject {
     // This could possibly be implemented as a Queue / Stack collection, but it may
     // be possible that a view which isn't the topmost one gets disposed (eg during
     // a Navigator.of(contect).pushAndRemoveUntil ?) so safest just to use a list
-    private var viewStack = [UnityView]()
-    private var isObservingUnityControllerIsDisposing = false
-
+    private var viewStack = [UnityViewController]()
     
-    func pushView(_ view: UnityView) {
+    func pushView(_ viewController: UnityViewController) {
         // Unity can only be attached to one view at a time. Therefore, check
         // if there are any other active views, and detatch Unity from them first
-        viewStack.forEach { existingView in
-            existingView.detachUnity()
+        viewStack.forEach { existingViewController in
+            existingViewController.detachUnity()
         }
         
+        // attach Unity to the new view
         let unityPlayerSingleton = UnityPlayerSingleton.getInstance()
-        // If this is the first time unity player has been created,
-        // start observing the view controller's dismissed
-        if(!isObservingUnityControllerIsDisposing) {
-            // When the view is dismissed, we need to detatch Unity from the
-            // view and, if there are any views left in the stack, reattach
-            // it to the topmost view, so make this be a transitioningDelegate
-            // of the unity view controller so we can override
-            // animationController(forDismissed dismissed: UIViewController)
-            ???
-            isObservingUnityControllerIsDisposing = true
-        }
-        
-        // Then attach Unity to the new view
-        view.attachUnity(unityPlayerSingleton)
+        viewController.attachUnity(unityPlayerSingleton)
         debugPrint("Attached Unity to new view")
+        
+        // When the view is dismissed, we need to detatch Unity from the
+        // view and, if there are any views left in the stack, reattach
+        // it to the topmost view
+        viewController.onDismissed = {
+            self.popView(viewController)
+        }
         
         // Resume unity
         unityPlayerSingleton.pause(false)
         
         // Add view to the stack
-        viewStack.append(view)
+        viewStack.append(viewController)
     }
 
-    private func popView(_ view: UnityView) {
+    private func popView(_ viewController: UnityViewController) {
         // Detatch Unity from the view
-        view.detachUnity()
+        viewController.detachUnity()
         // Remove from the stack
-        viewStack = viewStack.filter { $0 != view }
+        viewStack = viewStack.filter { $0 != viewController }
         debugPrint("Detached Unity from popped view")
 
         let unityPlayerSingleton = UnityPlayerSingleton.getInstance()
@@ -69,13 +62,12 @@ class UnityViewStack: NSObject {
         if(!viewStack.isEmpty) {
             // If there are any remaining views in the stack, attach Unity to the last view to be
             // added to the stack
-            
             viewStack.last?.attachUnity(unityPlayerSingleton)
             debugPrint("Reattached Unity to existing view")
             // I don't know why, but when Unity is reattached to an existing view
             // we need to pause AND resume (even though Unity was never paused?):
-//            unityPlayerSingleton.pause()
-//            unityPlayerSingleton.resume()
+            unityPlayerSingleton.pause(true)
+            unityPlayerSingleton.pause(false)
         }
         else {
             // No more Unity views, so pause
