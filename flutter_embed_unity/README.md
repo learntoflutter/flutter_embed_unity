@@ -431,6 +431,13 @@ If you are attempting to run your app on an Android emulator, you will encounter
 2. In Xcode, in the top bar to the right of the Run button (the one shaped like a triangular Play button), change the target from Runner to UnityFramework. Then press ⌘+B to build UnityFramework. Then do the same for the Unity-iPhone target. Finally, change back to the Runner target and attempt to build again.
 3. See https://stackoverflow.com/questions/29500227/getting-error-no-such-module-using-xcode-but-the-framework-is-there
 
+## Undefined symbol: _FlutterEmbedUnityIos_sendToFlutter
+
+You have forgotten to add the linker flag to Unity-IPhone, one of the iOS setup steps which are required to be done every time you export your Unity project 
+
+## ERROR: could not open UnityFramework.framework/Data/Managed/Metadata/global-metadata.dat, IL2CPP initialization failed
+
+You have forgotten to change the target membership of the Data folder in Unity-IPhone, one of the iOS setup steps which are required to be done every time you export your Unity project 
 
 # Plugin developers / contributors
 
