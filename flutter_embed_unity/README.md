@@ -74,7 +74,8 @@ To allow Unity to send messages to Flutter, and to make exporting your Unity pro
 - Expand `Assets`
 - Download the file `flutter_embed_unity_2022_3.unitypackage`
 
-![image](https://github.com/jamesncl/flutter_embed_unity/assets/15979056/28e92fe3-a13d-4d32-8b97-ed4f723d5b4a)
+![1](https://github.com/jamesncl/flutter_embed_unity/assets/15979056/ef5ba891-cdbd-4a97-87c5-0da34850cf6b)
+
 
 - In Unity, go to `Assets -> import package -> Custom package`, and choose the file you just downloaded
 - The package includes two parts: `FlutterEmbed` which contains scripts which are required to run the plugin, and `Example` which contains an optional example scene which demonstrates how to use them (you can untick these from the import package selection if you don't need the example).
@@ -160,17 +161,20 @@ The Unity project is now ready to use, but we still haven't actually linked it t
 - In the project navigator, make sure nothing is selected
 - From Xcode toolbar, select `File -> Add files to "Runner"` and select `<your flutter project>/ios/UnityLibrary/Unity-Iphone.xcodeproj`. This should add the Unity-iPhone project to your workspace at the same level as the Runner and Pods projects (if you accidentally added it as a child of Runner, right-click Unity-iPhone, choose Delete, then choose Remove Reference. Then *make sure nothing is selected* and try again). Alternatively, you can drag-and-drop Unity-Iphone.xcodeproj into the project navigator, again ensuring that you drop it at the root of the tree (at the same level as Runner and Pods)
 
-![image](https://github.com/jamesncl/flutter_embed_unity/assets/15979056/72dfc0dd-9b68-4c4f-ae6f-5a2c6de2feae)
+![2](https://github.com/jamesncl/flutter_embed_unity/assets/15979056/ca369db9-1991-4093-8713-5e68b0ddac17)
+
 
 
 - **This must be repeated every time you export your Unity project:** In project navigator, expand the `Unity-iPhone` project, and select the `Data` folder. In the Inspector, under Target Membership, change the target membership to `UnityFramework`.
   
-![image](https://github.com/jamesncl/flutter_embed_unity/assets/15979056/005ff072-46a0-48fe-8ba9-9c82f36fa835)
+![3](https://github.com/jamesncl/flutter_embed_unity/assets/15979056/791b13cb-0864-4636-98ae-fb3e327b671a)
+
 > This allows you to embed the Unity engine and your Unity game easily into your own Flutter app as a single unit.
 
 - **This must be repeated every time you export your Unity project:** In project navigator, select the `Unity-iPhone` project, then in the editor select the `Unity-iPhone` project under PROJECTS, then select the Build Settings tab. In the Build Settings tab, find the 'Other linker Flags' setting (you can use the search box to help you find it). Add the following : `-Wl,-U,_FlutterEmbedUnityIos_sendToFlutter`
 
-![image](https://github.com/jamesncl/flutter_embed_unity/assets/15979056/28d59a25-7b2a-4f7e-b70e-2611830bf8a9)
+![4](https://github.com/jamesncl/flutter_embed_unity/assets/15979056/c66d164f-1da1-4f2a-a640-615cd9b05b0a)
+
 
 > To be able to pass messages from Unity C# to the iOS part of the plugin (which then passes the message on to Flutter) the C# file you include in your Unity project declares (but does not define) a function called `FlutterEmbedUnityIos_sendToFlutter`. This function is instead defined in the plugin. To join these two things together, we need to tell Xcode to ignore the fact that `FlutterEmbedUnityIos_sendToFlutter` is not defined in the Unity module, and instead link it to the definition in the plugin.
 > `-Wl` allows us to pass additional options to the linker when it is invoked
@@ -186,14 +190,16 @@ dependencies {
 }
 ```
 
-![image](https://github.com/jamesncl/flutter_embed_unity/assets/15979056/1b1d5378-c4fc-4a39-b930-ec7626a44f7d)
+![5](https://github.com/jamesncl/flutter_embed_unity/assets/15979056/ef5b0f5e-8c1b-45cd-b5ec-a443d18c7f8f)
+
 
 - Add the exported unity project to the gradle build by including it in `<your flutter project>/android/settings.gradle`:
 ```
 include ':unityLibrary'
 ```
 
-![image](https://github.com/jamesncl/flutter_embed_unity/assets/15979056/dea1b772-1a81-4083-8637-f99cfb9759cd)
+![6](https://github.com/jamesncl/flutter_embed_unity/assets/15979056/3d1e87d0-2aeb-40ef-877c-bac722a709ae)
+
 
 Add the Unity export directory as a repository so gradle can find required libraries / AARs etc in `<your flutter project>/android/build.gradle`:
 
@@ -210,14 +216,16 @@ allprojects {
 }
 ```
 
-![image](https://github.com/jamesncl/flutter_embed_unity/assets/15979056/6492c00b-defb-470b-9ca7-b94aedbb6e2d)
+![7](https://github.com/jamesncl/flutter_embed_unity/assets/15979056/afd05061-e800-4200-a085-fa8828875b15)
+
 
 - Add to android/gradle.properties:
 
 ```
 unityStreamingAssets=
 ```
-![image](https://github.com/jamesncl/flutter_embed_unity/assets/15979056/ad9b7a2c-0e1e-4c57-8be5-fc78bbb6cce0)
+![8](https://github.com/jamesncl/flutter_embed_unity/assets/15979056/c158abc4-b761-4705-b815-0e04c684d21f)
+
 
 > By default, Unity references `unityStreamingAssets` in it's exported project build.gradle, and provides the definition in the gradle.properties of the thin launcher app. Because we are using a Flutter app rather than the provided launcher, we need to add the same definition to our own gradle.properites, otherwise you will get a build error `Could not get unknown property 'unityStreamingAssets'`
 
