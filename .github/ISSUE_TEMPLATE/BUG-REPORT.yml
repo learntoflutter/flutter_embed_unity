@@ -18,7 +18,7 @@ body:
     id: unityversion
     attributes:
       label: Unity version
-      description: As per the [README](https://github.com/jamesncl/flutter_embed_unity/blob/main/flutter_embed_unity/README.md) this plugin ONLY supports Unity 2022.3 LTS. Using a different version will likely lead to crashes which will not be fixed.
+      description: As per the [README](https://github.com/jamesncl/flutter_embed_unity/blob/main/flutter_embed_unity/README.md) this plugin ONLY supports Unity 2022.3 LTS. Using a different version will likely lead to crashes, and this issue may be closed as wontfix
       options:
         - label: I am using Unity 2022.3 LTS
           required: false
