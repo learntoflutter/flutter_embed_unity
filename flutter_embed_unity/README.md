@@ -29,12 +29,11 @@ android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestSc
 
 Failure to do this will mean your app will crash on orientation change. See [the `android:configChanges` documentation](https://developer.android.com/guide/topics/manifest/activity-element#config) and [Android configuration changes documentation](https://developer.android.com/guide/topics/resources/runtime-changes) for more.
 
+## No support for Android emulator
 
-## TODO:
-Real device only, not simulator? Test iOS: Build Settings -> Target SDK -> Simulator SDK
+Since Unity 2019.3, [Unity no longer supports Android x86](https://blog.unity.com/technology/android-support-update-64-bit-and-app-bundles-backported-to-2017-4-lts). This means that it cannot be run in an Android emulators. Therefore if you're using this plugin, you won't be able to run your Flutter app on an Android emulator. 
 
-## TODO:
-Gradle: https://docs.unity3d.com/Manual/android-gradle-overview.html
+TODO: iOS: Build Settings -> Target SDK -> Simulator SDK
 
 ## Alternatives
 If you need to support other versions of unity, consider using [flutter_unity_widget](https://pub.dev/packages/flutter_unity_widget)
@@ -166,18 +165,24 @@ The Unity project is now ready to use, but we still haven't actually linked it t
 
 ![image](https://github.com/jamesncl/flutter_embed_unity/assets/15979056/72dfc0dd-9b68-4c4f-ae6f-5a2c6de2feae)
 
+> These steps must be repeated every time you export your Unity project for iOS
+>
+> - In project navigator, expand the `Unity-iPhone` project, and select the `Data` folder. In the Inspector, under Target Membership, change the target membership to `UnityFramework`.
+> 
+> This allows you to embed the Unity engine and your Unity game easily into your own Flutter app as a single unit.
+> ![image](https://github.com/jamesncl/flutter_embed_unity/assets/15979056/005ff072-46a0-48fe-8ba9-9c82f36fa835)
+> 
+> - In project navigator, select the `Unity-iPhone` project, then in the editor select the `Unity-iPhone` project under PROJECTS, then select the Build Settings tab. In the Build Settings tab, find the 'Other linker Flags' setting (you can use the search box to help you find it). Add the following : `-Wl,-U,_FlutterEmbedUnityIos_sendToFlutter`
+>
+> This a
+> ![image](https://github.com/jamesncl/flutter_embed_unity/assets/15979056/28d59a25-7b2a-4f7e-b70e-2611830bf8a9)
 
--------- Must be done after every export --------
-The exported Unity project contains a project and target called Unity-iPhone, which is a thin 'launcher' app for Unity which you can build and deploy as a stand-alone app. Instead, we want to embed everything (the Unity engine and our Unity game) into our own Flutter app as a single framework file (UnityFramework). To do that, we need to change the Target Membership of the Data folder to be UnityFramework instead of the default Unity-iPhone:
-In project navigator, expand Unity-iPhone project, and select the Data folder. In the Inspector, under Target Membership, change the target membership to UnityFramework.
-
-![image](https://github.com/jamesncl/flutter_embed_unity/assets/15979056/005ff072-46a0-48fe-8ba9-9c82f36fa835)
 
 To be able to pass messages from Unity C# to the iOS part of the plugin (which then passes the message on to Flutter) the C# file you include in your Unity project declares (but does not define) a function called `FlutterEmbedUnityIos_sendToFlutter`. This function is instead defined in the plugin. To join these two things together, we need to tell Xcode to ignore the fact that `FlutterEmbedUnityIos_sendToFlutter` is not defined in the Unity module, and instead link it to the definition in the plugin:
 
-In project navigator, select Unity-iPhone project, then in the editor select the Unity-iPhone project under PROJECTS, then select the Build Settings tab. In the Build Settings tab, find the 'Other linker Flags' setting (you can use the search box to help you find it). Add the following as a setting: `-Wl,-U,_FlutterEmbedUnityIos_sendToFlutter`
 
-![image](https://github.com/jamesncl/flutter_embed_unity/assets/15979056/28d59a25-7b2a-4f7e-b70e-2611830bf8a9)
+
+
 
 > `-Wl` allows us to pass additional options to the linker when it is invoked
 > `-U` tells the linker to force the symbol `_FlutterEmbedUnityIos_sendToFlutter` to be entered in the output file as an undefined symbol. It will be linked instead to a function defined in the plugin.
