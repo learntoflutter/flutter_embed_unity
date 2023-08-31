@@ -7,10 +7,11 @@ Embed [Unity 3D](https://unity.com/) into Flutter apps using [Unity as a library
 # Limitations
 
 ## Only supports Unity 2022.3 LTS
-[Unity as a library](https://docs.unity3d.com/Manual/UnityasaLibrary.html) was only intended by Unity to be used fullscreen (running in it's own `UnityPlayerActivity.java` Activity on Android, or using `UnityAppController.mm` as the root UIViewController on iOS). By embedding Unity into a Flutter widget, this plugin breaks this assumption, calls undocumented functions written by Unity.
 
 > [!IMPORTANT]
 > It is **very important that you only use the Unity version which this plugin supports**, which is currently [Unity 2022.3 LTS (Long Term Support)](https://unity.com/releases/lts). Failure to do this will likely lead to crashes at runtime, because the undocumented functions this plugin calls can change and the workarounds it implements may not work as expected.
+
+> [Unity as a library](https://docs.unity3d.com/Manual/UnityasaLibrary.html) was only intended by Unity to be used fullscreen (running in it's own `UnityPlayerActivity.java` Activity on Android, or using `UnityAppController.mm` as the root UIViewController on iOS). By embedding Unity into a Flutter widget, this plugin breaks this assumption, calls undocumented functions written by Unity.
 
 ## Flutter 3.3+
 
