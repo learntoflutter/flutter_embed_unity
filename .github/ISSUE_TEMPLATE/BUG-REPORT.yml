@@ -52,6 +52,11 @@ body:
       options:
         - iOS
         - Android
+  - type: input
+    id: androidgraphics
+    attributes:
+      label: If you're using Android, what Graphics APIs do you have enabled in Unity (`File -> Build settings -> Player settings -> Other settings -> Graphics APIs`)
+      placeholder: eg Auto Graphics Api turned off, OPENGLES3 is first, Vulkan is second
   - type: textarea
     id: devices
     attributes:
