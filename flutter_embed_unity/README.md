@@ -14,6 +14,10 @@ It is therefore **very important that you only use the Unity version which this 
 
 Due to [an issue](https://github.com/flutter/flutter/issues/103630) with prior versions of Flutter 3, 3.3+ is required
 
+## Android 22+, iOS 12.0+
+
+Unity 2022.3 LTS [only supports Android 5.1 “Lollipop” (API level 22) and above](https://docs.unity3d.com/Manual/android-requirements-and-compatibility.html) and [iOS 12 and above](https://docs.unity3d.com/Manual/ios-requirements-and-compatibility.html) so your app must also observe these limitations
+
 ## Only 1 instance
 Unity can only render in 1 widget at a time. Therefore, you can only use one `EmbedUnity` widget on a Flutter screen. If another screen is pushed onto the navigator stack, Unity will be detatched from the first screen and attached to the second screen. If the second screen is popped, Unity will be reattached back to the first screen.
 
@@ -48,8 +52,11 @@ Flutter Forward 2023 demonstrated [an early preview of 3D support directly in Da
 - Install [the latest Unity 2022.3 LTS](https://unity.com/releases/lts) (See limitations above - you MUST use this version of Unity)
 - Either open an existing Unity project (it must be configured to use [the Universal Render Pipeline](https://docs.unity3d.com/Manual/universal-render-pipeline.html)), or create a new one using the `3D (URP) Core` template
 - In Unity, make sure to select the appropriate build platform: go to `File -> Build Settings` and select either Android or iOS, then click `Switch Platform`
+- In Unity, go to `File -> Build Settings -> Player Settings -> Other settings`, and make the following changes:
+  - Find [`Scripting backend`](https://docs.unity3d.com/Manual/scripting-backends.html) and set this to [`IL2CPP`](https://docs.unity3d.com/Manual/IL2CPP.html)
+- **Optional:** find `IL2CPP code generation` and `C++ Compiler Configuration`, and set to `Faster runtime` and `Release` if you are doing a release build and want your app to run as fast as possible (this will increase the build time significantly) or `faster build` and `Debug` if you are developing, want better error messages and want to build / iterate as fast as possible
 
-  
+ 
 ### Additional Unity configuration for Android
 
 - In Unity, go to `File -> Build Settings`, and enable the `Export project` tickbox
@@ -58,10 +65,8 @@ Flutter Forward 2023 demonstrated [an early preview of 3D support directly in Da
 
 - In Unity, go to `File -> Build Settings -> Player Settings -> Other settings`, and make the d following changes:
   - Find `Target API level`: it's not required, but recommended, to set this to the same target API level of your Flutter project's `android` app (this is usually set in `<your flutter project>/android/app/build.grade` as `targetSdkVersion`)
-  - Find [`Scripting backend`](https://docs.unity3d.com/Manual/scripting-backends.html) and set this to [`IL2CPP`](https://docs.unity3d.com/Manual/IL2CPP.html)
   - Find `Target Architechtures` and enable ARMv7 and ARM64
-  - **Optional:** find `IL2CPP code generation` and set to `Faster runtime` if you are doing a release build and want your app to run as fast as possible (this will increase the build time significantly) or `faster build` if you are developing and want to build / iterate as fast as possible
-
+  
 > Google Play [requires 64 bit apps](https://developer.android.com/google/play/requirements/64-bit), which is why we have to use IL2CPP and enable ARM64
 
 
