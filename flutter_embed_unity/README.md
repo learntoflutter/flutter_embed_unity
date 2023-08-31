@@ -111,7 +111,8 @@ public class ReceiveFromFlutterRotation : MonoBehaviour
             // always use a fixed locale, to prevent unexpected parsing errors when
             // the user's locale is different to the locale used by the developer
             // (eg the decimal separator might be different)
-            CultureInfo.InvariantCulture);
+            CultureInfo.InvariantCulture
+        );
     }
 }
 ```
