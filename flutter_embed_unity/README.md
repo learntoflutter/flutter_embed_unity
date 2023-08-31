@@ -40,7 +40,7 @@ Since Unity 2019.3, [Unity no longer supports Android x86](https://blog.unity.co
 TODO: iOS: Build Settings -> Target SDK -> Simulator SDK
 
 ## Alternatives
-If you need to support other versions of unity, consider using [flutter_unity_widget](https://pub.dev/packages/flutter_unity_widget)
+If you need to support other versions of unity, consider using [flutter_unity_widget](https://pub.dev/packages/flutter_unity_widget) or [consult the Wiki](https://github.com/jamesncl/flutter_embed_unity/wiki) for pointers on how to contribute your own packages targeting different versions of Unity
 
 Flutter Forward 2023 demonstrated [an early preview of 3D support directly in Dart using Impeller](https://www.youtube.com/watch?v=zKQYGKAe5W8&t=7067s&ab_channel=Flutter).
 
