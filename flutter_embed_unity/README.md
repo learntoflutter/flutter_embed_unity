@@ -1,6 +1,6 @@
 # flutter_embed_unity
 
-Embed Unity 3D into Flutter apps using [Unity as a library](https://docs.unity3d.com/Manual/UnityasaLibrary.html)
+Embed [Unity 3D](https://unity.com/) into Flutter apps using [Unity as a library](https://docs.unity3d.com/Manual/UnityasaLibrary.html)
 
 
 # Important limitations
