@@ -1,8 +1,6 @@
 name: Bug Report
 description: File a bug report
-title: ""
 labels: ["bug", "triage"]
-projects: ["jamesncl/flutter_embed_unity"]
 assignees:
   - jamesncl
 body:
@@ -16,7 +14,6 @@ body:
       description: Please search to see if an issue already exists for the bug you encountered.
       options:
         - label: I have searched the existing issues
-      required: true
   - type: checkboxes
     id: unityversion
     attributes:
@@ -39,7 +36,6 @@ body:
       label: Description
       description: How do you trigger the bug? What happens? What do you see? What error logs do you have?
       placeholder: Give as much detail as possible
-      value: ""
     validations:
       required: true
   - type: textarea
@@ -71,4 +67,3 @@ body:
       description: Any other information that is relevant
     validations:
       required: false
- 
