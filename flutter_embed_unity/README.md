@@ -48,24 +48,21 @@ Flutter Forward 2023 demonstrated [an early preview of 3D support directly in Da
 - Install [the latest Unity 2022.3 LTS](https://unity.com/releases/lts) (See limitations above - you MUST use this version of Unity)
 - Either open an existing Unity project (it must be configured to use [the Universal Render Pipeline](https://docs.unity3d.com/Manual/universal-render-pipeline.html)), or create a new one using the `3D (URP) Core` template
 - In Unity, make sure to select the appropriate build platform: go to `File -> Build Settings` and select either Android or iOS, then click `Switch Platform`
-- TODO import the package from tag release
+
   
 ### Additional Unity configuration for Android
 
-- In Unity, go to `File -> Build Settings`, and [enable the `Export project` tickbox](https://docs.unity3d.com/2022.1/Documentation/Manual/android-export-process.html). This means that when Unity builds, it builds as a library which we can import into Flutter.
+- In Unity, go to `File -> Build Settings`, and enable the `Export project` tickbox
+  
+> This means that when Unity builds, it [builds as a library which we can import](https://docs.unity3d.com/2022.1/Documentation/Manual/android-export-process.html) into Flutter.
+
 - In Unity, go to `File -> Build Settings -> Player Settings -> Other settings`, and make the d following changes:
   - Find `Target API level`: it's not required, but recommended, to set this to the same target API level of your Flutter project's `android` app (this is usually set in `<your flutter project>/android/app/build.grade` as `targetSdkVersion`)
+  - Find [`Scripting backend`](https://docs.unity3d.com/Manual/scripting-backends.html) and set this to [`IL2CPP`](https://docs.unity3d.com/Manual/IL2CPP.html)
+  - Find `Target Architechtures` and enable ARMv7 and ARM64
+  - **Optional:** find `IL2CPP code generation` and set to `Faster runtime` if you are doing a release build and want your app to run as fast as possible (this will increase the build time significantly) or `faster build` if you are developing and want to build / iterate as fast as possible
 
-TODO: Is this required? Is it needed in iOS?
-  - In `File -> Build Settings -> Player Settings -> Other settings`, look for [`Scripting backend`](https://docs.unity3d.com/Manual/scripting-backends.html): this needs to be set to [`IL2CPP`](https://docs.unity3d.com/Manual/IL2CPP.html) so that the build can be integrated into your app.
-  - In 
-
-Recommended on Android:
-
-Player Settings -> Other settings -> Target Architechtures: enable ARMv7 and ARM64
-
-Optional:
-- IL2CPP code generation: Faster runtime vs faster build
+> Google Play [requires 64 bit apps](https://developer.android.com/google/play/requirements/64-bit), which is why we have to use IL2CPP and enable ARM64
 
 
 ## Import Unity package
@@ -165,62 +162,40 @@ The Unity project is now ready to use, but we still haven't actually linked it t
 
 ![image](https://github.com/jamesncl/flutter_embed_unity/assets/15979056/72dfc0dd-9b68-4c4f-ae6f-5a2c6de2feae)
 
-> These steps must be repeated every time you export your Unity project for iOS
->
-> - In project navigator, expand the `Unity-iPhone` project, and select the `Data` folder. In the Inspector, under Target Membership, change the target membership to `UnityFramework`.
-> 
+
+- **This must be repeated every time you export your Unity project:** In project navigator, expand the `Unity-iPhone` project, and select the `Data` folder. In the Inspector, under Target Membership, change the target membership to `UnityFramework`.
+  
+![image](https://github.com/jamesncl/flutter_embed_unity/assets/15979056/005ff072-46a0-48fe-8ba9-9c82f36fa835)
 > This allows you to embed the Unity engine and your Unity game easily into your own Flutter app as a single unit.
-> ![image](https://github.com/jamesncl/flutter_embed_unity/assets/15979056/005ff072-46a0-48fe-8ba9-9c82f36fa835)
-> 
-> - In project navigator, select the `Unity-iPhone` project, then in the editor select the `Unity-iPhone` project under PROJECTS, then select the Build Settings tab. In the Build Settings tab, find the 'Other linker Flags' setting (you can use the search box to help you find it). Add the following : `-Wl,-U,_FlutterEmbedUnityIos_sendToFlutter`
->
-> This a
-> ![image](https://github.com/jamesncl/flutter_embed_unity/assets/15979056/28d59a25-7b2a-4f7e-b70e-2611830bf8a9)
 
+- **This must be repeated every time you export your Unity project:** In project navigator, select the `Unity-iPhone` project, then in the editor select the `Unity-iPhone` project under PROJECTS, then select the Build Settings tab. In the Build Settings tab, find the 'Other linker Flags' setting (you can use the search box to help you find it). Add the following : `-Wl,-U,_FlutterEmbedUnityIos_sendToFlutter`
 
-To be able to pass messages from Unity C# to the iOS part of the plugin (which then passes the message on to Flutter) the C# file you include in your Unity project declares (but does not define) a function called `FlutterEmbedUnityIos_sendToFlutter`. This function is instead defined in the plugin. To join these two things together, we need to tell Xcode to ignore the fact that `FlutterEmbedUnityIos_sendToFlutter` is not defined in the Unity module, and instead link it to the definition in the plugin:
+![image](https://github.com/jamesncl/flutter_embed_unity/assets/15979056/28d59a25-7b2a-4f7e-b70e-2611830bf8a9)
 
-
-
-
-
+> To be able to pass messages from Unity C# to the iOS part of the plugin (which then passes the message on to Flutter) the C# file you include in your Unity project declares (but does not define) a function called `FlutterEmbedUnityIos_sendToFlutter`. This function is instead defined in the plugin. To join these two things together, we need to tell Xcode to ignore the fact that `FlutterEmbedUnityIos_sendToFlutter` is not defined in the Unity module, and instead link it to the definition in the plugin.
 > `-Wl` allows us to pass additional options to the linker when it is invoked
 > `-U` tells the linker to force the symbol `_FlutterEmbedUnityIos_sendToFlutter` to be entered in the output file as an undefined symbol. It will be linked instead to a function defined in the plugin.
------------------
-
-
-Common error: “No such module UnityFramework”
-
-1. Make sure you have carefully done all the steps outlined here
-2. In Xcode, in the top bar to the right of the Run button (the one shaped like a triangular Play button), change the target from Runner to UnityFramework. Then press ⌘+B to build UnityFramework. Then do the same for the Unity-iPhone target. Finally, change back to the Runner target and attempt to build again.
-3. See https://stackoverflow.com/questions/29500227/getting-error-no-such-module-using-xcode-but-the-framework-is-there
 
 
 ### Android
 
-
-tell our project to depend on it:
-
-- Add to android/app/build.gradle (add to any existing dependencies block, or create one if it doesn't exist):
-
+- Add the Unity project as a dependency to your app by adding the following to `<your flutter project>/android/app/build.gradle`:
+```
 dependencies {
     implementation project(':unityLibrary')
 }
+```
 
 ![image](https://github.com/jamesncl/flutter_embed_unity/assets/15979056/1b1d5378-c4fc-4a39-b930-ec7626a44f7d)
 
-
-add the exported unity project to the gradle build using an `include` in android/settings.gradle:
-- Add to android/settings.gradle:
-
+- Add the exported unity project to the gradle build by including it in `<your flutter project>/android/settings.gradle`:
+```
 include ':unityLibrary'
-
+```
 
 ![image](https://github.com/jamesncl/flutter_embed_unity/assets/15979056/dea1b772-1a81-4083-8637-f99cfb9759cd)
 
-
-Add to `android\build.gradle`:
-
+Add the Unity export directory as a repository so gradle can find required libraries / AARs etc in `<your flutter project>/android/build.gradle`:
 
 ```
 allprojects {
@@ -237,54 +212,29 @@ allprojects {
 
 ![image](https://github.com/jamesncl/flutter_embed_unity/assets/15979056/6492c00b-defb-470b-9ca7-b94aedbb6e2d)
 
-
-
-By default, Unity has this in it's exported project build.gradle:
-
-aaptOptions {
-        noCompress = ['.unity3d', '.ress', '.resource', '.obb', '.bundle', '.unityexp'] + unityStreamingAssets.tokenize(', ')
-        ignoreAssetsPattern = "!.svn:!.git:!.ds_store:!*.scc:!CVS:!thumbs.db:!picasa.ini:!*~"
-    }
-	
-When we try to build, this error will happen:
-
-> Could not get unknown property 'unityStreamingAssets'
-
-Fix this by:
 - Add to android/gradle.properties:
 
 ```
 unityStreamingAssets=
 ```
-
 ![image](https://github.com/jamesncl/flutter_embed_unity/assets/15979056/ad9b7a2c-0e1e-4c57-8be5-fc78bbb6cce0)
 
+> By default, Unity references `unityStreamingAssets` in it's exported project build.gradle, and provides the definition in the gradle.properties of the thin launcher app. Because we are using a Flutter app rather than the provided launcher, we need to add the same definition to our own gradle.properites, otherwise you will get a build error `Could not get unknown property 'unityStreamingAssets'`
 
-##### If you're using XR (VR / AR)
 
-If you are using XR features in Unity (eg ARFoundation), make sure you check Unity's project validation checks: in your Unity project, go to Project Settings -> XR Plug-in Management -> Project Validation, and fix any problems.
+## If you're using XR (VR / AR) on Android
 
-Then we need to perform some additional configuration on your project.
+If you are using XR features in Unity (eg ARFoundation) you need to perform some additional configuration on your project. First, make sure you check Unity's project validation checks: in your Unity project, go to `Project Settings -> XR Plug-in Management -> Project Validation`, and fix any problems.
 
-###### Android
-
-In your exported `unityLibrary` you may find an extra project folder called `xrmanifest.androidlib`. The Unity project depends on this, so you need to inlcude it in your app's build. Do this by adding the following to your `android/settings.gradle`:
+- Add the following to your `android/settings.gradle`:
 
 ```
 // This additional project is required to build with Unity XR:
 include ':unityLibrary:xrmanifest.androidlib'
 ```
+> In your exported `unityLibrary` you may find an extra project folder called `xrmanifest.androidlib`. The Unity project depends on this, so you need to inlcude it in your app's build.
 
-In addition, some changes need to be made to the `MainActivity` of your app. This is to work around the fact that Unity as a library was designed to run in a custom activity made by Unity (you can find this in `unityLibrary\src\main\java\com\unity3d\player\UnityPlayerActivity.java`). Unfortunately, some Unity code expects to be able to find some properties in the activity hosting the Unity player - specifically, a field called `mUnityPlayer`. If it doesn't find this field, your app will crash when your XR code initialises with the following error:
-
-> `Non-fatal Exception: java.lang.Exception: AndroidJavaException : java.lang.NoSuchFieldError: no "Ljava/lang/Object;" field "mUnityPlayer" in class "Lcom/example/app/MainActivity;" or its superclasses`
-
-Because this plugin is designed to embed Unity in a widget, not in an activity, we need to make our MainActivity 'pretend' like it's a `UnityPlayerActivity` by giving it a `mUnityPlayer` field which can be set by the plugin when the `UnityPlayer` is created. 
-
-Find your `MainActivity` class (this is usually located at `<flutter project>\android\app\src\main\kotlin\com\<your org>\MainActivity.kt` or `<flutter project>\android\app\src\main\java\com\<your org>\MainActivity.java`)
-
-If your `MainActivity` extends `FlutterActivity`, you can simply change it to extend `FakeUnityPlayerActivity` instead of `FlutterActivity` (`FakeUnityPlayerActivity` also extends `FlutterActivity`). This is the simplest option, as nothing else needs to be done:
-
+- Find your `MainActivity` class (this is usually located at `<flutter project>\android\app\src\main\kotlin\com\<your org>\MainActivity.kt` or `<flutter project>\android\app\src\main\java\com\<your org>\MainActivity.java`). If your `MainActivity` extends `FlutterActivity`, you can simply change it to extend `FakeUnityPlayerActivity` instead of `FlutterActivity` (`FakeUnityPlayerActivity` also extends `FlutterActivity`). This is the simplest option, as nothing else needs to be done:
 
 ```java
 import com.jamesncl.dev.flutter_embed_unity_android.unity.FakeUnityPlayerActivity;
@@ -303,7 +253,7 @@ class MainActivity: FakeUnityPlayerActivity() {
 
 ```
 
-Otherwise, if your `MainActivity` extends something else (for example `FlutterFragmentActivity` or your own custom Activity) it may be easier to make your `MainActivity` implement `IFakeUnityPlayerActivity`. If you do this, you MUST also create a public field of type `Object` (for Java) or `Any?` (for Kotlin) in your `MainActivity` called `mUnityPlayer`, and set this via the interface function:
+- Otherwise, if your `MainActivity` extends something else (for example `FlutterFragmentActivity` or your own custom Activity) it may be easier to make your `MainActivity` implement `IFakeUnityPlayerActivity`. If you do this, you MUST also create a public field of type `Object` (for Java) or `Any?` (for Kotlin) in your `MainActivity` called `mUnityPlayer`, and set this via the interface function:
 
 ```java
 import com.jamesncl.dev.flutter_embed_unity_android.unity.IFakeUnityPlayerActivity;
@@ -333,52 +283,33 @@ class Thing: IFakeUnityPlayerActivity {
 }
 ```
 
+> This is to work around the fact that Unity as a library was designed to run in a custom activity made by Unity (you can find this in `unityLibrary\src\main\java\com\unity3d\player\UnityPlayerActivity.java`). Unfortunately, some Unity code expects to be able to find some properties in the activity hosting the Unity player - specifically, a field called `mUnityPlayer`. If it doesn't find this field, your app will crash when your XR code initialises with the following error:
+>
+> `Non-fatal Exception: java.lang.Exception: AndroidJavaException : java.lang.NoSuchFieldError: no "Ljava/lang/Object;" field "mUnityPlayer" in class "Lcom/example/app/MainActivity;" or its superclasses`
+> 
+> Because this plugin is designed to embed Unity in a widget, not in an activity, we need to make our MainActivity 'pretend' like it's a `UnityPlayerActivity` by giving it a `mUnityPlayer` field which can be set by the plugin when the `UnityPlayer` is created. 
 
-## Optional adjustments
 
-playerOptions.options = BuildOptions.AllowDebugging | BuildOptions.Development;
-PlayerSettings.SetIl2CppCompilerConfiguration(BuildTargetGroup.Android, isReleaseBuild ? Il2CppCompilerConfiguration.Release : Il2CppCompilerConfiguration.Debug);
-                PlayerSettings.SetIl2CppCodeGeneration(UnityEditor.Build.NamedBuildTarget.Android, UnityEditor.Build.Il2CppCodeGeneration.OptimizeSize);
+# Common issues
+
+## libmain.so not found
+
+If you are attempting to run your app on an Android emulator, you will encounter this error. As noted above in the limitations, this is not supported. Use a real device instead.
+
+## No such module UnityFramework
+
+1. Make sure you have carefully done all the steps outlined here
+2. In Xcode, in the top bar to the right of the Run button (the one shaped like a triangular Play button), change the target from Runner to UnityFramework. Then press ⌘+B to build UnityFramework. Then do the same for the Unity-iPhone target. Finally, change back to the Runner target and attempt to build again.
+3. See https://stackoverflow.com/questions/29500227/getting-error-no-such-module-using-xcode-but-the-framework-is-there
+
+
+
+
+## Plugin developers / contributors
+
+See [the Wiki for more information](https://github.com/jamesncl/flutter_embed_unity/wiki) on running the example, notes on how the plugin works, developing for different versions of Unity etc.
 				
-## Unity export script
 
-See See https://docs.unity3d.com/2022.3/Documentation/Manual/UnityasaLibrary-Android.html
-https://docs.unity3d.com/2022.3/Documentation/Manual/UnityasaLibrary.html
-https://docs.unity3d.com/Manual/UnityasaLibrary-iOS.html
-
-Old and outdated but still useful background: https://forum.unity.com/threads/using-unity-as-a-library-in-native-ios-android-apps.685195/
-
-https://github.com/Unity-Technologies/uaal-example/blob/master/docs/android.md
-
-UnityPlayerActivity source:
-<Unity hub editors install folder>\2022.3.7f1\Editor\Data\PlaybackEngines\AndroidPlayer\Source\com\unity3d\player\UnityPlayerActivity.java
-
-
-We're replacing launcher with our own app, but when we run, there will be an error:
-
-> Error creating CustomUnityPlayer: android.content.res.Resources$NotFoundException: String resource ID #0x0
-
-This is because unity is trying to read some string values from the `strings.xml` resouces file which it was expecting to find (`app_name` and `game_view_content_description`). Even though we don't actually use these, we still need them to be present to keep unity happy. So:
-
-- Copy strings.xml from `android\unityLibrary\launcher\src\main\res\values\` to `android\unityLibrary\unityLibrary\src\main\res\values\`
-- Now we can delete the `launcher` folder, `gradle` folder, and files at the root export (`build.gradle`, `gradle.properties`, `local.properties`, `settings.gradle`)
-
-
-- Move contents of unityLibrary/unityLibrary to unityLibrary
-- ??????????? Delete ` android:extractNativeLibs="true"` from `<application ... >` tag in `android\unityLibrary\src\main\AndroidManifest.xml`
-- Delete the whole `<activity>` under `<application>` in `android\unityLibrary\src\main\AndroidManifest.xml`
-            
-			
-If we are using Gradle 8 for our project (which the example project does) we need to add the package's namespace to the build.gradle, which is now required, otherwise we get:
-
-> Namespace not specified. Please specify a namespace in the module's build.gradle file
-
-Unity 2022.3 currently does not include this, as it still uses Gradle 7.2 (see https://docs.unity3d.com/Manual/android-gradle-overview.html), so add this to the build.gradle at `android\unityLibrary\build.gradle` file like so:
-
-android {
-    namespace 'com.unity3d.player'
-	...
-}
 
 
 # Misc notes
@@ -387,22 +318,3 @@ Wait for scene load the first time you create an EmbedUnity widget before sendin
 
 
 
-# Developer notes
-
-Android: explain the classes.jar
-
-iOS: built UnityFramework.framework (by building the exported Unity project), extract it from DerivedData, copied to flutter_embed_unity_2022_3_ios/ios, edited flutter_embed_unity_2022_3_ios/ios/flutter_embed_unity_ios.podspec to include: 
-
-```
-# Add UnityFramework
-s.vendored_frameworks = 'UnityFramework.framework'
-```
-Then run `pod install` from flutter_embed_unity_2022_3_ios/example/iOS
-
-
-`-Wl,-U,_FlutterEmbedUnityIos_sendToFlutter`
-
-> `-Wl` allows us to pass additional options to the linker (`ld`) when it is invoked
-> `-U` tells the linker to force the symbol `_FlutterEmbedUnityIos_sendToFlutter` to be entered in the output file as an undefined symbol. It will be linked instead to a C function defined in `flutter_embed_unity_2022_3_ios/ios/Classes/SendToFlutter.swift`
-
-See https://linux.die.net/man/1/ld
