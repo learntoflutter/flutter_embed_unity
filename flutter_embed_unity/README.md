@@ -2,6 +2,8 @@
 
 Embed [Unity 3D](https://unity.com/) into Flutter apps using [Unity as a library](https://docs.unity3d.com/Manual/UnityasaLibrary.html)
 
+![ezgif-3-432510b499](https://github.com/jamesncl/flutter_embed_unity/assets/15979056/cc69185e-bb84-4ed6-a778-1705a85798fb)
+
 
 # Important limitations
 
