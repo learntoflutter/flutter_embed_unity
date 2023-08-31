@@ -1,0 +1,74 @@
+name: Bug Report
+description: File a bug report
+title: ""
+labels: ["bug", "triage"]
+projects: ["jamesncl/flutter_embed_unity"]
+assignees:
+  - jamesncl
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to fill out this bug report!
+  - type: checkboxes
+    attributes:
+      label: Is there an existing issue for this?
+      description: Please search to see if an issue already exists for the bug you encountered.
+      options:
+        - label: I have searched the existing issues
+      required: true
+  - type: checkboxes
+    id: unityversion
+    attributes:
+      label: Unity version
+      description: As per the [README](https://github.com/jamesncl/flutter_embed_unity/blob/main/flutter_embed_unity/README.md) this plugin ONLY supports Unity 2022.3 LTS. Using a different version will likely lead to crashes which will not be fixed.
+      options:
+        - label: I am using Unity 2022.3 LTS
+          required: false
+  - type: input
+    id: flutterversion
+    attributes:
+      label: Flutter version
+      description: What version of Flutter are you using?
+      placeholder: eg 3.13.1
+    validations:
+      required: true
+  - type: textarea
+    id: describe
+    attributes:
+      label: Description
+      description: How do you trigger the bug? What happens? What do you see? What error logs do you have?
+      placeholder: Give as much detail as possible
+      value: ""
+    validations:
+      required: true
+  - type: textarea
+    id: mre
+    attributes:
+      label: Minimum reproducible example (MRE)
+      description: It's much easier for us to fix issues with a [minimum reproducible example](https://stackoverflow.com/help/minimal-reproducible-example). The easiest way to create one is to modify [the example project](https://github.com/jamesncl/flutter_embed_unity/tree/main/flutter_embed_unity/example) - see [the Wiki for instructions on how to do that](https://github.com/jamesncl/flutter_embed_unity/wiki/Running-the-example)
+      placeholder: Please provide the minimum required steps / code to modify the example project to reproduce the error, or provide a link to a MRE
+  - type: dropdown
+    id: platforms
+    attributes:
+      label: What platforms are you seeing the problem on?
+      multiple: true
+      options:
+        - iOS
+        - Android
+  - type: textarea
+    id: devices
+    attributes:
+      label: Devices
+      description: What devices can you reproduce the error on?
+      placeholder: eg iPhone 13, Samsung S12, Xcode emulator
+    validations:
+      required: true
+  - type: textarea
+    id: other
+    attributes:
+      label: Anything else?
+      description: Any other information that is relevant
+    validations:
+      required: false
+ 

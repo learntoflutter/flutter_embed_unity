@@ -10,6 +10,10 @@ Embed Unity 3D into Flutter apps using [Unity as a library](https://docs.unity3d
 
 It is therefore **very important that you only use the Unity version which this plugin supports**, which is currently [Unity 2022.3 LTS (Long Term Support)](https://unity.com/releases/lts). Failure to do this will likely lead to crashes at runtime, because the undocumented functions this plugin calls can change and the workarounds it implements may not work as expected.
 
+## Flutter 3.3+
+
+Due to [an issue](https://github.com/flutter/flutter/issues/103630) with prior versions of Flutter 3, 3.3+ is required
+
 ## Only 1 instance
 Unity can only render in 1 widget at a time. Therefore, you can only use one `EmbedUnity` widget on a Flutter screen. If another screen is pushed onto the navigator stack, Unity will be detatched from the first screen and attached to the second screen. If the second screen is popped, Unity will be reattached back to the first screen.
 
