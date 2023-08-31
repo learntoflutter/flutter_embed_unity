@@ -290,6 +290,117 @@ class Thing: IFakeUnityPlayerActivity {
 > Because this plugin is designed to embed Unity in a widget, not in an activity, we need to make our MainActivity 'pretend' like it's a `UnityPlayerActivity` by giving it a `mUnityPlayer` field which can be set by the plugin when the `UnityPlayer` is created. 
 
 
+# Using the plugin
+
+You should now be able to use the plugin! 
+
+- Add the dependency to `flutter_embed_unity` to your `pubspec.yaml` and then `flutter pub get`
+- Simply drop the `EmbedUnity` widget where you want to render Unity. For example:
+
+```dart
+import 'package:flutter/material.dart';
+import 'package:flutter_embed_unity/flutter_embed_unity.dart';
+
+class Example extends StatelessWidget {
+  
+  const Example();
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: EmbedUnity(
+        onMessageFromUnity: (String message) {
+          // Receive message from Unity sent via SendToFlutter.cs
+        },
+      ),
+    );
+  }
+}
+```
+
+The first time the widget is rendered, Unity will start and the first active scene will load.
+
+To receive messages from Unity, use the optional `onMessageFromUnity` parameter (See also 'Sending messages from Flutter to Unity' section above)
+
+To send messages to a game object in Unity, simply call the top level function `sendToUnity`:
+
+```dart
+sendToUnity(
+    "MyGameObject",  // The name of the Unity game object
+    "SetRotationSpeed",  // The name of a public function attached to the game object in a MonoBehaviour script
+    "42",  // The message to send
+);
+```
+
+This will send a message to the given game object in the active scene. Note that the scene must be loaded - see the next section.
+
+When the `EmbedUnity` widget is disposed, Unity will be 'paused' (game time will stop), and resumed the next time a `EmbedUnity` is rendered.
+
+After Unity is loaded, subsequent usages of `sendToUnity` will still work, and will be received by Unity, even if there is no `EmbedUnity` widget in the tree and even though Unity is 'paused'. This is because Unity cannot be shut down when loaded (see Limitations above).
+
+> Important! Only one `EmbedUnity` widget can be used in a route / screen at a time. Using more than one is not supported (see Limitations above). You can push a new route onto the stack with a second `EmbedUnity`: if you do this, Unity will be detatched from the first `EmbedUnity` widget and attached to the second.
+
+
+## Waiting for the Unity scene to load
+
+This plugin is designed to be as bare bones as possible, leaving the details up to you. One common task you might need to do is waiting for Unity to load the first scene before sending any messages. As an example of how to do this, add the following script to a game object in your Unity project:
+
+```csharp
+using UnityEngine;
+using UnityEngine.SceneManagement;
+
+public class SendToFlutterSceneLoaded : MonoBehaviour
+{
+    void OnEnable()
+    {
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        SendToFlutter.Send("scene_loaded");
+    }
+
+    // called when the game is terminated
+    void OnDisable()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+}
+
+```
+
+Then in your Flutter project:
+
+```dart
+EmbedUnity(
+    onMessageFromUnity: (String data) {
+        if(data == "scene_loaded") {
+            // Start sending messages to Unity
+        }
+    }
+)
+```
+
+
+## Manually pausing and resuming
+
+If you need, you can manually pause and resume Unity using the top level functions `pauseUnity` and `resumeUnity`:
+
+```
+import 'package:flutter_embed_unity/flutter_embed_unity.dart';
+
+...
+
+ElevatedButton(
+    onPressed: () {
+        pauseUnity();
+    },
+    child: const Text("Pause"),
+),
+```
+
+
 # Common issues
 
 ## libmain.so not found
@@ -303,18 +414,7 @@ If you are attempting to run your app on an Android emulator, you will encounter
 3. See https://stackoverflow.com/questions/29500227/getting-error-no-such-module-using-xcode-but-the-framework-is-there
 
 
-
-
-## Plugin developers / contributors
+# Plugin developers / contributors
 
 See [the Wiki for more information](https://github.com/jamesncl/flutter_embed_unity/wiki) on running the example, notes on how the plugin works, developing for different versions of Unity etc.
 				
-
-
-
-# Misc notes
-
-Wait for scene load the first time you create an EmbedUnity widget before sending message. After that, you can send message at any time (even without EmbedUnity widget in the widget tree and even after pausing Unity) and it will be received, because Unity is still active in the background.
-
-
-
