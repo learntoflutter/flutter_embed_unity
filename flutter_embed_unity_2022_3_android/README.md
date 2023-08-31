@@ -32,8 +32,3 @@ dependencies:
 ```
 
 [1]: ../flutter_embed_unity
-
-
-## Developer notes
-
-- android\libs\unity_classes_2022.3.LTS.jar compileOnly
