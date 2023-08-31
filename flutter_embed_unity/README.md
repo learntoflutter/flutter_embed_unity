@@ -40,7 +40,7 @@ Flutter Forward 2023 demonstrated [an early preview of 3D support directly in Da
 
 # Setup
 
-## Unity
+## Configure Unity
 
 - Install [the latest Unity 2022.3 LTS](https://unity.com/releases/lts) (See limitations above - you MUST use this version of Unity)
 - Either open an existing Unity project (it must be configured to use [the Universal Render Pipeline](https://docs.unity3d.com/Manual/universal-render-pipeline.html)), or create a new one using the `3D (URP) Core` template
@@ -48,6 +48,7 @@ Flutter Forward 2023 demonstrated [an early preview of 3D support directly in Da
 - TODO import the package from tag release
   
 ### Additional Unity configuration for Android
+
 - In Unity, go to `File -> Build Settings`, and [enable the `Export project` tickbox](https://docs.unity3d.com/2022.1/Documentation/Manual/android-export-process.html). This means that when Unity builds, it builds as a library which we can import into Flutter.
 - In Unity, go to `File -> Build Settings -> Player Settings -> Other settings`, and make the d following changes:
   - Find `Target API level`: it's not required, but recommended, to set this to the same target API level of your Flutter project's `android` app (this is usually set in `<your flutter project>/android/app/build.grade` as `targetSdkVersion`)
@@ -63,22 +64,101 @@ Player Settings -> Other settings -> Target Architechtures: enable ARMv7 and ARM
 Optional:
 - IL2CPP code generation: Faster runtime vs faster build
 
-Export project to ??????
-Check Unity console says Build completed with a result of 'Succeeded'
 
-Our Unity project is now ready to use, but we still haven't actually linked it to our app
+## Import Unity package
+
+To allow Unity to send messages to Flutter, and to make exporting your Unity project into Flutter easier, this plugin includes some Unity scripts which you should import into your Unity project.
+
+- Go to [the releases for this plugin on Github](https://github.com/jamesncl/flutter_embed_unity/releases)
+- Find the release which matches the one you have used to add this plugin to your `pubspec.yaml`
+- Expand `Assets`
+- Download the file `flutter_embed_unity_2022_3.unitypackage`
+
+![image](https://github.com/jamesncl/flutter_embed_unity/assets/15979056/28e92fe3-a13d-4d32-8b97-ed4f723d5b4a)
+
+- In Unity, go to `Assets -> import package -> Custom package`, and choose the file you just downloaded
+- The package includes two parts: `FlutterEmbed` which contains scripts which are required to run the plugin, and `Example` which contains an optional example scene which demonstrates how to use them (you can untick these from the import package selection if you don't need the example).
+
+
+## Setup your Unity project for sending messages to Flutter
+
+### Sending messages from Flutter to Unity
+
+You can directly call any public method of any `MonoBehaviour` script attached to a game object in the active scene which has a single `string` parameter. The Example scene from the package includes an example of this in `ReceiveFromFlutterRotation.cs`. In this example, `SetRotationSpeed` can be called directly from Flutter. This script is attached to a flutter logo game object, and allows Flutter to control the rotation speed:
+
+```
+public class ReceiveFromFlutterRotation : MonoBehaviour
+{
+    float _rotationSpeed = 0;
+
+    void Update()
+    {
+        transform.Rotate(0, _rotationSpeed * Time.deltaTime, 0);
+    }
+
+    // Called from Flutter:
+    public void SetRotationSpeed(string data)
+    {
+        _rotationSpeed = float.Parse(
+            data,
+            // When converting between strings and numbers in a message protocol
+            // always use a fixed locale, to prevent unexpected parsing errors when
+            // the user's locale is different to the locale used by the developer
+            // (eg the decimal separator might be different)
+            CultureInfo.InvariantCulture);
+    }
+}
+```
+
+### Sending messages from Unity to Flutter
+
+You can only send a `string` message to Flutter, so it is up to you to decide on a message protocol (such as [protobuf](https://protobuf.dev/) or [JSON](https://www.json.org/json-en.html)). Simply use the `SendToFlutter.Send(string)` static function of the `SendToFlutter.cs` script from the `EmbedUnity` section of the package. There is an example of this in `SendToFlutterTouched.cs` which sends the message `touch` when the Flutter logo is touched:
+
+```
+public class SendToFlutterTouched : MonoBehaviour
+{
+    void Update()
+    {
+        if (Input.GetMouseButtonDown(0) || (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began))
+        {
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            RaycastHit hit;
+            if (Physics.Raycast(ray, out hit))
+            {
+                SendToFlutter.Send("touch");
+            }
+        }
+    }
+}
+
+```
+
+
+## Export your Unity project
+
+To embed Unity into your Flutter app, you need to export your Unity project into a form which we can integrate into the native `android` and / or `ios` part of your Flutter project.
+The `EmbedUnity` section of the `flutter_embed_unity_2022_3.unitypackage` you imported includes scripts to make this easy, and an Editor menu item to launch them, so you should see an option called `Flutter embed` in the Unity toobar.
+
+- First, create the folder to export your Unity project to. This MUST be either:
+  - `<your flutter project>/android/unityLibrary` for Android or
+  - `<your flutter project>/ios/unityLibrary` for iOS
+- Select `Flutter Embed -> Export project to Flutter app` (select `ios` or `android` as appropriate)
+- The export script will make some checks for you (follow any instructions which appear)
+- When asked, select the `unityLibrary` export folder you created
+- Wait for the project to build, then check the Unity console output to understand what has happened and check for errors
+
+> It's recommended to learn about the structure of the Unity export you have just made so you understand how it works: see [the documentation for Android](https://docs.unity3d.com/Manual/UnityasaLibrary-Android.html) and the [documentation for iOS](https://docs.unity3d.com/Manual/UnityasaLibrary-iOS.html). The export script takes these structures and modifies them for easier integration into Flutter: the Unity console output tells you what changes have been made
+
+The Unity project is now ready to use, but we still haven't actually linked it to our Flutter app.
+
+
+## Link exported Unity project to your Flutter project
 
 ### iOS
 
-As per https://docs.unity3d.com/Manual/UnityasaLibrary-iOS.html we need to:
-
-> To integrate Unity into another Xcode project, you need to combine both Xcode projects (the native one and the one Unity generates) into a single Xcode workspace, and add the UnityFramework.framework file to the Embedded Binaries section of the Application target for the native Xcode project. 
-
-So open your app's `ios/Runner.xcworkspace` in Xcode
-
-In the project navigator, make sure nothing is selected
-
-From Xcode toolbar, select File -> Add files to "Runner" -> select `ios/UnityLibrary/Unity-Iphone.xcodeproj`. This should add the Unity-iPhone project to your workspace at the same level as the Runner and Pods projects (if you accidentally added it as a child of Runner, right-click Unity-iPhone, choose Delete, then choose Remove Reference. Then *make sure nothing is selected* and try again). Alternatively, you can drag-and-drop Unity-Iphone.xcodeproj into the project navigator, again ensuring that you drop it at the root of the tree (at the same level as Runner and Pods)
+- In Xcode, open your app's `<your flutter project>/ios/Runner.xcworkspace`. It's **very important** to make sure you are opening the `xcworkspace` and not the `xcproj`: [workspaces](https://developer.apple.com/documentation/xcode/managing-multiple-projects-and-their-dependencies) are designed for combining multiple projects (in this case, the Runner project for your Flutter app and the exported Unity project)
+- In the project navigator, make sure nothing is selected
+- From Xcode toolbar, select `File -> Add files to "Runner"` and select `<your flutter project>/ios/UnityLibrary/Unity-Iphone.xcodeproj`. This should add the Unity-iPhone project to your workspace at the same level as the Runner and Pods projects (if you accidentally added it as a child of Runner, right-click Unity-iPhone, choose Delete, then choose Remove Reference. Then *make sure nothing is selected* and try again). Alternatively, you can drag-and-drop Unity-Iphone.xcodeproj into the project navigator, again ensuring that you drop it at the root of the tree (at the same level as Runner and Pods)
 
 ![image](https://github.com/jamesncl/flutter_embed_unity/assets/15979056/72dfc0dd-9b68-4c4f-ae6f-5a2c6de2feae)
 
