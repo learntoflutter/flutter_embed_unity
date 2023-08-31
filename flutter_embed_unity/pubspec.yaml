@@ -17,13 +17,13 @@ dependencies:
   # https://github.com/flutter/flutter/issues/46264
   flutter_embed_unity_platform_interface: #^0.0.1
     path: ../flutter_embed_unity_platform_interface
-  flutter_embed_unity_android: #^0.0.1
+  flutter_embed_unity_2022_3_android: #^0.0.1
     path: ../flutter_embed_unity_2022_3_android
-  flutter_embed_unity_ios: #^0.0.1
+  flutter_embed_unity_2022_3_ios: #^0.0.1
     path: ../flutter_embed_unity_2022_3_ios
 
 dev_dependencies:
-  flutter_lints: ^2.0.2
+  flutter_lints: ^2.0.3
 
 flutter:
   plugin:
