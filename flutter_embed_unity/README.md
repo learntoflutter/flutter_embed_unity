@@ -35,11 +35,12 @@ android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestSc
 
 Failure to do this will mean your app will crash on orientation change. See [the `android:configChanges` documentation](https://developer.android.com/guide/topics/manifest/activity-element#config) and [Android configuration changes documentation](https://developer.android.com/guide/topics/resources/runtime-changes) for more.
 
-## No support for Android emulator
+## No support for Simulators
 
-Since Unity 2019.3, [Unity no longer supports Android x86](https://blog.unity.com/technology/android-support-update-64-bit-and-app-bundles-backported-to-2017-4-lts). This means that it cannot be run in an Android emulators. Therefore if you're using this plugin, you won't be able to run your Flutter app on an Android emulator. 
+You will not be able to run your Flutter app on a simulator when using this plugin. Use real devices for development and testing.
 
-TODO: iOS: Build Settings -> Target SDK -> Simulator SDK
+Since Unity 2019.3, [Unity no longer supports Android x86](https://blog.unity.com/technology/android-support-update-64-bit-and-app-bundles-backported-to-2017-4-lts). This means that it cannot be run in an Android emulators. If you are NOT using AR / VR features, it may be possible to use an iOS simulator by changing the Target SDK in Unity Player Settings, but this is untested and unsupported.
+
 
 ## Alternatives
 If you need to support other versions of unity, consider using [flutter_unity_widget](https://pub.dev/packages/flutter_unity_widget) or [consult the Wiki](https://github.com/jamesncl/flutter_embed_unity/wiki) for pointers on how to contribute your own packages targeting different versions of Unity
