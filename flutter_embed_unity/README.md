@@ -72,7 +72,7 @@ public class MyGameObjectScript : MonoBehaviour
 > [!IMPORTANT]
 > It is **very important that you only use the Unity version which this plugin supports**, which is currently [Unity 2022.3 LTS (Long Term Support)](https://unity.com/releases/lts). Failure to do this will likely lead to crashes at runtime, because the undocumented functions this plugin calls can change and the workarounds it implements may not work as expected.
 
-> [Unity as a library](https://docs.unity3d.com/Manual/UnityasaLibrary.html) was only intended by Unity to be used fullscreen (running in it's own `UnityPlayerActivity.java` Activity on Android, or using `UnityAppController.mm` as the root UIViewController on iOS). By embedding Unity into a Flutter widget, this plugin breaks this assumption, making it quite delicate. It also calls undocumented functions written by Unity, and implements various workarounds, which is why this plugin will not work with different versions of Unity. If you need support for different versions, please consider [contributing your own package](https://github.com/jamesncl/flutter_embed_unity/wiki).
+[Unity as a library](https://docs.unity3d.com/Manual/UnityasaLibrary.html) was only intended by Unity to be used fullscreen (running in it's own `UnityPlayerActivity.java` Activity on Android, or using `UnityAppController.mm` as the root UIViewController on iOS). By embedding Unity into a Flutter widget, this plugin breaks this assumption, making it quite delicate. It also calls undocumented functions written by Unity, and implements various workarounds, which is why this plugin will not work with different versions of Unity. If you need support for different versions, please consider [contributing your own package](https://github.com/jamesncl/flutter_embed_unity/wiki).
 
 ## Flutter 3.3+
 
@@ -145,6 +145,9 @@ To allow Unity to send messages to Flutter, and to make exporting your Unity pro
 - In Unity, go to `Assets -> import package -> Custom package`, and choose the file you just downloaded
 - The package includes two folders: `FlutterEmbed` which contains scripts which are REQUIRED to run the plugin, and `Example` which contains an optional example scene and AR scene which demonstrates how to use the plugin (this includes dependencies on ARFoundation - if you don't need the example you can untick these from the import package selection).
 
+![import](https://github.com/jamesncl/flutter_embed_unity/assets/15979056/3641f1a2-8fb3-40cf-9a16-bfca9919e214)
+
+
 > [!NOTE]
 > As an alternative to importing `flutter_embed_unity_2022_3.unitypackage`, you can browse the source which this package is made from in [the example Unity project](https://github.com/jamesncl/flutter_embed_unity/tree/main/example_unity_2022_3_project), or use the example project as a template for your own project.
 
@@ -216,7 +219,7 @@ The `EmbedUnity` section of the `flutter_embed_unity_2022_3.unitypackage` you im
 - When asked, select the `unityLibrary` export folder you created
 - Wait for the project to build, then check the Unity console output to understand what has happened and check for errors
 
-> It's recommended to learn about the structure of the Unity export you have just made so you understand how it works: see [the documentation for Android](https://docs.unity3d.com/Manual/UnityasaLibrary-Android.html) and the [documentation for iOS](https://docs.unity3d.com/Manual/UnityasaLibrary-iOS.html). The export script takes these structures and modifies them for easier integration into Flutter: the Unity console output tells you what changes have been made
+> To learn about the structure of the Unity export you have just made, see [the documentation for Android](https://docs.unity3d.com/Manual/UnityasaLibrary-Android.html) and the [documentation for iOS](https://docs.unity3d.com/Manual/UnityasaLibrary-iOS.html). The export script takes these structures and modifies them for easier integration into Flutter: the Unity console output tells you what changes have been made
 
 The Unity project is now ready to use, but we still haven't actually linked it to our Flutter app.
 
@@ -235,13 +238,15 @@ The Unity project is now ready to use, but we still haven't actually linked it t
 
 - **This must be repeated every time you export your Unity project:** In project navigator, expand the `Unity-iPhone` project, and select the `Data` folder. In the Inspector, under Target Membership, change the target membership to `UnityFramework`.
   
-![3](https://github.com/jamesncl/flutter_embed_unity/assets/15979056/791b13cb-0864-4636-98ae-fb3e327b671a)
+![3](https://github.com/jamesncl/flutter_embed_unity/assets/15979056/06737b05-934a-4391-8caa-9d279328d397)
+
 
 > This allows you to embed the Unity engine and your Unity game easily into your own Flutter app as a single unit.
 
 - **This must be repeated every time you export your Unity project:** In project navigator, select the `Unity-iPhone` project, then in the editor select the `Unity-iPhone` project under PROJECTS, then select the Build Settings tab. In the Build Settings tab, find the 'Other linker Flags' setting (you can use the search box to help you find it). Add the following : `-Wl,-U,_FlutterEmbedUnityIos_sendToFlutter`
 
-![4](https://github.com/jamesncl/flutter_embed_unity/assets/15979056/c66d164f-1da1-4f2a-a640-615cd9b05b0a)
+![4](https://github.com/jamesncl/flutter_embed_unity/assets/15979056/5119acdb-10ad-466d-abe7-3353acdfef75)
+
 
 
 > To be able to pass messages from Unity C# to the iOS part of the plugin (which then passes the message on to Flutter) the C# file you include in your Unity project declares (but does not define) a function called `FlutterEmbedUnityIos_sendToFlutter`. This function is instead defined in the plugin. To join these two things together, we need to tell Xcode to ignore the fact that `FlutterEmbedUnityIos_sendToFlutter` is not defined in the Unity module, and instead link it to the definition in the plugin.
@@ -266,7 +271,7 @@ dependencies {
 include ':unityLibrary'
 ```
 
-![6](https://github.com/jamesncl/flutter_embed_unity/assets/15979056/3d1e87d0-2aeb-40ef-877c-bac722a709ae)
+![6](https://github.com/jamesncl/flutter_embed_unity/assets/15979056/11721c31-2d76-4451-81bf-c0a9fa4bd62e)
 
 
 Add the Unity export directory as a repository so gradle can find required libraries / AARs etc in `<your flutter project>/android/build.gradle`:
@@ -284,16 +289,15 @@ allprojects {
 }
 ```
 
-![7](https://github.com/jamesncl/flutter_embed_unity/assets/15979056/afd05061-e800-4200-a085-fa8828875b15)
-
+![7](https://github.com/jamesncl/flutter_embed_unity/assets/15979056/56097d90-4707-4375-ba33-4e5d65cae104)
 
 - Add to android/gradle.properties:
 
 ```
 unityStreamingAssets=
 ```
-![8](https://github.com/jamesncl/flutter_embed_unity/assets/15979056/c158abc4-b761-4705-b815-0e04c684d21f)
 
+![8](https://github.com/jamesncl/flutter_embed_unity/assets/15979056/b705d075-175c-4bd6-a126-422d83670d30)
 
 > By default, Unity references `unityStreamingAssets` in it's exported project build.gradle, and provides the definition in the gradle.properties of the thin launcher app. Because we are using a Flutter app rather than the provided launcher, we need to add the same definition to our own gradle.properites, otherwise you will get a build error `Could not get unknown property 'unityStreamingAssets'`
 
@@ -302,12 +306,11 @@ unityStreamingAssets=
 
 If you are using XR features in Unity (eg ARFoundation) you need to perform some additional configuration on your project. First, make sure you check Unity's project validation checks: in your Unity project, go to `Project Settings -> XR Plug-in Management -> Project Validation`, and fix any problems.
 
-- Add the following to your `android/settings.gradle`:
+- Add `include ':unityLibrary:xrmanifest.androidlib'` to your `android/settings.gradle`:
 
-```
-// This additional project is required to build with Unity XR:
-include ':unityLibrary:xrmanifest.androidlib'
-```
+![6b](https://github.com/jamesncl/flutter_embed_unity/assets/15979056/3a51afd3-0d3c-4fe9-8bc1-be67daff6e74)
+
+
 > In your exported `unityLibrary` you may find an extra project folder called `xrmanifest.androidlib`. The Unity project depends on this, so you need to inlcude it in your app's build.
 
 - Find your `MainActivity` class (this is usually located at `<flutter project>\android\app\src\main\kotlin\com\<your org>\MainActivity.kt` or `<flutter project>\android\app\src\main\java\com\<your org>\MainActivity.java`). If your `MainActivity` extends `FlutterActivity`, you can simply change it to extend `FakeUnityPlayerActivity` instead of `FlutterActivity` (`FakeUnityPlayerActivity` also extends `FlutterActivity`). This is the simplest option, as nothing else needs to be done:
@@ -419,7 +422,7 @@ After Unity is loaded, subsequent usages of `sendToUnity` will still work, and w
 
 ## Waiting for the Unity scene to load
 
-This plugin is designed to be as bare bones as possible, leaving the details up to you. One common task you might need to do is waiting for Unity to load the first scene before sending any messages. As an example of how to do this, add the following script to a game object in your Unity project:
+Unity can take a few seconds to load the first time it is rendered. Therefore one common task you might need to do is wait for Unity to load the first scene before sending any messages. Here's an example of how you might do this. Add the following script to a game object in your Unity scene:
 
 ```csharp
 using UnityEngine;
@@ -452,16 +455,19 @@ Then in your Flutter project:
 EmbedUnity(
     onMessageFromUnity: (String data) {
         if(data == "scene_loaded") {
-            // Start sending messages to Unity
+            // Now you can start sending messages to Unity
         }
     }
 )
 ```
 
+> [!NOTE]
+> Unity only loads once. When `EmbedUnity` widget is disposed, your scene is still loaded in the background, so in this example when you create a new `EmbedUnity` a second time, the scene is already loaded.
+
 
 ## Manually pausing and resuming
 
-If you need, you can manually pause and resume Unity using the top level functions `pauseUnity` and `resumeUnity`:
+You can manually pause and resume Unity using the top level functions `pauseUnity` and `resumeUnity`. This does not unload Unity from memory: it simply pauses the 'game time'. You can still pass messages to Unity game objects when Unity is paused. When `EmbedUnity` is disposed, it pauses Unity automatically for you, and resumes it when `EmbedUnity` is created again.
 
 ```
 import 'package:flutter_embed_unity/flutter_embed_unity.dart';
