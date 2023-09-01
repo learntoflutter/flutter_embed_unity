@@ -10,7 +10,7 @@ dependencies:
   flutter:
     sdk: flutter
 
-  flutter_embed_unity_android:
+  flutter_embed_unity_2022_3_android:
     # When depending on this package from a real application you should use:
     #   flutter_embed_unity_android: ^x.y.z
     # See https://dart.dev/tools/pub/dependencies#version-constraints
@@ -20,7 +20,6 @@ dependencies:
   flutter_embed_unity:
     path: ../../flutter_embed_unity
   intl: any
-  provider: ^6.0.5
 
 
 dev_dependencies:
@@ -29,7 +28,7 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
 
-  flutter_lints: ^2.0.2
+  flutter_lints: ^2.0.3
 
 
 flutter:

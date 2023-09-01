@@ -19,7 +19,6 @@ dependencies:
     # the parent directory to use the current plugin's version.
     path: ../
   intl: any
-  provider: ^6.0.5
 
 
 dev_dependencies:
