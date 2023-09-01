@@ -263,7 +263,8 @@ dependencies {
 }
 ```
 
-![5](https://github.com/jamesncl/flutter_embed_unity/assets/15979056/ef5b0f5e-8c1b-45cd-b5ec-a443d18c7f8f)
+![5](https://github.com/jamesncl/flutter_embed_unity/assets/15979056/04e44ff4-755c-457b-9267-d9c4735559fc)
+
 
 
 - Add the exported unity project to the gradle build by including it in `<your flutter project>/android/settings.gradle`:
