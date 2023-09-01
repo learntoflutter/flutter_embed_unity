@@ -1,5 +1,5 @@
 name: flutter_embed_unity
-description: Embed Unity 3D into Flutter apps. Designed to offer more basic functionality than other packages, but be more stable and maintainable
+description: Embed Unity 3D into Flutter apps as a widget.
 version: 0.0.1
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 

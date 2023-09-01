@@ -2,6 +2,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_embed_unity/src/unity_message_listener.dart';
 import 'package:flutter_embed_unity_platform_interface/flutter_embed_constants.dart';
 
+/// Registers listeners ([EmbedUnity] widgets) who want to receive messages from Unity.
 class UnityMessageListeners {
 
   UnityMessageListeners._internal() {
@@ -21,6 +22,7 @@ class UnityMessageListeners {
     _listeners.remove(listener);
   }
 
+  // Platform code send messages from Unity to Flutter via the method channel
   Future<dynamic> _methodCallHandler(MethodCall call) async {
     if(call.method == FlutterEmbedConstants.methodNameSendToFlutter) {
       for(var listener in _listeners) {
