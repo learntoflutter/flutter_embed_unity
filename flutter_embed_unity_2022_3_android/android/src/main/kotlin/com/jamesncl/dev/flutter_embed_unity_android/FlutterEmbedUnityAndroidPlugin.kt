@@ -1,16 +1,19 @@
 package com.jamesncl.dev.flutter_embed_unity_android
 
+import androidx.lifecycle.LifecycleEventObserver
 import com.jamesncl.dev.flutter_embed_unity_android.constants.FlutterEmbedConstants.Companion.logTag
 import com.jamesncl.dev.flutter_embed_unity_android.constants.FlutterEmbedConstants.Companion.uniqueIdentifier
 import com.jamesncl.dev.flutter_embed_unity_android.messaging.SendToFlutter
 import com.jamesncl.dev.flutter_embed_unity_android.messaging.SendToUnity
 import com.jamesncl.dev.flutter_embed_unity_android.platformView.UnityViewFactory
+import com.jamesncl.dev.flutter_embed_unity_android.unity.ResumeUnityOnActivityResume
 import com.jamesncl.dev.flutter_embed_unity_android.unity.UnityPlayerSingleton
 import io.flutter.embedding.engine.plugins.FlutterPlugin
 import io.flutter.embedding.engine.plugins.activity.ActivityAware
 import io.flutter.embedding.engine.plugins.activity.ActivityPluginBinding
 import io.flutter.plugin.common.MethodChannel
 import io.flutter.Log
+import io.flutter.embedding.engine.plugins.lifecycle.HiddenLifecycleReference
 
 /**
  * This is the entry point for the plugin. The Flutter engine will call onAttachedToEngine first.
@@ -24,6 +27,11 @@ class FlutterEmbedUnityAndroidPlugin : FlutterPlugin, ActivityAware {
     private lateinit var channel: MethodChannel
     // Messages from Flutter to this plugin will be sent to Unity via this:
     private val methodCallHandler = SendToUnity()
+    // This lifecycle observer works around an issue with Unity freezing sometimes when
+    // the app is brought back into foreground
+    private val resumeUnityOnActivityResume = ResumeUnityOnActivityResume()
+    // This is just so we can unregister the resumeUnityOnActivityResume lifecycle observer:
+    private var activityPluginBinding: ActivityPluginBinding? = null
 
     override fun onAttachedToEngine(flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
         Log.d(logTag, "onAttachedToEngine")
@@ -59,6 +67,13 @@ class FlutterEmbedUnityAndroidPlugin : FlutterPlugin, ActivityAware {
         // UnityPlayerSingleton needs the activity which will be received in onAttachedToActivity
         // so that the UnityPlayer can be created
         UnityPlayerSingleton.flutterActivity = binding.activity
+
+        // See comments on ResumeActivityOnActivityResume for explanation of why this is needed
+        (binding.lifecycle as HiddenLifecycleReference)
+            .lifecycle
+            .addObserver(resumeUnityOnActivityResume)
+        // So we can remove the observer later on detach
+        activityPluginBinding = binding
     }
 
     // ActivityAware
@@ -81,12 +96,23 @@ class FlutterEmbedUnityAndroidPlugin : FlutterPlugin, ActivityAware {
         // TODO(Is there any way to handle FlutterActivity onDestroy()?)
 
         UnityPlayerSingleton.flutterActivity = null
+        // Remove the lifecycle observer
+        (activityPluginBinding?.lifecycle as? HiddenLifecycleReference)
+            ?.lifecycle
+            ?.removeObserver(resumeUnityOnActivityResume)
     }
 
     // ActivityAware
     override fun onReattachedToActivityForConfigChanges(binding: ActivityPluginBinding) {
         Log.d(logTag, "onReattachedToActivityForConfigChanges")
         UnityPlayerSingleton.flutterActivity = binding.activity
+
+        // See comments on ResumeActivityOnActivityResume for explanation of why this is needed
+        (binding.lifecycle as HiddenLifecycleReference)
+            .lifecycle
+            .addObserver(resumeUnityOnActivityResume)
+        // So we can remove the observer later on detach
+        activityPluginBinding = binding
     }
 
     // ActivityAware
@@ -95,5 +121,10 @@ class FlutterEmbedUnityAndroidPlugin : FlutterPlugin, ActivityAware {
                     "for your app was destroyed. This scenario is not supported")
         // TODO(Is there any way to handle FlutterActivity onDestroy()?)
         UnityPlayerSingleton.flutterActivity = null
+
+        // Remove the lifecycle observer
+        (activityPluginBinding?.lifecycle as? HiddenLifecycleReference)
+            ?.lifecycle
+            ?.removeObserver(resumeUnityOnActivityResume)
     }
 }
