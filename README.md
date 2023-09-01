@@ -1,4 +1,4 @@
-# flutter_embed_unity plugin overview
+# Federated plugin overview
 
 > [!NOTE]
 > See [the main README of the app-facing package](https://github.com/jamesncl/flutter_embed_unity/tree/main/flutter_embed_unity) for details.
