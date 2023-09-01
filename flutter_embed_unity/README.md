@@ -2,7 +2,7 @@
 
 Embed your [Unity 3D](https://unity.com/) game / app into Flutter apps as a widget on iOS and Android. Transfer messages between Unity scripts and your Flutter app. Only supports a single instance of Unity 2022.3 LTS. Supports Unity ARFoundation / ARKit / ARCore.
 
-![ezgif-3-432510b499](https://github.com/jamesncl/flutter_embed_unity/assets/15979056/cc69185e-bb84-4ed6-a778-1705a85798fb)
+![ezgif com-resize](https://github.com/jamesncl/flutter_embed_unity/assets/15979056/e4dd706d-9c0c-4365-8740-d374afa49ebb)
 
 # Usage
 
