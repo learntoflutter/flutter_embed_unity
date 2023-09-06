@@ -486,6 +486,17 @@ ElevatedButton(
 
 # Common issues
 
+## Export incomplete: AndroidManifest.xml not found
+
+There is [an issue with some versions of Unity 2022.3](https://issuetracker.unity3d.com/issues/android-xr-xr-management-package-equals-4-dot-3-1-deletes-unitylibrary-androidmanifest-dot-xml-when-exporting-a-gradle-build) which causes the following error when attempting to export the project using the plugin export script with AR packages enabled:
+
+![265426774-9fcb0274-1502-4e38-8d3b-bc86e7a04c98](https://github.com/jamesncl/flutter_embed_unity/assets/15979056/9f3a6cff-b333-4a41-98a0-293f9b0b8179)
+
+This is caused by a broken version of a Unity package called `com.unity.xr.management` which is a depencency of AR Foundation, Google ARCore XR Plugin and Apple ARKit XR Plugin. This issue [is fixed in version 4.4+](https://issuetracker.unity3d.com/issues/android-xr-xr-management-package-equals-4-dot-3-1-deletes-unitylibrary-androidmanifest-dot-xml-when-exporting-a-gradle-build) of com.unity.xr.management, however you may need to manually pin this version until the parent packages are updated to use this newer version. To do this, in your Unity project, open `<your unity project>/Packages/manifest.json` and add `"com.unity.xr.management": "4.4.0",`:
+
+![xr management fix](https://github.com/jamesncl/flutter_embed_unity/assets/15979056/39e9c102-f870-4162-976d-85ca23a5ca2b)
+
+
 ## libmain.so not found
 
 If you are attempting to run your app on an Android emulator, you will encounter this error. As noted above in the limitations, this is not supported. Use a real device instead.
