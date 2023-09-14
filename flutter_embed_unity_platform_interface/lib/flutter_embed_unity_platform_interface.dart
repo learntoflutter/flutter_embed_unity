@@ -30,18 +30,22 @@ abstract class FlutterEmbedUnityPlatform extends PlatformInterface {
     _instance = instance;
   }
 
+  /// Send [data] to a public MonoBehaviour method named [methodName] attached to a
+  /// Unity game object named [gameObjectName] in the active scene.
+  ///
+  /// The Unity method must be public and accept a single [String] parameter.
   void sendToUnity(String gameObjectName, String methodName, String data) {
     throw UnimplementedError('sendToUnity() has not been implemented.');
   }
 
-  void orientationChanged() {
-    throw UnimplementedError('orientationChanged() has not been implemented.');
-  }
-
+  /// Pause time in Unity.
+  ///
+  /// Unity will remain loaded in memory and still be able to accept messages.
   void pauseUnity() {
     throw UnimplementedError('pauseUnity() has not been implemented.');
   }
 
+  /// Resume time in Unity.
   void resumeUnity() {
     throw UnimplementedError('resumeUnity() has not been implemented.');
   }
