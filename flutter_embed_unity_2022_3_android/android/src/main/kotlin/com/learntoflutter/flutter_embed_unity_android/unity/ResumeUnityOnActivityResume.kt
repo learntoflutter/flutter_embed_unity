@@ -1,9 +1,9 @@
-package com.jamesncl.dev.flutter_embed_unity_android.unity
+package com.learntoflutter.flutter_embed_unity_android.unity
 
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
-import com.jamesncl.dev.flutter_embed_unity_android.constants.FlutterEmbedConstants.Companion.logTag
+import com.learntoflutter.flutter_embed_unity_android.constants.FlutterEmbedConstants.Companion.logTag
 import io.flutter.Log
 
 

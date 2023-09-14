@@ -9,7 +9,7 @@ public class SendToFlutter
         if (Application.platform == RuntimePlatform.Android)
         {
             // Use reflection to call the relevant static Kotlin method in the Android plugin
-            using (AndroidJavaClass sendToFlutterClass = new AndroidJavaClass("com.jamesncl.dev.flutter_embed_unity_android.messaging.SendToFlutter"))
+            using (AndroidJavaClass sendToFlutterClass = new AndroidJavaClass("com.learntoflutter.flutter_embed_unity_android.messaging.SendToFlutter"))
             {
                 sendToFlutterClass.CallStatic("sendToFlutter", data);
             }

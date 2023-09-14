@@ -1,10 +1,10 @@
-package com.jamesncl.dev.flutter_embed_unity_android.unity
+package com.learntoflutter.flutter_embed_unity_android.unity
 
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.view.InputDevice
 import android.view.MotionEvent
-import com.jamesncl.dev.flutter_embed_unity_android.constants.FlutterEmbedConstants.Companion.logTag
+import com.learntoflutter.flutter_embed_unity_android.constants.FlutterEmbedConstants.Companion.logTag
 import com.unity3d.player.UnityPlayer
 import io.flutter.Log
 

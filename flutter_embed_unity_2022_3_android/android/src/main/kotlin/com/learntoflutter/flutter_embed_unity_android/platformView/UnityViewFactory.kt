@@ -1,4 +1,4 @@
-package com.jamesncl.dev.flutter_embed_unity_android.platformView
+package com.learntoflutter.flutter_embed_unity_android.platformView
 
 import android.content.Context
 import android.graphics.Color
@@ -6,8 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.RelativeLayout
 import android.widget.TextView
-import com.jamesncl.dev.flutter_embed_unity_android.constants.FlutterEmbedConstants.Companion.logTag
-import com.jamesncl.dev.flutter_embed_unity_android.unity.UnityPlayerSingleton
+import com.learntoflutter.flutter_embed_unity_android.constants.FlutterEmbedConstants.Companion.logTag
+import com.learntoflutter.flutter_embed_unity_android.unity.UnityPlayerSingleton
 import io.flutter.BuildConfig
 import io.flutter.Log
 import io.flutter.plugin.platform.PlatformView

@@ -82,6 +82,29 @@ Due to [an issue](https://github.com/flutter/flutter/issues/103630) with prior v
 
 Unity 2022.3 LTS [only supports Android 5.1 “Lollipop” (API level 22) and above](https://docs.unity3d.com/Manual/android-requirements-and-compatibility.html) and [iOS 12 and above](https://docs.unity3d.com/Manual/ios-requirements-and-compatibility.html) so your app must also observe these limitations
 
+## Gradle 7.2
+
+Unity 2022.3 LTS [only supports Gradle 7.2 / Android Gradle Plugin (AGP) 7.1.2](https://docs.unity3d.com/Manual/android-gradle-overview.html), so you should use these versions in the Android part of your Flutter app to avoid build problems (especially if you are using Unity AR / XR). Do this by specifying **7.1.2** as the AGP version in `<your flutter app>/android/build.gradle`:
+
+```
+buildscript {
+    ...
+
+    dependencies {
+		...
+        classpath 'com.android.tools.build:gradle:7.1.2'
+    }
+}
+```
+
+You will also need to specify that the related version of Gradle which works with AGP 7.1.2, which is Gradle **7.2**, should be used in `<your flutter app>/android/gradle/wrapper/gradle-wrapper.properties`:
+
+```
+distributionUrl=https\://services.gradle.org/distributions/gradle-7.2-all.zip
+```
+
+
+
 ## Only 1 instance
 Unity can only render in 1 widget at a time. Therefore, you can only use one `EmbedUnity` widget on a Flutter screen. If another screen is pushed onto the navigator stack, Unity will be detatched from the first screen and attached to the second screen. If the second screen is popped, Unity will be reattached back to the first screen.
 
@@ -317,7 +340,7 @@ If you are using XR features in Unity (eg ARFoundation) you need to perform some
 - Find your `MainActivity` class (this is usually located at `<flutter project>\android\app\src\main\kotlin\com\<your org>\MainActivity.kt` or `<flutter project>\android\app\src\main\java\com\<your org>\MainActivity.java`). If your `MainActivity` extends `FlutterActivity`, you can simply change it to extend `FakeUnityPlayerActivity` instead of `FlutterActivity` (`FakeUnityPlayerActivity` also extends `FlutterActivity`). This is the simplest option, as nothing else needs to be done:
 
 ```java
-import com.jamesncl.dev.flutter_embed_unity_android.unity.FakeUnityPlayerActivity;
+import com.learntoflutter.flutter_embed_unity_android.unity.FakeUnityPlayerActivity;
 
 public class MainActivity extends FakeUnityPlayerActivity {
 	
@@ -325,7 +348,7 @@ public class MainActivity extends FakeUnityPlayerActivity {
 ```
 
 ```kotlin
-import com.jamesncl.dev.flutter_embed_unity_android.unity.FakeUnityPlayerActivity
+import com.learntoflutter.flutter_embed_unity_android.unity.FakeUnityPlayerActivity
 
 class MainActivity: FakeUnityPlayerActivity() {
     
@@ -336,7 +359,7 @@ class MainActivity: FakeUnityPlayerActivity() {
 - Otherwise, if your `MainActivity` extends something else (for example `FlutterFragmentActivity` or your own custom Activity) it may be easier to make your `MainActivity` implement `IFakeUnityPlayerActivity`. If you do this, you MUST also create a public field of type `Object` (for Java) or `Any?` (for Kotlin) in your `MainActivity` called `mUnityPlayer`, and set this via the interface function:
 
 ```java
-import com.jamesncl.dev.flutter_embed_unity_android.unity.IFakeUnityPlayerActivity;
+import com.learntoflutter.flutter_embed_unity_android.unity.IFakeUnityPlayerActivity;
 
 public class MainActivity implements IFakeUnityPlayerActivity {
 
@@ -514,6 +537,29 @@ You have forgotten to add the linker flag to Unity-IPhone, one of the iOS setup 
 ## ERROR: could not open UnityFramework.framework/Data/Managed/Metadata/global-metadata.dat, IL2CPP initialization failed
 
 You have forgotten to change the target membership of the Data folder in Unity-IPhone, one of the iOS setup steps which are required to be done every time you export your Unity project 
+
+## Project with path 'xrmanifest.androidlib' could not be found in project ':unityLibrary'
+
+You are using AR packages in your Unity project but you have forgotten to follow the instuctions above in the section titled "If you're using XR (VR / AR) on Android"
+
+## A problem occurred configuring project ':unityLibrary:xrmanifest.androidlib' - Could not create an instance of type com.android.build.api.variant.impl.LibraryVariantBuilderImpl - Namespace not specified. Please specify a namespace in the module's build.gradle file
+
+This is caused by the fact that you are using Gradle 8 or higher in the Android part of your Flutter app, but Unity 2022.3 does not support this. The gradle version is usually specified in `<your flutter project>/android/build.gradle`, for example:
+
+```gradle
+dependencies {
+	...
+    classpath 'com.android.tools.build:gradle:8.0.2'   <-- This is the problem
+}
+```
+
+See the Limitations section above for instructions on how to set the correct gradle version for your app.
+
+
+## Could not find :arcore_client: / :ARPresto: / :UnityARCore: etc.
+
+Check you have followed the instructions about linking Unity to your Android project. Specifically, make sure you have added the unityLibrary flatDir to the correct place in you `build.gradle` (it goes under the `allprojects` section, not the `buildscript` section).
+
 
 # Plugin developers / contributors
 

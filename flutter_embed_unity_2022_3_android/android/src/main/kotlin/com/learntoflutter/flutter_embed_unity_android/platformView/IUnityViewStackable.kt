@@ -1,6 +1,6 @@
-package com.jamesncl.dev.flutter_embed_unity_android.platformView
+package com.learntoflutter.flutter_embed_unity_android.platformView
 
-import com.jamesncl.dev.flutter_embed_unity_android.unity.UnityPlayerSingleton
+import com.learntoflutter.flutter_embed_unity_android.unity.UnityPlayerSingleton
 
 interface IUnityViewStackable {
     fun attachUnity(unityPlayerSingleton: UnityPlayerSingleton)

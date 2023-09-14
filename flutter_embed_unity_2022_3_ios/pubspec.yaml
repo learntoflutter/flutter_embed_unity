@@ -22,5 +22,5 @@ flutter:
     implements: flutter_embed_unity
     platforms:
       ios:
-        package: com.jamesncl.dev.flutter_embed_unity_ios
+        package: com.learntoflutter.flutter_embed_unity_ios
         pluginClass: FlutterEmbedUnityIosPlugin

@@ -1,13 +1,12 @@
-package com.jamesncl.dev.flutter_embed_unity_android
+package com.learntoflutter.flutter_embed_unity_android
 
-import androidx.lifecycle.LifecycleEventObserver
-import com.jamesncl.dev.flutter_embed_unity_android.constants.FlutterEmbedConstants.Companion.logTag
-import com.jamesncl.dev.flutter_embed_unity_android.constants.FlutterEmbedConstants.Companion.uniqueIdentifier
-import com.jamesncl.dev.flutter_embed_unity_android.messaging.SendToFlutter
-import com.jamesncl.dev.flutter_embed_unity_android.messaging.SendToUnity
-import com.jamesncl.dev.flutter_embed_unity_android.platformView.UnityViewFactory
-import com.jamesncl.dev.flutter_embed_unity_android.unity.ResumeUnityOnActivityResume
-import com.jamesncl.dev.flutter_embed_unity_android.unity.UnityPlayerSingleton
+import com.learntoflutter.flutter_embed_unity_android.constants.FlutterEmbedConstants.Companion.logTag
+import com.learntoflutter.flutter_embed_unity_android.constants.FlutterEmbedConstants.Companion.uniqueIdentifier
+import com.learntoflutter.flutter_embed_unity_android.messaging.SendToFlutter
+import com.learntoflutter.flutter_embed_unity_android.messaging.SendToUnity
+import com.learntoflutter.flutter_embed_unity_android.platformView.UnityViewFactory
+import com.learntoflutter.flutter_embed_unity_android.unity.ResumeUnityOnActivityResume
+import com.learntoflutter.flutter_embed_unity_android.unity.UnityPlayerSingleton
 import io.flutter.embedding.engine.plugins.FlutterPlugin
 import io.flutter.embedding.engine.plugins.activity.ActivityAware
 import io.flutter.embedding.engine.plugins.activity.ActivityPluginBinding

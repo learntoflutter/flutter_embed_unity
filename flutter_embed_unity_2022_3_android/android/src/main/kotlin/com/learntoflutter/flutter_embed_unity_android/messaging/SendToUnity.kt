@@ -1,11 +1,11 @@
-package com.jamesncl.dev.flutter_embed_unity_android.messaging
+package com.learntoflutter.flutter_embed_unity_android.messaging
 
-import com.jamesncl.dev.flutter_embed_unity_android.constants.FlutterEmbedConstants.Companion.logTag
-import com.jamesncl.dev.flutter_embed_unity_android.constants.FlutterEmbedConstants.Companion.methodNameOrientationChanged
-import com.jamesncl.dev.flutter_embed_unity_android.constants.FlutterEmbedConstants.Companion.methodNamePauseUnity
-import com.jamesncl.dev.flutter_embed_unity_android.constants.FlutterEmbedConstants.Companion.methodNameResumeUnity
-import com.jamesncl.dev.flutter_embed_unity_android.constants.FlutterEmbedConstants.Companion.methodNameSendToUnity
-import com.jamesncl.dev.flutter_embed_unity_android.unity.UnityPlayerSingleton
+import com.learntoflutter.flutter_embed_unity_android.constants.FlutterEmbedConstants.Companion.logTag
+import com.learntoflutter.flutter_embed_unity_android.constants.FlutterEmbedConstants.Companion.methodNameOrientationChanged
+import com.learntoflutter.flutter_embed_unity_android.constants.FlutterEmbedConstants.Companion.methodNamePauseUnity
+import com.learntoflutter.flutter_embed_unity_android.constants.FlutterEmbedConstants.Companion.methodNameResumeUnity
+import com.learntoflutter.flutter_embed_unity_android.constants.FlutterEmbedConstants.Companion.methodNameSendToUnity
+import com.learntoflutter.flutter_embed_unity_android.unity.UnityPlayerSingleton
 import com.unity3d.player.UnityPlayer
 import io.flutter.Log
 import io.flutter.plugin.common.MethodCall
@@ -14,8 +14,6 @@ import io.flutter.plugin.common.MethodChannel
 class SendToUnity: MethodChannel.MethodCallHandler {
 
     override fun onMethodCall(call: MethodCall, result: MethodChannel.Result) {
-        Log.i(logTag, call.method)
-
         when (call.method) {
             methodNameSendToUnity -> {
                 val gameObjectMethodNameData = (call.arguments as List<*>).filterIsInstance<String>()

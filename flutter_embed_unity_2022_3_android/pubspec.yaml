@@ -22,5 +22,5 @@ flutter:
     implements: flutter_embed_unity
     platforms:
       android:
-        package: com.jamesncl.dev.flutter_embed_unity_android
+        package: com.learntoflutter.flutter_embed_unity_android
         pluginClass: FlutterEmbedUnityAndroidPlugin

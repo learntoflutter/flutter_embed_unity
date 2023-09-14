@@ -1,4 +1,4 @@
-package com.jamesncl.dev.flutter_embed_unity_android.unity;
+package com.learntoflutter.flutter_embed_unity_android.unity;
 
 /**
  * Unity code assumes that UnityPlayer is only ever run inside

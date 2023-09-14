@@ -1,4 +1,4 @@
-package com.jamesncl.dev.flutter_embed_unity_android
+package com.learntoflutter.flutter_embed_unity_android
 
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel

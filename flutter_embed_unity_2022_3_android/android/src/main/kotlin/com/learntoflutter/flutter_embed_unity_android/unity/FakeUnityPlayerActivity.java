@@ -1,4 +1,4 @@
-package com.jamesncl.dev.flutter_embed_unity_android.unity;
+package com.learntoflutter.flutter_embed_unity_android.unity;
 
 import io.flutter.embedding.android.FlutterActivity;
 
