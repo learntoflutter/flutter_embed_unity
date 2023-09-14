@@ -1,6 +1,14 @@
 name: flutter_embed_unity
-description: Embed Unity 3D into Flutter apps as a widget.
+description: Harness the power of Unity 3D in your Flutter app by embedding Unity as a widget. Useful for adding 3D, gaming or augmented reality (AR) to your app.
 version: 0.0.1
+homepage: https://learntoflutter.com
+repository: https://github.com/learntoflutter/flutter_embed_unity
+documentation: https://github.com/learntoflutter/flutter_embed_unity/wiki
+funding:
+  - https://www.buymeacoffee.com/pPDtNs6A6T
+topics:
+  - unity
+  - 3D
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
 environment:
