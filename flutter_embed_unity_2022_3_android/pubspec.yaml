@@ -9,7 +9,6 @@ funding:
   - https://www.buymeacoffee.com/pPDtNs6A6T
 topics:
   - unity
-  - 3D
 
 environment:
   sdk: '>=3.0.6 <4.0.0'
