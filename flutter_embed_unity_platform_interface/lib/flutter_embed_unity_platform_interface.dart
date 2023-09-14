@@ -52,7 +52,7 @@ abstract class FlutterEmbedUnityPlatform extends PlatformInterface {
     throw UnimplementedError('pauseUnity() has not been implemented.');
   }
 
-
+  /// Resume time in Unity.
   void resumeUnity() {
     throw UnimplementedError('resumeUnity() has not been implemented.');
   }
