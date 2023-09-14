@@ -9,7 +9,6 @@ funding:
 topics:
   - unity
   - 3D
-publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
 environment:
   sdk: '>=3.0.6 <4.0.0'

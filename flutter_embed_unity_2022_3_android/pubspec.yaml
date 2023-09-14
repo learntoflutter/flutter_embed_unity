@@ -1,6 +1,5 @@
 name: flutter_embed_unity_2022_3_android
 description: Android implementation for Unity 2022.3 LTS of the flutter_embed_unity plugin.
-publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 0.0.2-beta
 
 environment:
