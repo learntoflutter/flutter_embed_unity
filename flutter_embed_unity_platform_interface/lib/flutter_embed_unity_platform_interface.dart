@@ -38,6 +38,13 @@ abstract class FlutterEmbedUnityPlatform extends PlatformInterface {
     throw UnimplementedError('sendToUnity() has not been implemented.');
   }
 
+  /// Notify Unity that the orientation of the device has changed. Currently
+  /// this is only used by Android to work around an issue with detecting
+  /// orientation change in native code
+  void orientationChanged() {
+    throw UnimplementedError('orientationChanged() has not been implemented.');
+  }
+
   /// Pause time in Unity.
   ///
   /// Unity will remain loaded in memory and still be able to accept messages.
@@ -45,7 +52,7 @@ abstract class FlutterEmbedUnityPlatform extends PlatformInterface {
     throw UnimplementedError('pauseUnity() has not been implemented.');
   }
 
-  /// Resume time in Unity.
+
   void resumeUnity() {
     throw UnimplementedError('resumeUnity() has not been implemented.');
   }
