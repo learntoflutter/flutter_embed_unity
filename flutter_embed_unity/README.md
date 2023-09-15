@@ -80,7 +80,27 @@ Due to [an issue](https://github.com/flutter/flutter/issues/103630) with prior v
 
 ## Android 22+, iOS 12.0+
 
-Unity 2022.3 LTS [only supports Android 5.1 “Lollipop” (API level 22) and above](https://docs.unity3d.com/Manual/android-requirements-and-compatibility.html) and [iOS 12 and above](https://docs.unity3d.com/Manual/ios-requirements-and-compatibility.html) so your app must also observe these limitations
+Unity 2022.3 LTS [only supports Android 5.1 “Lollipop” (API level 22) and above](https://docs.unity3d.com/Manual/android-requirements-and-compatibility.html) and [iOS 12 and above](https://docs.unity3d.com/Manual/ios-requirements-and-compatibility.html) so your app must also observe these limitations.
+
+In `<your flutter app>/android/app/build.gradle` check your `minSdkVersion` is at least 22:
+
+```
+android {
+    ...
+    defaultConfig {
+        // Unity 2022.3 requires Android 22 or higher
+        minSdkVersion 22
+    }
+}
+```
+
+And in `<your flutter app>/ios/Podfile` make sure the ios platform requirement is at least 12:
+
+```
+# Unity 2022.3 requires iOS 12 or higher
+platform :ios, '12.0'
+```
+
 
 ## Gradle 7.2
 
@@ -159,8 +179,8 @@ Flutter Forward 2023 demonstrated [an early preview of 3D support directly in Da
 
 To allow Unity to send messages to Flutter, and to make exporting your Unity project into Flutter easier, this plugin includes some Unity scripts which you should import into your Unity project.
 
-- Go to [the releases for this plugin on Github](https://github.com/learntoflutter/flutter_embed_unity/releases) and find the release which matches the one you have used to add this plugin to your `pubspec.yaml`
-- Expand `Assets` and download the file `flutter_embed_unity_2022_3.unitypackage`
+- Go to [the releases for this plugin on Github](https://github.com/learntoflutter/flutter_embed_unity/releases) and find the version of this plugin you are using (the version you [add to your `pubspec.yaml`](https://pub.dev/packages/flutter_embed_unity/install))
+- Expand `Assets` and download the file `flutter_embed_unity_2022_3.unitypackage`.
 
 ![1](https://github.com/jamesncl/flutter_embed_unity/assets/15979056/92a25bd6-29a7-4caf-bf6d-399d2ecd8f06)
 
