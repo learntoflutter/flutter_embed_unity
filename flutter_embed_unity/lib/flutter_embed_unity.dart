@@ -5,7 +5,6 @@ import 'package:flutter_embed_unity_platform_interface/flutter_embed_unity_platf
 export 'src/embed_unity.dart' show EmbedUnity;
 export 'package:flutter_embed_unity/flutter_embed_unity.dart' show sendToUnity, pauseUnity, resumeUnity;
 
-
 FlutterEmbedUnityPlatform get _platform => FlutterEmbedUnityPlatform.instance;
 
 /// Send [data] to a public MonoBehaviour method named [methodName] attached to a

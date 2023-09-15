@@ -5,13 +5,11 @@ import 'package:flutter_embed_unity/src/unity_message_listener.dart';
 import 'package:flutter_embed_unity/src/unity_message_listeners.dart';
 import 'package:flutter_embed_unity_platform_interface/flutter_embed_constants.dart';
 
-
 /// Embed Unity into your Flutter app and listen for messages from your Unity scripts.
 ///
 /// Unity will be rendered within the bounds of the widget.
 /// Only 1 instance of the widget should be shown on a screen.
 class EmbedUnity extends StatefulWidget {
-
   /// Listen to messages sent from Unity via `SendToFlutter.cs`.
   final Function(String)? onMessageFromUnity;
 
@@ -22,7 +20,6 @@ class EmbedUnity extends StatefulWidget {
 }
 
 class _EmbedUnityState extends State<EmbedUnity> implements UnityMessageListener {
-
   @override
   void initState() {
     UnityMessageListeners.instance.addListener(this);
@@ -36,7 +33,7 @@ class _EmbedUnityState extends State<EmbedUnity> implements UnityMessageListener
   }
 
   @override
-  void onMessageFromUnity(String data ) {
+  void onMessageFromUnity(String data) {
     widget.onMessageFromUnity?.call(data);
   }
 

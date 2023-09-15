@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_embed_unity_platform_interface/flutter_embed_unity_platform_interface.dart';
 
-
 /// Sends a notification to the platform implementation when the orientation
 /// changes.
 ///
@@ -17,7 +16,6 @@ import 'package:flutter_embed_unity_platform_interface/flutter_embed_unity_platf
 /// destroyed, which will cause Unity to quit the app.
 /// So as a workaround, detect orientation change in Flutter and send a message
 class OrientationChangeNotifier extends StatefulWidget {
-
   final Widget child;
 
   const OrientationChangeNotifier({required this.child, super.key});
@@ -27,22 +25,18 @@ class OrientationChangeNotifier extends StatefulWidget {
 }
 
 class _OrientationChangeNotifierState extends State<OrientationChangeNotifier> {
-
   Orientation? _previousOrientation;
 
   @override
   Widget build(BuildContext context) {
-    return OrientationBuilder(
-        builder: (context, orientation) {
-          if(_previousOrientation == null) {
-            _previousOrientation = orientation;
-          }
-          else if(_previousOrientation != orientation) {
-            FlutterEmbedUnityPlatform.instance.orientationChanged();
-            _previousOrientation = orientation;
-          }
-          return widget.child;
-        }
-    );
+    return OrientationBuilder(builder: (context, orientation) {
+      if (_previousOrientation == null) {
+        _previousOrientation = orientation;
+      } else if (_previousOrientation != orientation) {
+        FlutterEmbedUnityPlatform.instance.orientationChanged();
+        _previousOrientation = orientation;
+      }
+      return widget.child;
+    });
   }
 }
