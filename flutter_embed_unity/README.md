@@ -258,6 +258,11 @@ The `EmbedUnity` section of the `flutter_embed_unity_2022_3.unitypackage` you im
   - `<your flutter project>/android/unityLibrary` for Android or
   - `<your flutter project>/ios/unityLibrary` for iOS
 - Select `Flutter Embed -> Export project to Flutter app` (select `ios` or `android` as appropriate)
+
+![Screenshot 2023-09-15 153150](https://github.com/learntoflutter/flutter_embed_unity/assets/145048332/77cefebb-f5d0-4759-b23f-04ffdaca4c01)
+
+> If you can't find this menu item, make sure you have imported the flutter_embed_unity_2022_3.unitypackage
+  
 - The export script will make some checks for you (follow any instructions which appear)
 - When asked, select the `unityLibrary` export folder you created
 - Wait for the project to build, then check the Unity console output to understand what has happened and check for errors
