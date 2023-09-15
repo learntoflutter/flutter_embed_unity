@@ -72,7 +72,7 @@ public class MyGameObjectScript : MonoBehaviour
 > [!IMPORTANT]
 > It is **very important that you only use the Unity version which this plugin supports**, which is currently [Unity 2022.3 LTS (Long Term Support)](https://unity.com/releases/lts). Failure to do this will likely lead to crashes at runtime, because the undocumented functions this plugin calls can change and the workarounds it implements may not work as expected.
 
-[Unity as a library](https://docs.unity3d.com/Manual/UnityasaLibrary.html) was only intended by Unity to be used fullscreen (running in it's own `UnityPlayerActivity.java` Activity on Android, or using `UnityAppController.mm` as the root UIViewController on iOS). By embedding Unity into a Flutter widget, this plugin breaks this assumption, making it quite delicate. It also calls undocumented functions written by Unity, and implements various workarounds, which is why this plugin will not work with different versions of Unity. If you need support for different versions, please consider [contributing your own package](https://github.com/jamesncl/flutter_embed_unity/wiki).
+[Unity as a library](https://docs.unity3d.com/Manual/UnityasaLibrary.html) was only intended by Unity to be used fullscreen (running in it's own `UnityPlayerActivity.java` Activity on Android, or using `UnityAppController.mm` as the root UIViewController on iOS). By embedding Unity into a Flutter widget, this plugin breaks this assumption, making it quite delicate. It also calls undocumented functions written by Unity, and implements various workarounds, which is why this plugin will not work with different versions of Unity. If you need support for different versions, please consider [contributing your own package](https://github.com/learntoflutter/flutter_embed_unity/wiki).
 
 ## Flutter 3.3+
 
@@ -128,7 +128,7 @@ Since Unity 2019.3, [Unity no longer supports Android x86](https://blog.unity.co
 
 
 ## Alternatives
-If you need to support other versions of unity, consider using [flutter_unity_widget](https://pub.dev/packages/flutter_unity_widget) or [consult the Wiki](https://github.com/jamesncl/flutter_embed_unity/wiki) for pointers on how to contribute your own packages targeting different versions of Unity
+If you need to support other versions of unity, consider using [flutter_unity_widget](https://pub.dev/packages/flutter_unity_widget) or [consult the Wiki](https://github.com/learntoflutter/flutter_embed_unity/wiki) for pointers on how to contribute your own packages targeting different versions of Unity
 
 Flutter Forward 2023 demonstrated [an early preview of 3D support directly in Dart using Impeller](https://www.youtube.com/watch?v=zKQYGKAe5W8&t=7067s&ab_channel=Flutter).
 
@@ -159,7 +159,7 @@ Flutter Forward 2023 demonstrated [an early preview of 3D support directly in Da
 
 To allow Unity to send messages to Flutter, and to make exporting your Unity project into Flutter easier, this plugin includes some Unity scripts which you should import into your Unity project.
 
-- Go to [the releases for this plugin on Github](https://github.com/jamesncl/flutter_embed_unity/releases) and find the release which matches the one you have used to add this plugin to your `pubspec.yaml`
+- Go to [the releases for this plugin on Github](https://github.com/learntoflutter/flutter_embed_unity/releases) and find the release which matches the one you have used to add this plugin to your `pubspec.yaml`
 - Expand `Assets` and download the file `flutter_embed_unity_2022_3.unitypackage`
 
 ![1](https://github.com/jamesncl/flutter_embed_unity/assets/15979056/92a25bd6-29a7-4caf-bf6d-399d2ecd8f06)
@@ -172,7 +172,7 @@ To allow Unity to send messages to Flutter, and to make exporting your Unity pro
 
 
 > [!NOTE]
-> As an alternative to importing `flutter_embed_unity_2022_3.unitypackage`, you can browse the source which this package is made from in [the example Unity project](https://github.com/jamesncl/flutter_embed_unity/tree/main/example_unity_2022_3_project), or use the example project as a template for your own project.
+> As an alternative to importing `flutter_embed_unity_2022_3.unitypackage`, you can browse the source which this package is made from in [the example Unity project](https://github.com/learntoflutter/flutter_embed_unity/tree/main/example_unity_2022_3_project), or use the example project as a template for your own project.
 
 ## Setup messaging in Unity
 
@@ -563,5 +563,5 @@ Check you have followed the instructions about linking Unity to your Android pro
 
 # Plugin developers / contributors
 
-See [the Wiki for more information](https://github.com/jamesncl/flutter_embed_unity/wiki) on running the example, notes on how the plugin works, developing for different versions of Unity etc.
+See [the Wiki for more information](https://github.com/learntoflutter/flutter_embed_unity/wiki) on running the example, notes on how the plugin works, developing for different versions of Unity etc.
 				
