@@ -31,4 +31,4 @@ dependencies:
   ...
 ```
 
-[1]: ../flutter_embed_unity
+[1]: https://pub.dev/packages/flutter_embed_unity

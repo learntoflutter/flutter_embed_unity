@@ -1,7 +1,7 @@
 # Federated plugin overview
 
 > [!NOTE]
-> See [the main README of the app-facing package](https://github.com/jamesncl/flutter_embed_unity/tree/main/flutter_embed_unity) for details.
+> See [the main README of the app-facing package](https://github.com/learntoflutter/flutter_embed_unity/tree/main/flutter_embed_unity) for details.
 
 
 This is a containing folder for a [federated Flutter plugin](https://docs.flutter.dev/packages-and-plugins/developing-packages) for embedding Unity 3D into Flutter apps, containing:
