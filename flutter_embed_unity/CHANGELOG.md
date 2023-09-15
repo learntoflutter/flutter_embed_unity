@@ -13,3 +13,7 @@
 ## 0.0.4-beta
 
 * Update dependencies
+
+## 0.0.5-beta
+
+* Update flutter_embed_unity_2022_3_android dependency to fix [issue #3](https://github.com/learntoflutter/flutter_embed_unity/issues/3): plugin not working when R8 / minification enabled on Android
