@@ -1,0 +1,8 @@
+# This file will be combined with the proguard rules used by the main app
+# because it is specified in consumerProguardFiles in the library build.gradle
+
+# We need to tell proguard to keep the Unity classes in the Unity JAR file
+# otherwise we get:
+# java.lang.ClassNotFoundException: com.unity3d.plugin.UnityAndroidPermissions
+
+-keep class com.unity3d.plugin.** {*;}

@@ -45,6 +45,12 @@ android {
 
     defaultConfig {
         minSdkVersion 22
+        // Add proguard rules for the plugin code, these are needed to prevent
+        // the plugin breaking (reflection is used when passing messages between
+        // Flutter and Unity). consumerProguardFiles are combined with the consuming
+        // app's proguard rules when R8 is run. See
+        // https://developer.android.com/studio/projects/android-library#Considerations
+        consumerProguardFiles 'lib-proguard-rules.txt'
     }
 
     dependencies {
