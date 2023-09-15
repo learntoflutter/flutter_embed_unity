@@ -3,7 +3,7 @@
 # Run `pod lib lint flutter_embed_unity_ios.podspec` to validate before publishing.
 #
 Pod::Spec.new do |s|
-  s.name             = 'flutter_embed_unity_ios'
+  s.name             = 'flutter_embed_unity_2022_3_ios'
   s.version          = '0.0.1'
   s.summary          = 'A new Flutter plugin project.'
   s.description      = <<-DESC
