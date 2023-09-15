@@ -9,3 +9,7 @@
 ## 0.0.3-beta
 
 * Minor changes to the README
+
+## 0.0.4-beta
+
+* Update dependencies
