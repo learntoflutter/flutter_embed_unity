@@ -592,3 +592,6 @@ Check you have followed the instructions about linking Unity to your Android pro
 
 See [the Wiki for more information](https://github.com/learntoflutter/flutter_embed_unity/wiki) on running the example, notes on how the plugin works, developing for different versions of Unity etc.
 				
+# Acknowledgements
+
+Thanks to [@cookiejarlid](https://github.com/cookiejarlid) who created [flutter_unity](https://github.com/Glartek/flutter-unity) and [@juicycleff](https://github.com/juicycleff) who created [flutter_unity_widget](https://github.com/juicycleff/flutter-unity-view-widget), they figured out many of the techniques used in this package to get Unity to work with Flutter. Thanks to @timbotimbo for patches to flutter_unity_widget, some of which are also used in this package.
