@@ -1,26 +1,26 @@
 PODS:
   - Flutter (1.0.0)
-  - flutter_embed_unity_ios (0.0.1):
+  - flutter_embed_unity_2022_3_ios (0.0.1):
     - Flutter
   - integration_test (0.0.1):
     - Flutter
 
 DEPENDENCIES:
   - Flutter (from `Flutter`)
-  - flutter_embed_unity_ios (from `.symlinks/plugins/flutter_embed_unity_ios/ios`)
+  - flutter_embed_unity_2022_3_ios (from `.symlinks/plugins/flutter_embed_unity_2022_3_ios/ios`)
   - integration_test (from `.symlinks/plugins/integration_test/ios`)
 
 EXTERNAL SOURCES:
   Flutter:
     :path: Flutter
-  flutter_embed_unity_ios:
-    :path: ".symlinks/plugins/flutter_embed_unity_ios/ios"
+  flutter_embed_unity_2022_3_ios:
+    :path: ".symlinks/plugins/flutter_embed_unity_2022_3_ios/ios"
   integration_test:
     :path: ".symlinks/plugins/integration_test/ios"
 
 SPEC CHECKSUMS:
   Flutter: f04841e97a9d0b0a8025694d0796dd46242b2854
-  flutter_embed_unity_ios: 30b4423a27d42ce7f7e58a2a6f40b0646ccada4a
+  flutter_embed_unity_2022_3_ios: dd30b0ba95da6e3db4cbe9f53a5fe3b4de077ed7
   integration_test: 13825b8a9334a850581300559b8839134b124670
 
 PODFILE CHECKSUM: 6b9eb94e9f98a329f2ef624b852a6e42d090af2b

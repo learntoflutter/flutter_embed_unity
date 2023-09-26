@@ -65,6 +65,8 @@ public class MyGameObjectScript : MonoBehaviour
 }
 ```
 
+There is [an example Unity project](https://github.com/learntoflutter/flutter_embed_unity/tree/main/example_unity_2022_3_project) you can use to get started - check out the repository to try it out, and consult [the wiki](https://github.com/learntoflutter/flutter_embed_unity/wiki) and the example project documentation [for iOS](https://github.com/learntoflutter/flutter_embed_unity/tree/main/flutter_embed_unity_2022_3_ios/example) and [for Android](https://github.com/learntoflutter/flutter_embed_unity/tree/main/flutter_embed_unity_2022_3_android) for instructions on running the examples. 
+
 # Limitations
 
 ## Only supports Unity 2022.3 LTS
@@ -590,3 +592,6 @@ Check you have followed the instructions about linking Unity to your Android pro
 
 See [the Wiki for more information](https://github.com/learntoflutter/flutter_embed_unity/wiki) on running the example, notes on how the plugin works, developing for different versions of Unity etc.
 				
+# Acknowledgements
+
+Thanks to [@cookiejarlid](https://github.com/cookiejarlid) who created [flutter_unity](https://github.com/Glartek/flutter-unity) and [@juicycleff](https://github.com/juicycleff) who created [flutter_unity_widget](https://github.com/juicycleff/flutter-unity-view-widget), they figured out many of the techniques used in this package to get Unity to work with Flutter. Thanks to [@timbotimbo](https://github.com/timbotimbo) for patches to flutter_unity_widget, some of which are also used in this package.
