@@ -70,31 +70,35 @@ packages:
   flutter_embed_unity:
     dependency: "direct main"
     description:
-      path: "../../flutter_embed_unity"
-      relative: true
-    source: path
-    version: "0.0.1"
+      name: flutter_embed_unity
+      sha256: "4ac5ef800701d2d0373ca15d912b9a581f515c3de21d6631859d3a685344e9e4"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.0.5-beta"
   flutter_embed_unity_2022_3_android:
     dependency: "direct main"
     description:
-      path: ".."
-      relative: true
-    source: path
-    version: "0.0.1"
+      name: flutter_embed_unity_2022_3_android
+      sha256: "49536460bd8dd9121bcf90bba429d0ea9b9f06508cdfab304ff333038b4227a6"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.0.5-beta"
   flutter_embed_unity_2022_3_ios:
     dependency: transitive
     description:
-      path: "../../flutter_embed_unity_2022_3_ios"
-      relative: true
-    source: path
-    version: "0.0.1"
+      name: flutter_embed_unity_2022_3_ios
+      sha256: "4b12a23b15caf1214c2298dc40c9dd7a5f9349e182b9ff3a2faf28fa8c70a08a"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.0.4-beta"
   flutter_embed_unity_platform_interface:
     dependency: transitive
     description:
-      path: "../../flutter_embed_unity_platform_interface"
-      relative: true
-    source: path
-    version: "0.0.1"
+      name: flutter_embed_unity_platform_interface
+      sha256: "89de1eaf07943408bc6355abd9ea99dd7360de950e2be27d8817f471307a3ee7"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.0.4-beta"
   flutter_lints:
     dependency: "direct dev"
     description:
@@ -178,10 +182,10 @@ packages:
     dependency: transitive
     description:
       name: plugin_platform_interface
-      sha256: "43798d895c929056255600343db8f049921cbec94d31ec87f1dc5c16c01935dd"
+      sha256: da3fdfeccc4d4ff2da8f8c556704c08f912542c5fb3cf2233ed75372384a034d
       url: "https://pub.dev"
     source: hosted
-    version: "2.1.5"
+    version: "2.1.6"
   process:
     dependency: transitive
     description:

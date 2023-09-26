@@ -10,15 +10,8 @@ dependencies:
   flutter:
     sdk: flutter
 
-  flutter_embed_unity_2022_3_android:
-    # When depending on this package from a real application you should use:
-    #   flutter_embed_unity_android: ^x.y.z
-    # See https://dart.dev/tools/pub/dependencies#version-constraints
-    # The example app is bundled with the plugin so we use a path dependency on
-    # the parent directory to use the current plugin's version.
-    path: ../
-  flutter_embed_unity:
-    path: ../../flutter_embed_unity
+  flutter_embed_unity_2022_3_android: ^0.0.5-beta
+  flutter_embed_unity: ^0.0.5-beta
   intl: any
 
 
