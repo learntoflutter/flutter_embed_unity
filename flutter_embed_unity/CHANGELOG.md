@@ -16,4 +16,13 @@
 
 ## 0.0.5-beta
 
-* Update flutter_embed_unity_2022_3_android dependency to fix [issue #3](https://github.com/learntoflutter/flutter_embed_unity/issues/3): plugin not working when R8 / minification enabled on Android
+* Update flutter_embed_unity_2022_3_android dependency to:
+  * Fix [issue #3](https://github.com/learntoflutter/flutter_embed_unity/issues/3): plugin not working when R8 / minification enabled on Android
+
+## 0.0.6-beta
+
+27 September 2023
+
+* Update flutter_embed_unity_2022_3_iOS dependency to:
+  * Fix [issue #6](https://github.com/learntoflutter/flutter_embed_unity/issues/6)
+  * Fix iOS platform package dependency name in iOS example app
