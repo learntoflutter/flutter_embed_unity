@@ -588,6 +588,13 @@ See the Limitations section above for instructions on how to set the correct gra
 Check you have followed the instructions about linking Unity to your Android project. Specifically, make sure you have added the unityLibrary flatDir to the correct place in you `build.gradle` (it goes under the `allprojects` section, not the `buildscript` section).
 
 
+## Error (Xcode): Multiple commands produce '.../build/ios/Debug-iphoneos/Runner.app/Frameworks/UnityFramework.framework'
+
+This is probably because you have migrated from using the flutter_unity_widget package, where you have to embed & sign UnityFramework.framework into your Runner app. This package includes UnityFramework.framework as part of the plugin, so this step isn't needed, and in fact will mean you end up with UnityFramework twice.
+
+To resolve this, in Xcode, select Runner in the project navigator, then select the Runner target in the editor window. Select the General tab and scroll down to Frameworks, Libraries & Embedded Content. If you have UnityFramework.framework in the list, remove it.
+
+
 # Plugin developers / contributors
 
 See [the Wiki for more information](https://github.com/learntoflutter/flutter_embed_unity/wiki) on running the example, notes on how the plugin works, developing for different versions of Unity etc.
