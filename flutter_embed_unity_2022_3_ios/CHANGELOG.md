@@ -13,3 +13,10 @@
 ## 0.0.4-beta
 
 * Update dependencies
+
+## 0.0.5-beta
+
+27 September 2023
+
+* Fix [issue #6](https://github.com/learntoflutter/flutter_embed_unity/issues/6)
+* Fix iOS platform package dependency name in iOS example app
