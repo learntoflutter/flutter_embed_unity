@@ -18,8 +18,10 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_embed_unity_platform_interface: ^0.0.4-beta
-  flutter_embed_unity_2022_3_android: ^0.0.5-beta
-  flutter_embed_unity_2022_3_ios: ^0.0.4-beta
+  flutter_embed_unity_2022_3_android:
+    path: ../flutter_embed_unity_2022_3_android
+  flutter_embed_unity_2022_3_ios:
+    path: ../flutter_embed_unity_2022_3_ios
 
 dev_dependencies:
   flutter_lints: ^2.0.3

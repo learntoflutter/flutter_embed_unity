@@ -12,6 +12,8 @@ import io.flutter.Log
 // So, add a lifecycle observer so we can resume Unity.
 class ResumeUnityOnActivityResume : LifecycleEventObserver {
     override fun onStateChanged(source: LifecycleOwner, event: Lifecycle.Event) {
+        Log.d(logTag, "Detected lifecycle change $event")
+
         if (event == Lifecycle.Event.ON_RESUME) {
             Log.d(logTag, "Activity resumed so resuming Unity")
             // For some reason, we need to pause first, and then resume. Not sure why.

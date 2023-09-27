@@ -40,11 +40,18 @@ class UnityView(viewFactoryContext: Context) : PlatformView, IUnityViewStackable
 
     override fun attachUnity(unityPlayerSingleton: UnityPlayerSingleton) {
         baseView.addView(unityPlayerSingleton)
+        Log.i(logTag, "Attached Unity to view")
     }
 
     override fun detachUnity() {
         if(baseView.childCount > 0) {
             baseView.removeViewAt(0)
+            Log.i(logTag, "Detached Unity from view")
+        }
+        else {
+            // This might happen (but probably not desirable) if a view lower down
+            // on the stack is being disposed
+            Log.w(logTag, "Detached called on view, but couldn't find Unity")
         }
     }
 
