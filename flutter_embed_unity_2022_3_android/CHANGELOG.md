@@ -17,3 +17,7 @@
 ## 0.0.5-beta
 
 * Fix [issue #3](https://github.com/learntoflutter/flutter_embed_unity/issues/3): plugin not working when R8 / minification enabled on Android
+
+## 0.0.6-beta
+
+* Fix [issue #5](https://github.com/learntoflutter/flutter_embed_unity/issues/5) (Unity freezing on hot reload and widget rebuild)

@@ -10,10 +10,8 @@ dependencies:
   flutter:
     sdk: flutter
 
-  flutter_embed_unity_2022_3_ios: 
-    path: ../
-  flutter_embed_unity: 
-    path: ../../flutter_embed_unity
+  flutter_embed_unity_2022_3_ios: ^0.0.6-beta
+  flutter_embed_unity: ^0.0.7-beta
   intl: any
 
 

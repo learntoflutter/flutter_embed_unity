@@ -13,3 +13,9 @@
 ## 0.0.4-beta
 
 * Update dependencies
+
+## 0.1.0-beta
+
+28 September 2023
+
+* **Breaking change:** Removed redundant orientationChanged method from platform interface

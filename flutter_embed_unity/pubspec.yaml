@@ -1,6 +1,6 @@
 name: flutter_embed_unity
 description: Harness the power of Unity 3D in your Flutter app by embedding Unity as a widget. Useful for adding 3D, gaming or augmented reality (AR) to your app.
-version: 0.0.5-beta
+version: 0.0.7-beta
 homepage: https://learntoflutter.com
 repository: https://github.com/learntoflutter/flutter_embed_unity/tree/main/flutter_embed_unity
 issue_tracker: https://github.com/learntoflutter/flutter_embed_unity/issues
@@ -17,12 +17,9 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  flutter_embed_unity_platform_interface:
-    path: ../flutter_embed_unity_platform_interface
-  flutter_embed_unity_2022_3_android:
-    path: ../flutter_embed_unity_2022_3_android
-  flutter_embed_unity_2022_3_ios:
-    path: ../flutter_embed_unity_2022_3_ios
+  flutter_embed_unity_platform_interface: ^0.1.0-beta
+  flutter_embed_unity_2022_3_android: ^0.0.6-beta
+  flutter_embed_unity_2022_3_ios: ^0.0.6-beta
 
 dev_dependencies:
   flutter_lints: ^2.0.3
