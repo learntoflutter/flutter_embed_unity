@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.view.InputDevice
 import android.view.MotionEvent
+import android.view.View
 import com.learntoflutter.flutter_embed_unity_android.constants.FlutterEmbedConstants.Companion.logTag
 import com.unity3d.player.UnityPlayer
 import io.flutter.Log
@@ -83,16 +84,27 @@ class UnityPlayerSingleton private constructor (activity: Activity) : UnityPlaye
         return super.onTouchEvent(motionEvent)
     }
 
-    fun orientationChanged() {
-        Log.d(logTag, "UnityPlatformView orientationChanged: pausing and resuming")
-        // For some unknown reason, when orientation changes, Unity rendering appears to
-        // freeze (not always, but usually). The underlying UnityPlayer is still active and
-        // still responds to messages, so it is purely a UI thing. Presumably a bug, although
-        // using UnityPlayer to render in a View is not supported anyway (see
-        // https://docs.unity3d.com/Manual/UnityasaLibrary-Android.html)
-        // As a workaround, pause and resume the player seems to work
-        pause()
-        resume()
+    override fun onWindowVisibilityChanged(visibility: Int) {
+        Log.d(logTag, "UnityPlayerSingleton onWindowVisibilityChanged $visibility")
+
+        if(visibility == View.VISIBLE) {
+            // For some unknown reason, if window visibility changes quickly from View.VISIBLE
+            // to View.GONE and back to View.VISIBLE, Unity UI appears to freeze.
+            // This happens, for example, on orientation change, flutter hot reload, and
+            // occasionally on widget rebuild if there is a significant change to the widget
+            // tree (you can usually see this as a brief flicker of the widget).
+            // The underlying UnityPlayer is still active and still responds to messages even
+            // though it appears frozen, so it is purely a UI thing. Presumably a bug in Unity.
+            // However using UnityPlayer to render in a View like this is not supported so
+            // unlikely to be fixed by Unity
+            // (see https://docs.unity3d.com/Manual/UnityasaLibrary-Android.html)
+            // As a workaround, pause and resume the player unfreezes the UI
+            Log.d(logTag, "UnityPlayerSingleton became visible, so pausing and resuming Unity")
+            pause()
+            resume()
+        }
+
+        super.onWindowVisibilityChanged(visibility)
     }
 
     // Overriding kill() was an experiment to try to resolve app closing / crashing when

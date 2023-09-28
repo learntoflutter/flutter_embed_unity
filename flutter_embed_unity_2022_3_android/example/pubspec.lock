@@ -87,7 +87,7 @@ packages:
       path: "../../flutter_embed_unity_2022_3_ios"
       relative: true
     source: path
-    version: "0.0.4-beta"
+    version: "0.0.5-beta"
   flutter_embed_unity_platform_interface:
     dependency: transitive
     description:

@@ -9,7 +9,6 @@ class FlutterEmbedConstants {
         const val uniqueIdentifier = "com.learntoflutter/flutter_embed_unity"
         const val methodNameSendToUnity = "sendToUnity"
         const val methodNameSendToFlutter = "sendToFlutter"
-        const val methodNameOrientationChanged = "orientationChanged"
         const val methodNamePauseUnity = "pauseUnity"
         const val methodNameResumeUnity = "resumeUnity"
     }

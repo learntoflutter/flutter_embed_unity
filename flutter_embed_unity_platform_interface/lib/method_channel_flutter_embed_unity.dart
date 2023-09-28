@@ -16,13 +16,6 @@ class MethodChannelFlutterEmbedUnity extends FlutterEmbedUnityPlatform {
   }
 
   @override
-  void orientationChanged() {
-    _channel.invokeMethod(
-      FlutterEmbedConstants.methodNameOrientationChanged,
-    );
-  }
-
-  @override
   void pauseUnity() {
     _channel.invokeMethod(
       FlutterEmbedConstants.methodNamePauseUnity,

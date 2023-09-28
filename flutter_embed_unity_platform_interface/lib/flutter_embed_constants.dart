@@ -5,7 +5,6 @@ class FlutterEmbedConstants {
   static const uniqueIdentifier = "com.learntoflutter/flutter_embed_unity";
   static const methodNameSendToUnity = "sendToUnity";
   static const methodNameSendToFlutter = "sendToFlutter";
-  static const methodNameOrientationChanged = "orientationChanged";
   static const methodNamePauseUnity = "pauseUnity";
   static const methodNameResumeUnity = "resumeUnity";
 }
