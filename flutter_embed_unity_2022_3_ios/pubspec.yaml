@@ -17,7 +17,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  flutter_embed_unity_platform_interface: ^0.0.4-beta
+  flutter_embed_unity_platform_interface: 
+    path: ../flutter_embed_unity_platform_interface
 
 dev_dependencies:
   flutter_test:
