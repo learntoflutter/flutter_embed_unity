@@ -551,12 +551,6 @@ This is caused by a broken version of a Unity package called `com.unity.xr.manag
 
 If you are attempting to run your app on an Android emulator, you will encounter this error. As noted above in the limitations, this is not supported. Use a real device instead.
 
-## No such module UnityFramework
-
-1. Make sure you have carefully done all the steps outlined here
-2. In Xcode, in the top bar to the right of the Run button (the one shaped like a triangular Play button), change the target from Runner to UnityFramework. Then press ⌘+B to build UnityFramework. Then do the same for the Unity-iPhone target. Finally, change back to the Runner target and attempt to build again.
-3. See https://stackoverflow.com/questions/29500227/getting-error-no-such-module-using-xcode-but-the-framework-is-there
-
 ## Undefined symbol: _FlutterEmbedUnityIos_sendToFlutter
 
 You have forgotten to add the linker flag to Unity-IPhone, one of the iOS setup steps which are required to be done every time you export your Unity project 
