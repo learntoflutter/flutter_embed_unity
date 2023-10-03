@@ -8,9 +8,6 @@ class UnityView : UIView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        // This might help debugging: if the user reports seeing
-        // green, they are seeing the base view:
-        backgroundColor = UIColor.green
     }
     
     required init?(coder aDecoder: NSCoder) {

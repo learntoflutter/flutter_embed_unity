@@ -32,12 +32,6 @@ class UnityView(viewFactoryContext: Context) : PlatformView, IUnityViewStackable
 
     override var onDispose: (() -> Unit)? = null
 
-    init {
-        // Setting background colour might help when things go wrong: if users report seeing
-        // green, they are seeing the base view
-        baseView.setBackgroundColor(Color.GREEN)
-    }
-
     override fun attachUnity(unityPlayerSingleton: UnityPlayerSingleton) {
         baseView.addView(unityPlayerSingleton)
         Log.i(logTag, "Attached Unity to view")
