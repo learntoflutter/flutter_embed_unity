@@ -31,3 +31,8 @@
 
 * Update Android and platform interface dependency to:
   * Fix [issue #5](https://github.com/learntoflutter/flutter_embed_unity/issues/5) (Unity freezing on hot reload and widget rebuild)
+
+## 0.0.8-beta
+
+* Update Android and iOS platform dependencies to:
+  * Removed green placeholder when Unity is detached from `EmbedUnity`

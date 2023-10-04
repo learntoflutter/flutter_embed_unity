@@ -26,3 +26,7 @@
 28 September 2023
 
 * Update platform interface dependency
+
+## 0.0.7-beta
+
+* Removed green placeholder when Unity is detached from `EmbedUnity`

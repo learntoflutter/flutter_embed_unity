@@ -21,3 +21,7 @@
 ## 0.0.6-beta
 
 * Fix [issue #5](https://github.com/learntoflutter/flutter_embed_unity/issues/5) (Unity freezing on hot reload and widget rebuild)
+
+## 0.0.7-beta
+
+* Removed green placeholder when Unity is detached from `EmbedUnity`
