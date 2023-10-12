@@ -29,4 +29,12 @@
 
 ## 0.0.7-beta
 
+3 October 2023
+
 * Removed green placeholder when Unity is detached from `EmbedUnity`
+
+## 1.0.0
+
+12 October 2023
+
+* First production release

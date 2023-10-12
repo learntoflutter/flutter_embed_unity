@@ -19,3 +19,9 @@
 28 September 2023
 
 * **Breaking change:** Removed redundant orientationChanged method from platform interface
+
+## 1.0.0
+
+12 October 2023
+
+* First production release

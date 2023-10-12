@@ -29,10 +29,21 @@
 
 ## 0.0.7-beta
 
+28 September 2023
+
 * Update Android and platform interface dependency to:
   * Fix [issue #5](https://github.com/learntoflutter/flutter_embed_unity/issues/5) (Unity freezing on hot reload and widget rebuild)
 
 ## 0.0.8-beta
 
+3 October 2023
+
 * Update Android and iOS platform dependencies to:
   * Removed green placeholder when Unity is detached from `EmbedUnity`
+
+## 1.0.0
+
+12 October 2023
+
+* First production release
+* Added `EmbedUnityPreferences` to allow setting Unity message listening behaviour (see the README)
