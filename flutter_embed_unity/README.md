@@ -534,6 +534,29 @@ ElevatedButton(
 ```
 
 
+## Using more than one instance of `EmbedUnity`
+
+Unity can only be shown in 1 widget at a time. This is a limitation with Unity itself. Because of this, flutter_embed_unity only supports using a single `EmbedUnity` per Flutter screen / route, and Unity will only be displayed on the 'current' route (top-most in the stack).
+
+For example, if you have a screen containing an `EmbedUnity` (Screen 1), you can push another screen / dialog / route etc onto the navigation stack (Screen 2) containing another `EmbedUnity`. Unity will be detached from the `EmbedUnity` in Screen 1 and be shown on Screen 2. When Screen 2 is popped from the stack, Unity is detached from Screen 2 and reattached to Screen 1.
+
+![Stacking illustration](https://github.com/learntoflutter/flutter_embed_unity/assets/15979056/473c22c8-927a-43bf-82de-1fcabae4c72e)
+
+Note that in the example above, even though Unity is detached from Screen 1 and 2, **all `EmbedUnity` widgets on all screens will still receive messages via `onMessageFromUnity`**. To avoid processing duplicate messages, consider adding a check for the 'current' route before acting on messages:
+
+```dart
+EmbedUnity(
+  onMessageFromUnity: (String data) {
+    if(ModalRoute.of(context)?.isCurrent ?? true) {
+      // Process message
+    }
+  }
+)
+```
+
+Currently, having two instances of `EmbedUnity` on the same screen is not supported.
+
+
 # Common issues
 
 ## Export incomplete: AndroidManifest.xml not found
