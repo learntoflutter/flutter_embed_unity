@@ -542,16 +542,11 @@ For example, if you have a screen containing an `EmbedUnity` (Screen 1), you can
 
 ![Stacking illustration](https://github.com/learntoflutter/flutter_embed_unity/assets/15979056/473c22c8-927a-43bf-82de-1fcabae4c72e)
 
-Note that in the example above, even though Unity is detached from Screen 1 and 2, **all `EmbedUnity` widgets on all screens will still receive messages via `onMessageFromUnity`**. To avoid processing duplicate messages, consider adding a check for the 'current' route before acting on messages:
+Note that in the example above, even though Unity is detached from Screen 1 and 2, by default **all `EmbedUnity` widgets on all screens will still receive messages via `onMessageFromUnity`**. To avoid processing duplicate messages, you can configure it to only send messages to the `EmbedUnity` which was created most recently (which will usually be the one on the 'top' of the navigation stack):
 
 ```dart
-EmbedUnity(
-  onMessageFromUnity: (String data) {
-    if(ModalRoute.of(context)?.isCurrent ?? true) {
-      // Process message
-    }
-  }
-)
+EmbedUnityPreferences.messageFromUnityListeningBehaviour =
+  MessageFromUnityListeningBehaviour.onlyMostRecentlyCreatedWidgetReceivesMessages;
 ```
 
 Currently, having two instances of `EmbedUnity` on the same screen is not supported.
