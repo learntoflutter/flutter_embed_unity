@@ -3,6 +3,7 @@ library flutter_embed_unity;
 import 'package:flutter_embed_unity_platform_interface/flutter_embed_unity_platform_interface.dart';
 
 export 'src/embed_unity.dart' show EmbedUnity;
+export 'src/embed_unity_preferences.dart' show EmbedUnityPreferences, MessageFromUnityListeningBehaviour;
 export 'package:flutter_embed_unity/flutter_embed_unity.dart' show sendToUnity, pauseUnity, resumeUnity;
 
 FlutterEmbedUnityPlatform get _platform => FlutterEmbedUnityPlatform.instance;
