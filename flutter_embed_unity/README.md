@@ -607,6 +607,28 @@ This is probably because you have migrated from using the flutter_unity_widget p
 To resolve this, in Xcode, select Runner in the project navigator, then select the Runner target in the editor window. Select the General tab and scroll down to Frameworks, Libraries & Embedded Content. If you have UnityFramework.framework in the list, remove it.
 
 
+## IL2CPP C++ code builder is unable to build C++ code. In order to build C++ code for Mac, you must have Xcode installed.
+
+> Unable to detect any compatible iPhoneOS SDK!
+> at Unity.IL2CPP.Bee.BuildLogic.iOS.iOSBuildLogic.GetCompatibleXcodeInstallation(Architecture architecture, Version xcodeMinVersion, Version platformSdkMinVersion, Identifier platformSdkIdentifier, XcodePlatformSdk& compatiblePlatformSdk, XcodeInstallation& compatibleXcodeInstallation)
+> at Unity.IL2CPP.Bee.BuildLogic.iOS.iOSBuildLogic.UserAvailableToolchainFor(Architecture architecture, NPath toolChainPath, NPath sysRootPath, Boolean targetIsSimulator)
+> at Unity.IL2CPP.Bee.IL2CPPExeCompileCppBuildProgram.BuildProgram.Main(String[] args, String currentDirectory)
+> at Unity.IL2CPP.Building.InProcessBuildProgram.StartImpl(String workingDirectory, String[] arguments) in /Users/bokken/build/output/unity/il2cpp/Unity.IL2CPP.Building/InProcessBuildProgram.cs:line 51
+>
+> Error: Unity.IL2CPP.Building.BuilderFailedException: Build failed with 0 successful nodes and 0 failed ones
+>
+> Error: Internal build system error. BuildProgram exited with code 1.
+> Unity.IL2CPP.Bee.BuildLogic.ToolchainNotFoundException: IL2CPP C++ code builder is unable to build C++ code. In order to build C++ code for Mac, you must have Xcode installed.
+> Building for Apple Silicon requires Xcode 9.4 and Mac 10.12 SDK.
+
+This is caused by an incompatibility between Unity and Xcode 15 which has been fixed in newer versions of Unity. See the following resources:
+
+* [Resolved issue on Unity Issue Tracker](https://issuetracker.unity3d.com/issues/building-projects-with-il2cpp-scripting-backend-for-apple-platforms-fails-with-xcode-15-dot-0b6-or-newer)
+* [Unity forum discussion](https://forum.unity.com/threads/project-wont-build-using-xode15-release-candidate.1491761/)
+
+The solution as described in the issue tracker is to update Unity to 2022.3.10 or newer
+
+
 # Plugin developers / contributors
 
 See [the Wiki for more information](https://github.com/learntoflutter/flutter_embed_unity/wiki) on running the example, notes on how the plugin works, developing for different versions of Unity etc.
