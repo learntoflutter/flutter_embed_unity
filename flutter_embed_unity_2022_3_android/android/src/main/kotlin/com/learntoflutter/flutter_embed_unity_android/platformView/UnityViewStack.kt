@@ -91,6 +91,7 @@ class UnityViewStack {
         }
         else {
             // No more Unity views, so pause
+            Log.i(logTag, "No more EmbedUnity views in stack, pausing Unity")
             UnityPlayerSingleton.getInstance()?.pause()
             // DO NOT call unityPlayerCustom.destroy(). UnityPlayer will also kill the process it is
             // running in, because it was designed to be run within it's own activity launched in it's
