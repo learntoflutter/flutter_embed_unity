@@ -15,10 +15,13 @@ import UnityFramework
 class UnityViewController : UIViewController {
     
     private var unityView: UnityView
-    var onDismissed: (() -> Void)? = nil
+    let viewId: Int64
+    var viewDidAppear: ((Int64) -> Void)? = nil
+    var viewDidDisappear: ((Int64) -> Void)? = nil
     
-    init(_ frame: CGRect) {
+    init(_ frame: CGRect, _ viewId: Int64) {
         unityView = UnityView(frame: frame)
+        self.viewId = viewId
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -42,11 +45,19 @@ class UnityViewController : UIViewController {
         unityView.detachUnity()
     }
     
-    override func viewDidDisappear(_ animated: Bool) {
-        // Pass on this event to the delegate function
-        // (which will be implemented by UnityViewStack)
-        if let onDismissed = onDismissed {
-            onDismissed()
+    override func viewDidAppear(_ animated: Bool) {
+        // Pass on this event to UnityViewStack
+        if let viewDidAppear = viewDidAppear {
+            viewDidAppear(viewId)
         }
+        super.viewDidAppear(animated)
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        // Pass on this event to UnityViewStack
+        if let viewDidDisappear = viewDidDisappear {
+            viewDidDisappear(viewId)
+        }
+        super.viewDidDisappear(animated)
     }
 }

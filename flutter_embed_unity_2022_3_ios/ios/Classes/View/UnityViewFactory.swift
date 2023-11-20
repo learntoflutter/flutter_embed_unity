@@ -20,7 +20,7 @@ class UnityViewFactory : NSObject, FlutterPlatformViewFactory {
         // inside a UnityViewController, give that to our custom
         // PlatformView which will return the controller's view
         // to Flutter for display
-        let unityViewController = UnityViewController(frame)
+        let unityViewController = UnityViewController(frame, viewId)
         let unityPlatformView = UnityPlatformView(unityViewController)
         // Push it onto the stack so we can handle multiple views
         viewStack.pushView(unityViewController)
