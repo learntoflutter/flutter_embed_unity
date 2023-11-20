@@ -1,18 +1,30 @@
-## 0.0.1-beta
+## 1.0.1
 
-* Initial beta release
+20 November 2023
 
-## 0.0.2-beta
+* Fix [#10](https://github.com/learntoflutter/flutter_embed_unity/issues/10)
 
-* **Breaking change:** due to a change in namespace, you MUST upgrade the `SendToFlutter.cs` script in your Unity project to use the new version from [the v0.0.2-beta release assets flutter_embed_unity_2022_3.unitypackage](https://github.com/learntoflutter/flutter_embed_unity/releases). Alternatively you can review [the source for SendToFlutter.cs](https://github.com/learntoflutter/flutter_embed_unity/blob/main/example_unity_2022_3_project/Assets/FlutterEmbed/SendToFlutter/SendToFlutter.cs) and make the change to the `AndroidJavaClass` package namespace manually.
 
-## 0.0.3-beta
+## 1.0.0
 
-* Minor changes to the README
+12 October 2023
 
-## 0.0.4-beta
+* First production release
 
-* Update dependencies
+
+## 0.0.7-beta
+
+3 October 2023
+
+* Removed green placeholder when Unity is detached from `EmbedUnity`
+
+
+## 0.0.6-beta
+
+28 September 2023
+
+* Update platform interface dependency
+
 
 ## 0.0.5-beta
 
@@ -21,26 +33,22 @@
 * Fix [issue #6](https://github.com/learntoflutter/flutter_embed_unity/issues/6)
 * Fix iOS platform package dependency name in iOS example app
 
-## 0.0.6-beta
 
-28 September 2023
+## 0.0.4-beta
 
-* Update platform interface dependency
+* Update dependencies
 
-## 0.0.7-beta
 
-3 October 2023
+## 0.0.3-beta
 
-* Removed green placeholder when Unity is detached from `EmbedUnity`
+* Minor changes to the README
 
-## 1.0.0
 
-12 October 2023
+## 0.0.2-beta
 
-* First production release
+* **Breaking change:** due to a change in namespace, you MUST upgrade the `SendToFlutter.cs` script in your Unity project to use the new version from [the v0.0.2-beta release assets flutter_embed_unity_2022_3.unitypackage](https://github.com/learntoflutter/flutter_embed_unity/releases). Alternatively you can review [the source for SendToFlutter.cs](https://github.com/learntoflutter/flutter_embed_unity/blob/main/example_unity_2022_3_project/Assets/FlutterEmbed/SendToFlutter/SendToFlutter.cs) and make the change to the `AndroidJavaClass` package namespace manually.
 
-## 1.0.1
 
-20 November 2023
+## 0.0.1-beta
 
-* Fix [#10](https://github.com/learntoflutter/flutter_embed_unity/issues/10)
+* Initial beta release
