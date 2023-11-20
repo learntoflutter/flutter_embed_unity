@@ -38,3 +38,9 @@
 12 October 2023
 
 * First production release
+
+## 1.0.1
+
+20 November 2023
+
+* Fix [#10](https://github.com/learntoflutter/flutter_embed_unity/issues/10)

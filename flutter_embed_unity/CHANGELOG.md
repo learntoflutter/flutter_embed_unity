@@ -47,3 +47,14 @@
 
 * First production release
 * Added `EmbedUnityPreferences` to allow setting Unity message listening behaviour (see the README)
+
+
+## 1.0.1
+
+20 November 2023
+
+* Update Android and iOS platform dependencies to:
+  * Fix iOS issue [#10](https://github.com/learntoflutter/flutter_embed_unity/issues/10)
+  * Minor change to Android debug logs
+* Updated README with info about [#9](https://github.com/learntoflutter/flutter_embed_unity/issues/9) (2022.3.9 not compatible with Xcode 15)
+* Upgrade example Unity project version to 2022.3.13 to fix [#9](https://github.com/learntoflutter/flutter_embed_unity/issues/9)
