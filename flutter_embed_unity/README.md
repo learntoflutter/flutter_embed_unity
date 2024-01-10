@@ -80,6 +80,10 @@ There is [an example Unity project](https://github.com/learntoflutter/flutter_em
 
 Due to [an issue](https://github.com/flutter/flutter/issues/103630) with prior versions of Flutter 3, 3.3+ is required
 
+> [!IMPORTANT]
+> Due to [a separate issue in Flutter 3.16](https://github.com/flutter/flutter/issues/141068), Flutter 3.16 is currently not supported. See also [#12](https://github.com/learntoflutter/flutter_embed_unity/issues/12)
+
+
 ## Android 22+, iOS 12.0+
 
 Unity 2022.3 LTS [only supports Android 5.1 “Lollipop” (API level 22) and above](https://docs.unity3d.com/Manual/android-requirements-and-compatibility.html) and [iOS 12 and above](https://docs.unity3d.com/Manual/ios-requirements-and-compatibility.html) so your app must also observe these limitations.
