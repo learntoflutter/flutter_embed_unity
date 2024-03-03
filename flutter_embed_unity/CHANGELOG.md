@@ -1,3 +1,17 @@
+## 1.0.3
+
+3 March 2024
+
+* Updated README to note that Flutter 3.16.x and 3.19.x are not supported due to [Flutter #141068](https://github.com/flutter/flutter/issues/141068) and [Flutter #142952](https://github.com/flutter/flutter/issues/142952) (tracked in [flutter_embed_unity #14](https://github.com/learntoflutter/flutter_embed_unity/issues/14))
+
+
+## 1.0.2
+
+10 January 2024
+
+* Updated README to note limitation of [#12](https://github.com/learntoflutter/flutter_embed_unity/issues/12)
+
+
 ## 1.0.1
 
 20 November 2023

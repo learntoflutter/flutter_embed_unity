@@ -76,13 +76,15 @@ There is [an example Unity project](https://github.com/learntoflutter/flutter_em
 
 [Unity as a library](https://docs.unity3d.com/Manual/UnityasaLibrary.html) was only intended by Unity to be used fullscreen (running in it's own `UnityPlayerActivity.java` Activity on Android, or using `UnityAppController.mm` as the root UIViewController on iOS). By embedding Unity into a Flutter widget, this plugin breaks this assumption, making it quite delicate. It also calls undocumented functions written by Unity, and implements various workarounds, which is why this plugin will not work with different versions of Unity. If you need support for different versions, this package is [federated](https://docs.flutter.dev/packages-and-plugins/developing-packages#federated-plugins) to allow easier extension by contributors for different versions of Unity using alternate platform packages - [consult the wiki for help developing and contributing your own.](https://github.com/learntoflutter/flutter_embed_unity/wiki).
 
-## Flutter 3.3+
+## Only supports Flutter 3.3.x, 3.7.x, 3.10.x, 3.13.x
 
-Due to [an issue](https://github.com/flutter/flutter/issues/103630) with prior versions of Flutter 3, 3.3+ is required
+Due to various issues in Flutter support for native platform views, only certain versions of Flutter are currently supported:
 
-> [!IMPORTANT]
-> Due to [a separate issue in Flutter 3.16](https://github.com/flutter/flutter/issues/141068), Flutter 3.16 is currently not supported. See also [#12](https://github.com/learntoflutter/flutter_embed_unity/issues/12)
+* [Flutter #103630: Platform views are drawn at the wrong position and don't fill the parent](https://github.com/flutter/flutter/issues/103630) (affects Flutter 3.0.x)
+* [Flutter #141068: Flutter 3.16 regression - Virtual display platform view is invisible on Android < 10](https://github.com/flutter/flutter/issues/141068) (affects Flutter 3.16.x and 3.19.x)
+* [Flutter #142952: Virtual display - Buggy resize with Android 12+](https://github.com/flutter/flutter/issues/142952) (affects Flutter 3.19.x)
 
+This is being tracked in [#14](https://github.com/learntoflutter/flutter_embed_unity/issues/14) (many thanks to [@timbotimbo](https://github.com/timbotimbo))
 
 ## Android 22+, iOS 12.0+
 
@@ -639,4 +641,4 @@ See [the Wiki for more information](https://github.com/learntoflutter/flutter_em
 				
 # Acknowledgements
 
-Thanks to [@cookiejarlid](https://github.com/cookiejarlid) who created [flutter_unity](https://github.com/Glartek/flutter-unity) and [@juicycleff](https://github.com/juicycleff) who created [flutter_unity_widget](https://github.com/juicycleff/flutter-unity-view-widget), they figured out many of the techniques used in this package to get Unity to work with Flutter. Thanks to [@timbotimbo](https://github.com/timbotimbo) for patches to flutter_unity_widget, some of which are also used in this package.
+Thanks to [@cookiejarlid](https://github.com/cookiejarlid) who created [flutter_unity](https://github.com/Glartek/flutter-unity) and [@juicycleff](https://github.com/juicycleff) who created [flutter_unity_widget](https://github.com/juicycleff/flutter-unity-view-widget), they figured out many of the techniques used in this package to get Unity to work with Flutter. Thanks to [@timbotimbo](https://github.com/timbotimbo) for patches to flutter_unity_widget, some of which are also used in this package, and continuing support on this package.
