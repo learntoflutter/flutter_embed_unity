@@ -1,3 +1,10 @@
+## 1.0.4
+
+4 March 2024
+
+* Updated README to note that all Unity versions between 2022.3.10 and 2022.3.18 are not supported with Android 8 or earlier due to [#15](https://github.com/learntoflutter/flutter_embed_unity/issues/15)
+
+
 ## 1.0.3
 
 3 March 2024

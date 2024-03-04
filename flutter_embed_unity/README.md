@@ -69,10 +69,13 @@ There is [an example Unity project](https://github.com/learntoflutter/flutter_em
 
 # Limitations
 
-## Only supports Unity 2022.3 LTS
+## Only supports certain versions of Unity 2022.3 LTS
 
 > [!IMPORTANT]
-> It is **very important that you only use the Unity version which this plugin supports**, which is currently [Unity 2022.3 LTS (Long Term Support)](https://unity.com/releases/lts). Failure to do this will likely lead to crashes at runtime, because the undocumented functions this plugin calls can change and the workarounds it implements may not work as expected.
+> It is **very important that you only use the Unity versions listed below**. Failure to do this will likely lead to crashes at runtime, because the undocumented functions this plugin calls can change and the workarounds it implements may not work as expected.
+
+* For Android 9 and later, any [Unity 2022.3 LTS](https://unity.com/releases/lts) is supported
+* For Android 8 and earlier, due to [issue #15](https://github.com/learntoflutter/flutter_embed_unity/issues/15), any version of Unity 2022.3 is supported **EXCEPT for 2022.3.10 to 2022.3.18** inclusive
 
 [Unity as a library](https://docs.unity3d.com/Manual/UnityasaLibrary.html) was only intended by Unity to be used fullscreen (running in it's own `UnityPlayerActivity.java` Activity on Android, or using `UnityAppController.mm` as the root UIViewController on iOS). By embedding Unity into a Flutter widget, this plugin breaks this assumption, making it quite delicate. It also calls undocumented functions written by Unity, and implements various workarounds, which is why this plugin will not work with different versions of Unity. If you need support for different versions, this package is [federated](https://docs.flutter.dev/packages-and-plugins/developing-packages#federated-plugins) to allow easier extension by contributors for different versions of Unity using alternate platform packages - [consult the wiki for help developing and contributing your own.](https://github.com/learntoflutter/flutter_embed_unity/wiki).
 
