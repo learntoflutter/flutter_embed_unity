@@ -61,7 +61,7 @@ class _ExampleAppState extends State<ExampleApp> {
                         // A message has been received from a Unity script
                         if(data == "touch"){
                           setState(() {
-                            _numberOfTaps = _numberOfTaps++;
+                            _numberOfTaps += 1;
                           });
                         }
                         else if(data == "scene_loaded") {
