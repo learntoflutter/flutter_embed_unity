@@ -81,7 +81,19 @@ class UnityPlayerSingleton private constructor (activity: Activity) : UnityPlaye
     override fun onTouchEvent(motionEvent: MotionEvent): Boolean {
         motionEvent.source = InputDevice.SOURCE_TOUCHSCREEN
 //        Log.i(logTag, "onTouchEvent")
-        return super.onTouchEvent(motionEvent)
+    
+         // true for Flutter Virtual Display, false for Hybrid composition.
+        if (motionEvent.deviceId == 0) {        
+            /* 
+              Flutter creates a touchscreen motion event with deviceId 0. (https://github.com/flutter/flutter/blob/34b454f42dd6f8721dfe43fc7de5d215705b5e52/packages/flutter/lib/src/services/platform_views.dart#L639)
+              Unity's new Input System package does not detect these touches, copy the motion event to change the immutable deviceId.
+            */
+            val modifiedEvent = motionEvent.copy(deviceId = -1)
+            motionEvent.recycle()
+            return super.onTouchEvent(modifiedEvent)
+        } else {
+            return super.onTouchEvent(motionEvent)
+        }
     }
 
     override fun onWindowVisibilityChanged(visibility: Int) {
