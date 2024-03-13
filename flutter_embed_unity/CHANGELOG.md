@@ -1,3 +1,10 @@
+## 1.1.0-beta1
+
+13 March 2024
+
+* New Unity input system touches works on Android
+
+
 ## 1.0.4
 
 4 March 2024
