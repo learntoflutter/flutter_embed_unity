@@ -1,3 +1,10 @@
+## 1.1.0
+
+29 March 2024
+
+* New Unity input system touches works on Android
+* Updated readme to note Unity 2022.3.21 or later will be required on iOS from 1st May [to comply with App Store privacy manifest requirements](https://forum.unity.com/threads/apple-privacy-manifest-updates-for-unity-engine.1529026/)
+
 ## 1.1.0-beta1
 
 13 March 2024
