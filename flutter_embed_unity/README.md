@@ -74,6 +74,7 @@ There is [an example Unity project](https://github.com/learntoflutter/flutter_em
 > [!IMPORTANT]
 > It is **very important that you only use the Unity versions listed below**. Failure to do this will likely lead to crashes at runtime, because the undocumented functions this plugin calls can change and the workarounds it implements may not work as expected.
 
+* For iOS, as of 1st May 2024, 2022.3.21 or later is required due to App Store requirements around apps and 3rd party SDKs (including Unity) [declaring required reason API usage using Privacy Manifests](https://developer.apple.com/documentation/bundleresources/privacy_manifest_files/describing_use_of_required_reason_api). See [this announcement from Unity](https://forum.unity.com/threads/apple-privacy-manifest-updates-for-unity-engine.1529026/) for more information.
 * For Android 9 and later, any [Unity 2022.3 LTS](https://unity.com/releases/lts) is supported
 * For Android 8 and earlier, due to [issue #15](https://github.com/learntoflutter/flutter_embed_unity/issues/15), any version of Unity 2022.3 is supported **EXCEPT for 2022.3.10 to 2022.3.18** inclusive
 
