@@ -1,9 +1,17 @@
+## 1.1.1
+
+16 May 2024
+
+* Updated README to add Flutter 3.22 and later to the list of supported versions (3.22 fixes [#12](https://github.com/learntoflutter/flutter_embed_unity/issues/12) and [#14](https://github.com/learntoflutter/flutter_embed_unity/issues/14))
+
+
 ## 1.1.0
 
 29 March 2024
 
 * New Unity input system touches works on Android
 * Updated readme to note Unity 2022.3.21 or later will be required on iOS from 1st May [to comply with App Store privacy manifest requirements](https://forum.unity.com/threads/apple-privacy-manifest-updates-for-unity-engine.1529026/)
+
 
 ## 1.1.0-beta1
 
