@@ -80,7 +80,7 @@ There is [an example Unity project](https://github.com/learntoflutter/flutter_em
 
 [Unity as a library](https://docs.unity3d.com/Manual/UnityasaLibrary.html) was only intended by Unity to be used fullscreen (running in it's own `UnityPlayerActivity.java` Activity on Android, or using `UnityAppController.mm` as the root UIViewController on iOS). By embedding Unity into a Flutter widget, this plugin breaks this assumption, making it quite delicate. It also calls undocumented functions written by Unity, and implements various workarounds, which is why this plugin will not work with different versions of Unity. If you need support for different versions, this package is [federated](https://docs.flutter.dev/packages-and-plugins/developing-packages#federated-plugins) to allow easier extension by contributors for different versions of Unity using alternate platform packages - [consult the wiki for help developing and contributing your own.](https://github.com/learntoflutter/flutter_embed_unity/wiki).
 
-## Only supports Flutter 3.3.x, 3.7.x, 3.10.x, 3.13.x
+## Only supports Flutter 3.3.x, 3.7.x, 3.10.x, 3.13.x, 3.22.x or later
 
 Due to various issues in Flutter support for native platform views, only certain versions of Flutter are currently supported:
 
@@ -88,7 +88,7 @@ Due to various issues in Flutter support for native platform views, only certain
 * [Flutter #141068: Flutter 3.16 regression - Virtual display platform view is invisible on Android < 10](https://github.com/flutter/flutter/issues/141068) (affects Flutter 3.16.x and 3.19.x)
 * [Flutter #142952: Virtual display - Buggy resize with Android 12+](https://github.com/flutter/flutter/issues/142952) (affects Flutter 3.19.x)
 
-This is being tracked in [#14](https://github.com/learntoflutter/flutter_embed_unity/issues/14) (many thanks to [@timbotimbo](https://github.com/timbotimbo))
+This is being tracked in [#12](https://github.com/learntoflutter/flutter_embed_unity/issues/12) and [#14](https://github.com/learntoflutter/flutter_embed_unity/issues/14) (many thanks to [@timbotimbo](https://github.com/timbotimbo))
 
 ## Android 22+, iOS 12.0+
 
