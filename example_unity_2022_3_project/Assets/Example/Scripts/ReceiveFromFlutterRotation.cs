@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class ReceiveFromFlutterRotation : MonoBehaviour
 {
-    float _rotationSpeed = 0;
+    float _rotationSpeed = 20f;
 
     void Update()
     {
