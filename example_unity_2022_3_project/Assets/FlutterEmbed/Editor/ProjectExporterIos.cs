@@ -40,6 +40,26 @@ internal class ProjectExporterIos : ProjectExporter
         PBXProject pbxProject = new PBXProject();
         pbxProject.ReadFromFile(pbxProjFileInfo.FullName);
         pbxProject.SetBuildProperty(pbxProject.ProjectGuid(), "ENABLE_BITCODE", "NO");
+
+        // Add linker flags to Unity-iPhone
+        pbxProject.AddBuildProperty(pbxProject.ProjectGuid(), "OTHER_LDFLAGS", "-Wl,-U,_FlutterEmbedUnityIos_sendToFlutter");
+
+        // Change the Data folder Target Membership
+        string dataGuid = pbxProject.FindFileGuidByProjectPath("Data");
+        if(!string.IsNullOrEmpty(dataGuid)) {
+            // Add the Data folder to the UnityFramework target
+            string frameworkGuid = pbxProject.GetUnityFrameworkTargetGuid();
+            pbxProject.AddFileToBuild(frameworkGuid, dataGuid);
+
+            // Remove the Data folder from the Unity-iPhone target
+            string mainGuid = pbxProject.GetUnityMainTargetGuid();
+            pbxProject.RemoveFileFromBuild(mainGuid, dataGuid);
+        }
+        else {
+            Debug.LogError("Could not find the 'Data' folder in the `Unity-iPhone project.");
+        }
+
+        // Save changes
         pbxProject.WriteToFile(pbxProjFileInfo.FullName);
 
         // Delete the BurstDebugInformation folder
