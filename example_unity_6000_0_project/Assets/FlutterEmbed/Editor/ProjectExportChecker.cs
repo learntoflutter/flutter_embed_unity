@@ -96,9 +96,9 @@ internal class ProjectExportChecker
 
     private bool PreCheckCommon(ref List<string> precheckWarnings, NamedBuildTarget namedBuildTarget, BuildTargetGroup buildTargetGroup)
     {
-#if !UNITY_2022_3
-        ShowErrorMessage("This plugin only supports Unity 2022.3 LTS (Long Term Support).");
-        return ProjectExportCheckerResult.Failure();
+#if !UNITY_6000
+        ProjectExportHelpers.ShowErrorMessage("This plugin only supports Unity 6000.0 .");
+        return false;
 #endif
 
         if (PlayerSettings.GetScriptingBackend(EditorUserBuildSettings.selectedBuildTargetGroup) != ScriptingImplementation.IL2CPP)

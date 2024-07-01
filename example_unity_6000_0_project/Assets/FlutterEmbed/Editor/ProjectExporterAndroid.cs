@@ -78,6 +78,21 @@ internal class ProjectExporterAndroid : ProjectExporter
         unityLibrarySubModuleDirectory.Delete(true);
         Debug.Log($"Moved {unityLibrarySubModuleDirectory.FullName} to {exportDirectory.FullName}");
 
+        // Now move the contents of 
+        //    '<exportPath>/shared/' 
+        // to '<exportPath>/unityLibrary'
+        //  Should only be keepUnitySymbols.gradle
+        DirectoryInfo sharedDirectory = new DirectoryInfo(Path.Combine(exportPath, "shared"));
+        if (!sharedDirectory.Exists)
+        {
+            ProjectExportHelpers.ShowErrorMessage($"Unexpected error: '{sharedDirectory.FullName} not found");
+            return;
+        }
+        ProjectExportHelpers.MoveContentsOfDirectory(sharedDirectory, exportDirectory);
+        sharedDirectory.Delete(true);
+        Debug.Log($"Moved {sharedDirectory.FullName} to {exportDirectory.FullName}");
+
+
         // The export includes an activity in the AndroidManifest.xml which is not going to be
         // used (because we are using a Flutter PlatfromView instead). Remove it
         FileInfo androidManifestFile = new FileInfo(Path.Combine(exportPath, "src", "main", "AndroidManifest.xml"));
@@ -99,10 +114,10 @@ internal class ProjectExporterAndroid : ProjectExporter
             return;
         }
         string buildGradleContents = File.ReadAllText(buildGradleFile.FullName);
-        Regex regexAndroidBlock = new Regex(Regex.Escape("android {"));
-        buildGradleContents = regexAndroidBlock.Replace(buildGradleContents, "android {\n\tnamespace 'com.unity3d.player'", 1);
+        // Change references to the ../../shared folder to unityLibrary
+        buildGradleContents = Regex.Replace(buildGradleContents, @"\.\./shared/", "./");
         File.WriteAllText(buildGradleFile.FullName, buildGradleContents);
-        Debug.Log($"Added namespace 'com.unity3d.player' to {buildGradleFile.FullName} for Gradle 8 compatibility");
+        Debug.Log($"Fixed ../../shared references in {buildGradleFile.FullName}");
 
         DirectoryInfo burstDebugInformation = new DirectoryInfo(Path.Join(exportPath, "..", "unityLibrary_BurstDebugInformation_DoNotShip"));
         if(burstDebugInformation.Exists) {
