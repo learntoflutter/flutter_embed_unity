@@ -34,7 +34,7 @@ class UnityViewStack {
 
             // It's important to call windowFocusChanged, otherwise unity will not start
             // (not sure why - UnityPlayer is undocumented)
-            unityPlayerSingleton.windowFocusChanged(unityPlayerSingleton.requestFocus())
+            unityPlayerSingleton.windowFocusChanged(unityPlayerSingleton.getFrameLayout().requestFocus())
             // I don't know why, but when Unity is detached from an existing view and
             // added to a new view, we need to pause AND resume instead of just resume:
             unityPlayerSingleton.pause()
@@ -80,7 +80,7 @@ class UnityViewStack {
                 Log.i(logTag, "Reattached Unity to existing view")
                 // I don't know why, but when Unity is reattached to an existing view
                 // we need to pause AND resume (even though Unity was never paused?):
-//                unityPlayerSingleton.windowFocusChanged(unityPlayerSingleton.requestFocus())
+//                unityPlayerSingleton.windowFocusChanged(unityPlayerSingleton.getFrameLayout().requestFocus())
                 unityPlayerSingleton.pause()
                 unityPlayerSingleton.resume()
             }

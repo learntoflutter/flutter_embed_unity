@@ -28,12 +28,12 @@ class UnityView(viewFactoryContext: Context) : PlatformView, IUnityViewStackable
     // The solution used here is to use an intermediate View (a FrameLayout) which sits between
     // the PlatformView and UnityPlayerCustom. Then we can construct the FrameLayout using the
     // context from the view factory, and add the UnityPlayer to that
-    private val baseView: FrameLayout = FrameLayout(viewFactoryContext)
+    private val baseView: CustomFrameLayout = CustomFrameLayout(viewFactoryContext)
 
     override var onDispose: (() -> Unit)? = null
 
     override fun attachUnity(unityPlayerSingleton: UnityPlayerSingleton) {
-        baseView.addView(unityPlayerSingleton)
+        baseView.addView(unityPlayerSingleton.getFrameLayout())
         Log.i(logTag, "Attached Unity to view")
     }
 
