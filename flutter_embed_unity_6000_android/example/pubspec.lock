@@ -70,19 +70,10 @@ packages:
   flutter_embed_unity:
     dependency: "direct main"
     description:
-      name: flutter_embed_unity
-      sha256: bdecb15e70d0bced020fadf173fd96f3afc2779fb7a9bae6add03c78d27b2273
-      url: "https://pub.dev"
-    source: hosted
+      path: "../../flutter_embed_unity"
+      relative: true
+    source: path
     version: "1.1.1"
-  flutter_embed_unity_2022_3_android:
-    dependency: transitive
-    description:
-      name: flutter_embed_unity_2022_3_android
-      sha256: d550403ac5bd730bf2e816f707b6e94070afe0dab03ae836bcedac9ad05dc6f9
-      url: "https://pub.dev"
-    source: hosted
-    version: "1.1.0"
   flutter_embed_unity_2022_3_ios:
     dependency: transitive
     description:
