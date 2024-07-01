@@ -1,0 +1,30 @@
+name: flutter_embed_unity_android_example
+description: Demonstrates how to use the flutter_embed_unity_android plugin.
+publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+
+environment:
+  sdk: '>=3.0.6 <4.0.0'
+  flutter: ">=3.3.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  flutter_embed_unity_6000_android:
+    path: ../
+  flutter_embed_unity: ^1.1.0
+
+  intl: any
+
+
+dev_dependencies:
+  integration_test:
+    sdk: flutter
+  flutter_test:
+    sdk: flutter
+
+  flutter_lints: ^2.0.3
+
+
+flutter:
+  uses-material-design: true
