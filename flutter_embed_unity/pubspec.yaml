@@ -18,7 +18,9 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_embed_unity_platform_interface: ^1.0.0
-  flutter_embed_unity_2022_3_android: ^1.1.0
+  # flutter_embed_unity_2022_3_android: ^1.1.0
+  flutter_embed_unity_6000_android:
+    path: ../flutter_embed_unity_6000_android
   flutter_embed_unity_2022_3_ios: ^1.0.1
 
 dev_dependencies:
