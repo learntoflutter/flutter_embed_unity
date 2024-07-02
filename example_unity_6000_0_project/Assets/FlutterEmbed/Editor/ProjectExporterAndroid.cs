@@ -106,18 +106,17 @@ internal class ProjectExporterAndroid : ProjectExporter
         File.WriteAllText(androidManifestFile.FullName, androidManifestContents);
         Debug.Log($"Removed <activity> from {androidManifestFile.FullName}");
 
-        // Add the namespace 'com.unity3d.player' to unityLibrary\build.gradle
-        // for compatibility with Gradle 8
+        // Fix an import in unityLibrary\build.gradle
         FileInfo buildGradleFile = new FileInfo(Path.Combine(exportPath, "build.gradle"));
         if(!buildGradleFile.Exists) {
             ProjectExportHelpers.ShowErrorMessage($"Unexpected error: '{buildGradleFile.FullName} not found");
             return;
         }
         string buildGradleContents = File.ReadAllText(buildGradleFile.FullName);
-        // Change references to the ../../shared folder to unityLibrary
+        // Change references to the ../shared folder to unityLibrary
         buildGradleContents = Regex.Replace(buildGradleContents, @"\.\./shared/", "./");
         File.WriteAllText(buildGradleFile.FullName, buildGradleContents);
-        Debug.Log($"Fixed ../../shared references in {buildGradleFile.FullName}");
+        Debug.Log($"Fixed ../shared references in {buildGradleFile.FullName}");
 
         DirectoryInfo burstDebugInformation = new DirectoryInfo(Path.Join(exportPath, "..", "unityLibrary_BurstDebugInformation_DoNotShip"));
         if(burstDebugInformation.Exists) {
