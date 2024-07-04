@@ -295,25 +295,6 @@ The Unity project is now ready to use, but we still haven't actually linked it t
 ![2](https://github.com/jamesncl/flutter_embed_unity/assets/15979056/ca369db9-1991-4093-8713-5e68b0ddac17)
 
 
-
-- **This must be repeated every time you export your Unity project:** In project navigator, expand the `Unity-iPhone` project, and select the `Data` folder. In the Inspector, under Target Membership, change the target membership to `UnityFramework`.
-  
-![3](https://github.com/jamesncl/flutter_embed_unity/assets/15979056/06737b05-934a-4391-8caa-9d279328d397)
-
-
-> This allows you to embed the Unity engine and your Unity game easily into your own Flutter app as a single unit.
-
-- **This must be repeated every time you export your Unity project:** In project navigator, select the `Unity-iPhone` project, then in the editor select the `Unity-iPhone` project under PROJECTS, then select the Build Settings tab. In the Build Settings tab, find the 'Other linker Flags' setting (you can use the search box to help you find it). Add the following : `-Wl,-U,_FlutterEmbedUnityIos_sendToFlutter`
-
-![4](https://github.com/jamesncl/flutter_embed_unity/assets/15979056/5119acdb-10ad-466d-abe7-3353acdfef75)
-
-
-
-> To be able to pass messages from Unity C# to the iOS part of the plugin (which then passes the message on to Flutter) the C# file you include in your Unity project declares (but does not define) a function called `FlutterEmbedUnityIos_sendToFlutter`. This function is instead defined in the plugin. To join these two things together, we need to tell Xcode to ignore the fact that `FlutterEmbedUnityIos_sendToFlutter` is not defined in the Unity module, and instead link it to the definition in the plugin.
-> `-Wl` allows us to pass additional options to the linker when it is invoked
-> `-U` tells the linker to force the symbol `_FlutterEmbedUnityIos_sendToFlutter` to be entered in the output file as an undefined symbol. It will be linked instead to a function defined in the plugin.
-
-
 ### Android
 
 - Add the Unity project as a dependency to your app by adding the following to `<your flutter project>/android/app/build.gradle`:
@@ -579,17 +560,21 @@ This is caused by a broken version of a Unity package called `com.unity.xr.manag
 
 If you are attempting to run your app on an Android emulator, you will encounter this error. As noted above in the limitations, this is not supported. Use a real device instead.
 
+
 ## Undefined symbol: _FlutterEmbedUnityIos_sendToFlutter
 
-You have forgotten to add the linker flag to Unity-IPhone, one of the iOS setup steps which are required to be done every time you export your Unity project 
+In versions prior to 1.1.1, some additional manual steps were required to link the Unity project to your Xcode project. As of 1.2.0 these are now automated as part of the Unity export process. Check the [Changelog release notes](https://pub.dev/packages/flutter_embed_unity/changelog) for 1.2.0 to see how to update to the new export process. Alternatively, you can do the following step manually after each export: In project navigator, select the Unity-iPhone project, then in the editor select the Unity-iPhone project under PROJECTS, then select the Build Settings tab. In the Build Settings tab, find the 'Other linker Flags' setting (you can use the search box to help you find it). Add the following : `-Wl,-U,_FlutterEmbedUnityIos_sendToFlutter`
+
 
 ## ERROR: could not open UnityFramework.framework/Data/Managed/Metadata/global-metadata.dat, IL2CPP initialization failed
 
-You have forgotten to change the target membership of the Data folder in Unity-IPhone, one of the iOS setup steps which are required to be done every time you export your Unity project 
+In versions prior to 1.1.1, some additional manual steps were required to link the Unity project to your Xcode project. As of 1.2.0 these are now automated as part of the Unity export process. Check the [Changelog release notes](https://pub.dev/packages/flutter_embed_unity/changelog) for 1.2.0 to see how to update to the new export process. Alternatively, you can do the following step manually after each export: In project navigator, expand the Unity-iPhone project, and select the Data folder. In the Inspector, under Target Membership, change the target membership to UnityFramework.
+
 
 ## Project with path 'xrmanifest.androidlib' could not be found in project ':unityLibrary'
 
 You are using AR packages in your Unity project but you have forgotten to follow the instuctions above in the section titled "If you're using XR (VR / AR) on Android"
+
 
 ## A problem occurred configuring project ':unityLibrary:xrmanifest.androidlib' - Could not create an instance of type com.android.build.api.variant.impl.LibraryVariantBuilderImpl - Namespace not specified. Please specify a namespace in the module's build.gradle file
 
