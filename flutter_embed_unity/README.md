@@ -639,6 +639,20 @@ This is caused by an incompatibility between Unity and Xcode 15 which has been f
 The solution as described in the issue tracker is to update Unity to 2022.3.10 or newer
 
 
+## Framework not found FBLPromises
+
+This build error can arise when using Firebase packages in your Unity project. To resolve this (thanks to @timbotimbo for the solution):
+
+* Make sure the Unity pods are installed. In the terminal, run `pod install` in the ios/unityLibrary folder
+
+> If you're using a Mac with Apple Silicon and run into cocoapod errors, try `arch -x86_64 pod install --repo-update` instead
+
+* Now use **Add Files to "Runner"** to add `ios/unityLibrary/Pods/Pods.xcodeproj`, just like you have already done with Unity-iPhone
+
+For further info see [#8](https://github.com/learntoflutter/flutter_embed_unity/issues/8)
+
+
+
 # Plugin developers / contributors
 
 See [the Wiki for more information](https://github.com/learntoflutter/flutter_embed_unity/wiki) on running the example, notes on how the plugin works, developing for different versions of Unity etc.
