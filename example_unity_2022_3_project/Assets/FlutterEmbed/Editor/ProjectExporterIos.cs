@@ -41,10 +41,17 @@ internal class ProjectExporterIos : ProjectExporter
         pbxProject.ReadFromFile(pbxProjFileInfo.FullName);
         pbxProject.SetBuildProperty(pbxProject.ProjectGuid(), "ENABLE_BITCODE", "NO");
 
-        // Add linker flags to Unity-iPhone
+        // To be able to pass messages from Unity C# to the iOS part of the plugin (which then passes the message on to Flutter) 
+        // the C# file you include in your Unity project declares (but does not define) a function called `FlutterEmbedUnityIos_sendToFlutter`.
+        // This function is instead defined in the plugin. To join these two things together, we need to tell Xcode to ignore the fact that 
+        // `FlutterEmbedUnityIos_sendToFlutter` is not defined in the Unity module, and instead link it to the definition in the plugin.
+        // `-Wl` allows us to pass additional options to the linker when it is invoked
+        // `-U` tells the linker to force the symbol `_FlutterEmbedUnityIos_sendToFlutter` to be entered in the output file as an undefined 
+        //      symbol. It will be linked instead to a function defined in the plugin.
         pbxProject.AddBuildProperty(pbxProject.ProjectGuid(), "OTHER_LDFLAGS", "-Wl,-U,_FlutterEmbedUnityIos_sendToFlutter");
 
         // Change the Data folder Target Membership
+        // This allows us to embed the Unity engine and the Unity game easily into the Flutter app as a single unit
         string dataGuid = pbxProject.FindFileGuidByProjectPath("Data");
         if(!string.IsNullOrEmpty(dataGuid)) {
             // Add the Data folder to the UnityFramework target
