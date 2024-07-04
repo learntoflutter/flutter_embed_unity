@@ -11,7 +11,7 @@ dependencies:
     sdk: flutter
 
   flutter_embed_unity_2022_3_ios: ^1.0.1
-  flutter_embed_unity: ^1.1.0
+  flutter_embed_unity: ^1.2.0
   intl: any
 
 
