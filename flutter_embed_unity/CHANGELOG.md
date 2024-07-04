@@ -1,3 +1,14 @@
+## 1.2.0
+
+4 July 2024
+
+> NOTE: To take advantage of the new automated steps for iOS Unity export, you will need to re-import the latest flutter_embed_unity_2022_3.unitypackage found in [Releases](https://github.com/learntoflutter/flutter_embed_unity/releases) - you only need the changes in `FlutterEmbed/Editor/ProjectExporterIos.cs`
+>
+> Alternatively, you can simply modify your existing copy of `FlutterEmbed/Editor/ProjectExporterIos.cs` according to [this commit](https://github.com/learntoflutter/flutter_embed_unity/commit/c393efc0e9fbc589e2e4c1045e52d5335830895a)
+
+* After exporting Unity project for iOS, the manual steps for changing the membership of the Data folder to Unity Framework and adding `-Wl,-U,_FlutterEmbedUnityIos_sendToFlutter` to Other Linker Flags in Xcode is no longer required (thanks @timbotimbo). See note above.
+
+
 ## 1.1.1
 
 16 May 2024
