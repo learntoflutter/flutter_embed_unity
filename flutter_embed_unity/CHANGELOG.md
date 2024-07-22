@@ -1,3 +1,9 @@
+## 1.2.1
+
+22 July 2024
+
+* Updated README to note issue [#21](https://github.com/learntoflutter/flutter_embed_unity/issues/21): AR not supported when using Flutter 3.22 on Android API 32 or less (thanks [@timbotimbo](https://github.com/timbotimbo))
+
 ## 1.2.0
 
 4 July 2024

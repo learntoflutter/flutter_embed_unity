@@ -90,9 +90,15 @@ Due to various issues in Flutter support for native platform views, only certain
 
 This is being tracked in [#12](https://github.com/learntoflutter/flutter_embed_unity/issues/12) and [#14](https://github.com/learntoflutter/flutter_embed_unity/issues/14) (many thanks to [@timbotimbo](https://github.com/timbotimbo))
 
-## Android 22+, iOS 12.0+
 
-Unity 2022.3 LTS [only supports Android 5.1 “Lollipop” (API level 22) and above](https://docs.unity3d.com/Manual/android-requirements-and-compatibility.html) and [iOS 12 and above](https://docs.unity3d.com/Manual/ios-requirements-and-compatibility.html) so your app must also observe these limitations.
+## AR not supported on Flutter 3.22 with Android API 32 (version 12 / Snow Cone) or earlier
+
+Due to [Issue #21](https://github.com/learntoflutter/flutter_embed_unity/issues/21), AR will crash when using Flutter 3.22 on Android API 32 or earlier (thanks [@timbotimbo](https://github.com/timbotimbo))
+
+
+## Requires Android API 22+ (version 5.1 / Android Lollipop), iOS 12.0+
+
+Unity 2022.3 LTS [only supports Android API 22 and above](https://docs.unity3d.com/Manual/android-requirements-and-compatibility.html) and [iOS 12 and above](https://docs.unity3d.com/Manual/ios-requirements-and-compatibility.html) so your app must also observe these limitations.
 
 In `<your flutter app>/android/app/build.gradle` check your `minSdkVersion` is at least 22:
 
@@ -637,6 +643,24 @@ This build error can arise when using Firebase packages in your Unity project. T
 For further info see [#8](https://github.com/learntoflutter/flutter_embed_unity/issues/8)
 
 
+## java.lang.NoClassDefFoundError: Failed resolution of: Landroid/window/OnBackInvokedCallback
+
+Since Flutter 3.22, Unity will crash on certain Android versions when ARFoundation is activated. This only happens on Android <13. See [#21](https://github.com/learntoflutter/flutter_embed_unity/issues/21)
+
+
+> E/Unity   ( 7029): AndroidJavaException: java.lang.NoClassDefFoundError: Failed resolution of: Landroid/window/OnBackInvokedCallback;
+>E/Unity   ( 7029): java.lang.NoClassDefFoundError: Failed resolution of: Landroid/window/OnBackInvokedCallback;
+>E/Unity   ( 7029): 	at java.lang.reflect.Executable.getMethodReturnTypeInternal(Native Method)
+>E/Unity   ( 7029): 	at java.lang.reflect.Method.getReturnType(Method.java:148)
+E/Unity   ( 7029): 	at java.lang.Class.getDeclaredMethods(Class.java:1880)
+E/Unity   ( 7029): 	at com.unity3d.player.ReflectionHelper.getMethodID(Unknown Source:26)
+E/Unity   ( 7029): 	at com.unity3d.player.UnityPlayer.nativeRender(Native Method)
+E/Unity   ( 7029): 	at com.unity3d.player.UnityPlayer.-$$Nest$mnativeRender(Unknown Source:0)
+E/Unity   ( 7029): 	at com.unity3d.player.UnityPlayer$F$a.handleMessage(Unknown Source:122)
+E/Unity   ( 7029): 	at android.os.Handler.dispatchMessage(Handler.java:102)
+E/Unity   ( 7029): 	at android.os.Looper.loop(Looper.java:214)
+E/Unity   ( 7029): 	at com.unity3d.player.UnityPlayer$F.run(Unknown Source:24)
+E/Unity   ( 7029): Caused by: java.lang.ClassNotFoundException: Didn't find class "android.window.OnBackInvokedCallback" on path: DexPathList[[zip file "/data/app/com.learntoflutter.flutter_embed_uni
 
 # Plugin developers / contributors
 
