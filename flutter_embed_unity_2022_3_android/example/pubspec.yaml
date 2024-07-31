@@ -3,15 +3,15 @@ description: Demonstrates how to use the flutter_embed_unity_android plugin.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
 environment:
-  sdk: '>=3.0.6 <4.0.0'
+  sdk: '>=2.18.0 <4.0.0'
   flutter: ">=3.3.0"
 
 dependencies:
   flutter:
     sdk: flutter
 
-  flutter_embed_unity_2022_3_android: ^1.1.0
-  flutter_embed_unity: ^1.2.1
+  flutter_embed_unity_2022_3_android: ^1.1.1
+  flutter_embed_unity: ^1.2.2
   intl: any
 
 

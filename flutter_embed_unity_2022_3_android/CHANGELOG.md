@@ -1,8 +1,16 @@
+## 1.1.1
+
+31 July 2024
+
+* Lowered Dart SDK constraint to 2.18+
+
+
 ## 1.1.0
 
 29 March 2024
 
 * New Unity input system touches works on Android
+
 
 ## 1.1.0-beta1
 

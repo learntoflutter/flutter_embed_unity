@@ -1,3 +1,10 @@
+## 1.2.2
+
+31 July 2024
+
+* Lowered Dart SDK constraint to 2.18+
+
+
 ## 1.2.1
 
 22 July 2024
