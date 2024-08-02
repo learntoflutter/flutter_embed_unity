@@ -32,12 +32,14 @@ class UnityMessageListeners {
             for (var listener in _listeners) {
               listener.onMessageFromUnity(data);
             }
+            break;
           }
         case MessageFromUnityListeningBehaviour.onlyMostRecentlyCreatedWidgetReceivesMessages:
           {
             if (_listeners.isNotEmpty) {
               _listeners.last.onMessageFromUnity(data);
             }
+            break;
           }
       }
     }

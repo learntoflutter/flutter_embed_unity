@@ -71,34 +71,34 @@ packages:
     dependency: "direct main"
     description:
       name: flutter_embed_unity
-      sha256: "5b6c5729d3d1c151379504d48f404d7d34894e6f16b015dde8000f26d77c6f71"
+      sha256: "7d0ff85cd60c694c70b4e1785352958c1596d299774ca3411b013e1ce025cf33"
       url: "https://pub.dev"
     source: hosted
-    version: "1.2.1"
+    version: "1.2.2"
   flutter_embed_unity_2022_3_android:
     dependency: transitive
     description:
       name: flutter_embed_unity_2022_3_android
-      sha256: d550403ac5bd730bf2e816f707b6e94070afe0dab03ae836bcedac9ad05dc6f9
+      sha256: "6eb19e53bdd12990a06416e392b99f9e098f9651c74e6ad0f9191ff0328dc6bb"
       url: "https://pub.dev"
     source: hosted
-    version: "1.1.0"
+    version: "1.1.1"
   flutter_embed_unity_2022_3_ios:
     dependency: transitive
     description:
       name: flutter_embed_unity_2022_3_ios
-      sha256: "1829acc64ff3014272de96fe7cceb17411f50b78e9be32dca5d93ac9433211c3"
+      sha256: "654ed70cf0fd678715e52ee2fa22b2babe540a42d1e663b9a3891fb0654201b4"
       url: "https://pub.dev"
     source: hosted
-    version: "1.0.1"
+    version: "1.0.2"
   flutter_embed_unity_platform_interface:
     dependency: transitive
     description:
       name: flutter_embed_unity_platform_interface
-      sha256: "4fd2dcc09ec8f35f35ea914d89e404354216a56f8415d719b7c9edb058ca6868"
+      sha256: f6c51507623af383dc78fb0a6957b139f6b1d0cc5ef368f507551beac21d33c4
       url: "https://pub.dev"
     source: hosted
-    version: "1.0.0"
+    version: "1.0.1"
   flutter_lints:
     dependency: "direct dev"
     description:
