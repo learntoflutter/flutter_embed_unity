@@ -1,8 +1,15 @@
+## 1.2.3
+
+2 Aug 2024
+
+* Lowered Dart SDK constraint to 2.18+ for compatibility with Flutter 3.7
+
+
 ## 1.2.2
 
 31 July 2024
 
-* Lowered Dart SDK constraint to 2.18+
+* ~~Lowered Dart SDK constraint to 2.18+~~ Fixed in 1.2.3
 
 
 ## 1.2.1
