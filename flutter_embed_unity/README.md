@@ -662,6 +662,28 @@ E/Unity   ( 7029): 	at android.os.Looper.loop(Looper.java:214)
 E/Unity   ( 7029): 	at com.unity3d.player.UnityPlayer$F.run(Unknown Source:24)
 E/Unity   ( 7029): Caused by: java.lang.ClassNotFoundException: Didn't find class "android.window.OnBackInvokedCallback" on path: DexPathList[[zip file "/data/app/com.learntoflutter.flutter_embed_uni
 
+
+## Crash on iOS when using Google Maps
+
+If you're using the [google_maps_flutter](https://pub.dev/packages/google_maps_flutter) package you may encounter a crash on iOS during app startup in `libdispatch.dylib`:
+
+```
+libdispatch.dylib`:
+0x10511cd2c <+0>: stp x20, x21, [sp, #-0x10]!
+0x10511cd30 <+4>: adrp x20, 7
+0x10511cd34 <+8>: add x20, x20, #0xaf8 ; "BUG IN CLIENT OF LIBDISPATCH: trying to lock recursively"
+0x10511cd38 <+12>: adrp x21, 41
+0x10511cd3c <+16>: add x21, x21, #0x220 ; gCRAnnotations
+0x10511cd40 <+20>: str x20, [x21, #0x8]
+0x10511cd44 <+24>: ldp x20, x21, [sp], #0x10
+-> 0x10511cd48 <+28>: brk #0x1       <-- Break occurs here
+```
+
+This can be resolved by disabling 'Thread Performance Checker' in your Xcode scheme (see [#28](https://github.com/learntoflutter/flutter_embed_unity/issues/28) for more info):
+
+![b7cc87349704f02ed91be4b0014a353a2e005d98_2_690x228](https://github.com/user-attachments/assets/88038f06-0343-4360-a1cf-ae1d72732fd2)
+
+
 # Plugin developers / contributors
 
 See [the Wiki for more information](https://github.com/learntoflutter/flutter_embed_unity/wiki) on running the example, notes on how the plugin works, developing for different versions of Unity etc.
