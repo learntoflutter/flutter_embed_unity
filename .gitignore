@@ -1,3 +1,7 @@
+# Example lock files
+**/example/pubspec.lock
+**/example/ios/Podfile.lock
+
 # Miscellaneous
 .DS_Store
 
