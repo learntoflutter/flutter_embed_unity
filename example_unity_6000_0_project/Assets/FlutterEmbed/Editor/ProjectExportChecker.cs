@@ -32,9 +32,17 @@ internal class ProjectExportChecker
     {
         if (EditorUserBuildSettings.activeBuildTarget != BuildTarget.Android)
         {
-            ProjectExportHelpers.ShowErrorMessage("Can't export until you change the build target to Android: see File -> Build settings -> Platform, then Switch Target");
+            ProjectExportHelpers.ShowErrorMessage("Can't export until you change the build target to Android: see File -> Build Profiles -> Platform, then Switch Target");
             return ProjectExportCheckerResult.Failure();
         }
+
+#if UNITY_ANDROID && UNITY_2023_1_OR_NEWER
+        if (PlayerSettings.Android.applicationEntry != AndroidApplicationEntry.Activity)
+        {
+            ProjectExportHelpers.ShowErrorMessage("Can't export until you change the 'Application Entry Point' to 'Activity'. \nFile -> Build Profiles -> Player Settings -> Other Settings -> Application Entry Point.");
+            return ProjectExportCheckerResult.Failure();
+        }
+#endif
 
         // Because Debug.Log does not work until after the build, collect any log messages to show at the end:
         List<string> precheckWarnings = new();
@@ -70,7 +78,7 @@ internal class ProjectExportChecker
     {
         if (EditorUserBuildSettings.activeBuildTarget != BuildTarget.iOS)
         {
-            ProjectExportHelpers.ShowErrorMessage("Can't export until you change the build target to iOS: see File -> Build settings -> Platform, then Switch Target");
+            ProjectExportHelpers.ShowErrorMessage("Can't export until you change the build target to iOS: see File -> Build Profiles -> Platform, then Switch Target");
             return ProjectExportCheckerResult.Failure();
         }
 
