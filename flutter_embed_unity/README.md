@@ -91,9 +91,9 @@ Due to various issues in Flutter support for native platform views, only certain
 This is being tracked in [#12](https://github.com/learntoflutter/flutter_embed_unity/issues/12) and [#14](https://github.com/learntoflutter/flutter_embed_unity/issues/14) (many thanks to [@timbotimbo](https://github.com/timbotimbo))
 
 
-## AR not supported on Flutter 3.22 with Android API 32 (version 12 / Snow Cone) or earlier
+## Known issues with AR when using Flutter 3.22 or later, and Android API 32 (version 12 / Snow Cone) or earlier
 
-Due to [Issue #21](https://github.com/learntoflutter/flutter_embed_unity/issues/21), AR will crash when using Flutter 3.22 on Android API 32 or earlier (thanks [@timbotimbo](https://github.com/timbotimbo))
+Due to [Issue #21](https://github.com/learntoflutter/flutter_embed_unity/issues/21), AR may crash when using Flutter 3.22+ on Android API 32 or earlier. There is currently a workaround available, however this workaround may break in future versions of flutter. The workaround is documented in [Issue #21](https://github.com/learntoflutter/flutter_embed_unity/issues/21) (thanks [@timbotimbo](https://github.com/timbotimbo))
 
 
 ## Requires Android API 22+ (version 5.1 / Android Lollipop), iOS 12.0+
