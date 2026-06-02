@@ -15,7 +15,7 @@ class UnityView : UIView {
     }
     
     func attachUnity(_ unityPlayerSingleton: UnityFramework) {
-        let unityRootView = unityPlayerSingleton.appController().rootView!
+        let unityRootView = unityPlayerSingleton.appController().rootViewController!.view!
         unityRootView.frame = bounds
         unityRootView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         addSubview(unityRootView)
