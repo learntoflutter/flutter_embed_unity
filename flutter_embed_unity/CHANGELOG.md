@@ -1,3 +1,14 @@
+## 2.1.0
+
+### Gradle 9 compatibility
+
+* Updated examples for compatibility with Flutter 3.47, Gradle 9, new DSL
+* Updated example Unity 6 project to use Unity >= 6000.3.17f1 and ARFoundation >= 6.5.0 for (Gradle 9 compatibility)[https://discussions.unity.com/t/android-gradle-9-1-0-agp-9-0-0-update-in-unity-6-0/1709062]
+
+> Note that Unity 2022.3 LTS is now unsupported and (does not officially support Gradle 9)[https://docs.unity3d.com/2022.3/Documentation/Manual/android-gradle-overview.html]
+
+
+
 ## 2.0.0
 
 ### ⚠️ Breaking changes!

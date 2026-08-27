@@ -816,6 +816,10 @@ See [the Wiki](https://github.com/learntoflutter/flutter_embed_unity/wiki/Advanc
 
 # Common issues
 
+## Namespace 'com.google.ar.core' is used in multiple modules and/or libraries: :arcore_client:, :unityandroidpermissions:.
+
+This may be caused by (a conflict with earlier versions of Unity and ARFoundation with Gradle 9+)[https://discussions.unity.com/t/android-gradle-9-1-0-agp-9-0-0-update-in-unity-6-0/1709062] which was fixed in later versions. If you are using Gradle 9, update Unity to >= 6000.3.17f1 and ARFoundation >= 6.5.0
+
 ## Swift Compiler Error (Xcode): Unable to find module dependency: 'UnityFramework'
 
 If you have recently upgraded flutter_embed_unity from version 1.x to 2.x make sure to read the breaking change notes [in the change log](https://pub.dev/packages/flutter_embed_unity/changelog). Version 2.x now requires UnityFramework.framework from your Unity-iPhone project to be embedded into your Runner target in Xcode. See the iOS setup instructions above to see how to do this. You may need to also run `flutter clean` before rebuilding.
