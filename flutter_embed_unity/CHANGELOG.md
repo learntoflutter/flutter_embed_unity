@@ -1,17 +1,28 @@
 ## 3.0.0
 
+August 2026
+
 ### Gradle 9 compatibility
+
+As the Flutter ecosystem continues to migrate to Gradle 9, this plugin has added support which required bumping the minimum supported version of Flutter.
 
 * Bumped minimum Flutter to 3.44+, Dart 3.12+
 * Migrated flutter_embed_unity_6000_0_android to built-in Kotlin
 * Updated examples for compatibility with Flutter 3.47, Gradle 9, new DSL
 * Updated example Unity 6 project to use Unity >= 6000.3.17f1 and ARFoundation >= 6.5.0 for [Gradle 9 compatibility](https://discussions.unity.com/t/android-gradle-9-1-0-agp-9-0-0-update-in-unity-6-0/1709062)
 
-> Note that Unity 2022.3 LTS is now unsupported and [does not officially support Gradle 9](https://docs.unity3d.com/2022.3/Documentation/Manual/android-gradle-overview.html)
+> Note that Unity 2022.3 LTS is now unsupported without an extended industry license and [currently does not have support for Gradle 9](https://docs.unity3d.com/2022.3/Documentation/Manual/android-gradle-overview.html)
 
+### Xcode 26 compatibility
+
+Fixed [#81](https://github.com/learntoflutter/flutter_embed_unity/issues/81) which caused a build error when using the latest Xcode and SPM:
+
+> Undefined symbol: OBJC_CLASS$_UnityFramework
 
 
 ## 2.0.0
+
+April 2026
 
 ### ⚠️ Breaking changes!
 
