@@ -11,8 +11,8 @@ topics:
   - unity
 
 environment:
-  sdk: '>=3.9.0 <4.0.0'
-  flutter: ">=3.35.0"
+  sdk: '>=3.12.0 <4.0.0'
+  flutter: ">=3.44.0"
 
 dependencies:
   flutter:
@@ -23,9 +23,11 @@ dependencies:
   # See https://github.com/learntoflutter/flutter_embed_unity/issues/54
   # e.g. only include either flutter_embed_unity_2022_3_android OR flutter_embed_unity_6000_0_android
   # The user can then override the default with a different implementation in their app's pubspec
-  flutter_embed_unity_6000_0_android: ^2.0.0
+  flutter_embed_unity_6000_0_android: #^2.0.0
+    path: ../flutter_embed_unity_6000_0_android
   # flutter_embed_unity_2022_3_ios works for both Unity 2022.3 and Unity 6
-  flutter_embed_unity_2022_3_ios: ^2.0.0
+  flutter_embed_unity_2022_3_ios: #^2.0.0
+    path: ../flutter_embed_unity_2022_3_ios
 
 dev_dependencies:
   flutter_lints: ^6.0.0

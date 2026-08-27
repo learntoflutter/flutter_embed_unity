@@ -12,7 +12,8 @@ dependencies:
   flutter:
     sdk: flutter
 
-  flutter_embed_unity: ^2.0.0
+  flutter_embed_unity: #^2.0.0
+    path: ../
   # To target Unity 2022.3, uncomment this to override the default Android implementation:
   # flutter_embed_unity_2022_3_android: ^2.0.0
   intl: any
