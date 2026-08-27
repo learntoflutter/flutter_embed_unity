@@ -1,34 +1,15 @@
 # flutter_embed_unity
 
-Embed your [Unity 3D](https://unity.com/) game / app into Flutter apps as a widget on iOS and Android. Transfer messages between Unity scripts and your Flutter app. Only supports a single instance of Unity 2022.3 LTS or Unity 6000.0 / 6000.3 LTS. Supports Unity ARFoundation / ARKit / ARCore.
+Embed your [Unity 3D](https://unity.com/) game / app into Flutter apps as a widget on iOS and Android. Transfer messages between Unity scripts and your Flutter app. Only supports a single instance of Unity 6 LTS. Unity 2022.3 LTS may work but will no longer be officially supported by this package (2022.3 is no longer supported by Unity, and isn't compatible with Gradle 9+). Limited support for Unity ARFoundation / ARKit / ARCore.
 
 ![ezgif com-resize](https://github.com/jamesncl/flutter_embed_unity/assets/15979056/e4dd706d-9c0c-4365-8740-d374afa49ebb)
 
 
-# Usage
-
-
-## If you are using Unity 6000.0 / 6000.3 on Android
-
-Currently, the default configuration of the plugin only supports Unity 2022.3 on Android.
-
-If you are using Unity 2022.3 you only need to include the latest **flutter_embed_unity** package in your pubspec.yaml.
-
-If you are using Unity 6000.0 or 6000.3 LTS on Android, you must opt-in to use the new implementation for the Android platform by also including the latest **flutter_embed_unity_6000_0_android** package in your pubspec.yaml. For example:
-
-```yaml
-dependencies:
-  ...
-  flutter_embed_unity: ^2.0.0  # (replace this version with the latest available)
-  # Add this for Unity 6000.0 / 6000.3 support on Android:
-  flutter_embed_unity_6000_0_android: ^1.2.3  # (replace this version with the latest available)
-```
-
-For iOS only, you do not need to add any additional dependency - the default implementation for iOS is compatible with both versions of Unity.
-
 > [!IMPORTANT]
-> In future versions, Unity 6 support will become the default, and you will have to opt-out of using the Unity 6 implementation by including flutter_embed_unity_2022_3_android in your pubspec.yaml
+> Embedding Unity in Flutter is not supported by Unity, and is essentially a complicated hack. Consider carefully before commiting to using this plugin, as future changes to Flutter, Unity, Xcode, Gradle or other moving parts may unexpectedly break this plugin, which may not be fixed quickly or at all. Building your app entirely in Unity, or entirely in Flutter / Dart using [Flutter GPU](https://github.com/flutter-team-archive/engine/blob/main/docs/impeller/Flutter-GPU.md) may be a better alternative (see [fscene.dev](https://fscene.dev/) for some great examples of what is possible using Flutter GPU by leveraging the [flutter_scene](https://pub.dev/packages/flutter_scene) package).
 
+
+# Usage
 
 ## Using the EmbedUnity widget
 
@@ -97,14 +78,30 @@ There is [an example Unity 2022.3 project](https://github.com/learntoflutter/flu
 
 # Limitations
 
+## Platform implementation override required for Unity 2022.3 LTS on Android
+
+Currently, the default configuration of the plugin supports Unity 6 LTS on Android.
+
+If you are targeting Unity 2022.3 LTS, you now need to explicitly override the default implementation for android from Unity 6 to Unity 2022.3 by adding flutter_embed_unity_2022_3_android as a dependency:
+
+```yaml
+dependencies:
+  ...
+  flutter_embed_unity: ^3.0.0  # (replace version with the latest available)
+  flutter_embed_unity_2022_3_android: ^2.0.0  # <-- If using Unity 2022.3, add this (replace version with the latest available)
+```
+
+For iOS only, you do not need to add any additional dependency - the default implementation for iOS is compatible with both Unity 6 LTS and Unity 2022.3 LTS.
+
 
 ## Unity version support
 
-> [!IMPORTANT]
-> It is important that you only use the Unity versions listed below. Failure to do this will likely lead to crashes at runtime, because the undocumented functions this plugin calls can change and the workarounds it implements may not work as expected.
+It is important that you only use the Unity versions listed below. Failure to do this will likely lead to crashes at runtime, because the undocumented functions this plugin calls can change and the workarounds it implements may not work as expected.
+
+[Unity as a library](https://docs.unity3d.com/Manual/UnityasaLibrary.html) was only intended by Unity to be used fullscreen (running in it's own `UnityPlayerActivity.java` Activity on Android, or using `UnityAppController.mm` as the root UIViewController on iOS). By embedding Unity into a Flutter widget, this plugin breaks this assumption, making it quite delicate. It also calls undocumented functions written by Unity, and implements various workarounds, which is why this plugin may not work with different versions of Unity. If you need support for different versions, this package is [federated](https://docs.flutter.dev/packages-and-plugins/developing-packages#federated-plugins) to allow easier extension by contributors for different versions of Unity using alternate platform packages - [consult the wiki for help developing and contributing your own.](https://github.com/learntoflutter/flutter_embed_unity/wiki)
 
 
-### Unity 6000.0 / 6000.3 LTS
+### Unity 6 LTS
 * For Android, version 6000.3.0f1 or newer or 6000.0.58f2 or newer is required due to a [security update advisory](https://unity.com/security/sept-2025-01).
 
   <details>
@@ -114,6 +111,7 @@ There is [an example Unity 2022.3 project](https://github.com/learntoflutter/flu
  requirements that all new apps and updates targeting Android 15+ [must support 16 KB page sizes](https://android-developers.googleblog.com/2025/05/prepare-play-apps-for-devices-with-16kb-page-size.html).
   See [this announcement from Unity](https://discussions.unity.com/t/info-unity-engine-support-for-16-kb-memory-page-sizes-android-15/1589588) for more information.
 </details>  
+* Version 6000.3.17f1+ or newer is [required if you are using Gradle 9+](https://docs.unity3d.com/6000.3/Documentation/Manual/android-gradle-version-compatibility.html)
 
 
 ### Unity 2022.3 LTS
@@ -129,8 +127,6 @@ There is [an example Unity 2022.3 project](https://github.com/learntoflutter/flu
  requirements that all new apps and updates targeting Android 15+ (SDK 35) [must support 16 KB page sizes](https://android-developers.googleblog.com/2025/05/prepare-play-apps-for-devices-with-16kb-page-size.html).
   See [this announcement from Unity](https://discussions.unity.com/t/info-unity-engine-support-for-16-kb-memory-page-sizes-android-15/1589588) for more information.
 </details>
-
-[Unity as a library](https://docs.unity3d.com/Manual/UnityasaLibrary.html) was only intended by Unity to be used fullscreen (running in it's own `UnityPlayerActivity.java` Activity on Android, or using `UnityAppController.mm` as the root UIViewController on iOS). By embedding Unity into a Flutter widget, this plugin breaks this assumption, making it quite delicate. It also calls undocumented functions written by Unity, and implements various workarounds, which is why this plugin may not work with different versions of Unity. If you need support for different versions, this package is [federated](https://docs.flutter.dev/packages-and-plugins/developing-packages#federated-plugins) to allow easier extension by contributors for different versions of Unity using alternate platform packages - [consult the wiki for help developing and contributing your own.](https://github.com/learntoflutter/flutter_embed_unity/wiki)
 
 
 ## Only supports Flutter 3.3.x, 3.7.x, 3.10.x, 3.13.x, 3.22.x or later
@@ -206,7 +202,6 @@ Other similator setups may not work due to architecture mismatches between the U
 ## Alternatives
 If you need to support other versions of unity, consider using [flutter_unity_widget](https://pub.dev/packages/flutter_unity_widget) or [consult the Wiki](https://github.com/learntoflutter/flutter_embed_unity/wiki) for instructions on how to create your own platform-specific sub-package to this federated package to target different versions of Unity.
 
-Flutter Forward 2023 demonstrated [an early preview of 3D support directly in Dart using Impeller](https://www.youtube.com/watch?v=zKQYGKAe5W8&t=7067s&ab_channel=Flutter). If you need only basic 3D rendering, this may be a better alternative.
 
 
 # Setup
