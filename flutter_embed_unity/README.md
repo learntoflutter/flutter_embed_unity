@@ -816,6 +816,10 @@ See [the Wiki](https://github.com/learntoflutter/flutter_embed_unity/wiki/Advanc
 
 # Common issues
 
+## Undefined symbol: OBJC_CLASS$_UnityFramework
+
+This is caused by changes to Xcode's linker in XCode 26. Upgrade to version 3.0.0 or later of this package. See [#84](https://github.com/learntoflutter/flutter_embed_unity/issues/84)
+
 ## Namespace 'com.google.ar.core' is used in multiple modules and/or libraries: :arcore_client:, :unityandroidpermissions:.
 
 This may be caused by (a conflict with earlier versions of Unity and ARFoundation with Gradle 9+)[https://discussions.unity.com/t/android-gradle-9-1-0-agp-9-0-0-update-in-unity-6-0/1709062] which was fixed in later versions. If you are using Gradle 9, update Unity to >= 6000.3.17f1 and ARFoundation >= 6.5.0
