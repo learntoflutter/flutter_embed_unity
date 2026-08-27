@@ -22,6 +22,14 @@ allprojects {
 }
 
 apply plugin: "com.android.library"
+// Only apply the Kotlin Gradle Plugin only when the app's Android Gradle Plugin version is less 
+// than version 9.
+// TODO: In the future if we increase the minimum Flutter to 3.44+ we can remove this apply of
+// Kotlin Gradle Plugin entirely
+def agpMajor = com.android.Version.ANDROID_GRADLE_PLUGIN_VERSION.tokenize('.')[0] as int
+if (agpMajor < 9) {
+    apply plugin: 'kotlin-android'
+}
 
 android {
     namespace = "com.learntoflutter.flutter_embed_unity_android"
@@ -74,8 +82,10 @@ android {
     }
 }
 
-kotlin {
-    compilerOptions {
-        jvmTarget = org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17
+project.pluginManager.withPlugin('kotlin-android') {
+    kotlin {
+        compilerOptions {
+            jvmTarget = org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17
+        }
     }
 }
