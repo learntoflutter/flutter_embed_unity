@@ -11,6 +11,22 @@ Embed your [Unity 3D](https://unity.com/) game / app into Flutter apps as a widg
 
 # Usage
 
+## Platform implementation override required for Unity 2022.3 LTS on Android
+
+Currently, the default configuration of the plugin supports Unity 6 LTS on Android.
+
+If you are targeting Unity 2022.3 LTS, you now need to explicitly override the default implementation for android from Unity 6 to Unity 2022.3 by adding flutter_embed_unity_2022_3_android as a dependency:
+
+```yaml
+dependencies:
+  ...
+  flutter_embed_unity: ^3.0.0  # (replace version with the latest available)
+  flutter_embed_unity_2022_3_android: ^2.0.0  # <-- If using Unity 2022.3, add this (replace version with the latest available)
+```
+
+For iOS only, you do not need to add any additional dependency - the default implementation for iOS is compatible with both Unity 6 LTS and Unity 2022.3 LTS.
+
+
 ## Using the EmbedUnity widget
 
 After setting up your Unity and Flutter project (see below), use the `EmbedUnity` widget to show your Unity game and listen to messages sent from your Unity scripts. Use the top level dart function `sendToUnity` to send messages from Flutter to any game object in Unity which has a `MonoBehaviour` script attached containing a public function accepting one `string` parameter.
@@ -77,21 +93,6 @@ There is [an example Unity 2022.3 project](https://github.com/learntoflutter/flu
 
 
 # Limitations
-
-## Platform implementation override required for Unity 2022.3 LTS on Android
-
-Currently, the default configuration of the plugin supports Unity 6 LTS on Android.
-
-If you are targeting Unity 2022.3 LTS, you now need to explicitly override the default implementation for android from Unity 6 to Unity 2022.3 by adding flutter_embed_unity_2022_3_android as a dependency:
-
-```yaml
-dependencies:
-  ...
-  flutter_embed_unity: ^3.0.0  # (replace version with the latest available)
-  flutter_embed_unity_2022_3_android: ^2.0.0  # <-- If using Unity 2022.3, add this (replace version with the latest available)
-```
-
-For iOS only, you do not need to add any additional dependency - the default implementation for iOS is compatible with both Unity 6 LTS and Unity 2022.3 LTS.
 
 
 ## Unity version support
