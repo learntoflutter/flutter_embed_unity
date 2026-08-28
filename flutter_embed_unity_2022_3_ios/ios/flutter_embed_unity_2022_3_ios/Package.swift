@@ -48,6 +48,10 @@ let package = Package(
                 // https://developer.apple.com/documentation/xcode/bundling-resources-with-a-swift-package
             ],
             linkerSettings: [
+                // This was added to resolve the following build error which started happening
+                // in Xcode 26:
+                //   Undefined symbol: OBJC_CLASS$_UnityFramework
+                // See https://github.com/learntoflutter/flutter_embed_unity/issues/84
                 .unsafeFlags([
                     "-Xlinker", "-U", "-Xlinker", "_OBJC_CLASS_$_UnityFramework"
                 ])
