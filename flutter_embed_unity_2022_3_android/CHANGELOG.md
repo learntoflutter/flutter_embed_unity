@@ -1,3 +1,11 @@
+## 2.1.0-dev.1
+
+August 2026
+
+* Migrated build from Groovy to Kotlin DSL
+* Bumped example Gradle / AGP / Kotlin versions
+
+
 ## 2.0.0
 
 ### ⚠️ Breaking changes!

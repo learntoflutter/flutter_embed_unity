@@ -1,3 +1,14 @@
+## 2.1.0-dev.1
+
+August 2026
+
+### Xcode 26 compatibility
+
+Fixed [#81](https://github.com/learntoflutter/flutter_embed_unity/issues/81) which caused a build error when using the latest Xcode and SPM:
+
+> Undefined symbol: OBJC_CLASS$_UnityFramework
+
+
 ## 2.0.0
 
 ### ⚠️ Breaking changes!

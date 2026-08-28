@@ -1,4 +1,18 @@
+## 2.1.0-dev.1
+
+August 2026
+
+### Gradle 9 compatibility
+
+* Migrated to support Gradle 9 and built-in Kotlin (with backward compatibility for apps using Flutter < 3.44)
+* Updated examples for compatibility with Flutter 3.47, Gradle 9, new DSL
+* Updated example Unity 6 project to use Unity >= 6000.3.17f1 and ARFoundation >= 6.5.0 for [Gradle 9 compatibility](https://discussions.unity.com/t/android-gradle-9-1-0-agp-9-0-0-update-in-unity-6-0/1709062)
+* Migrated build from Groovy to Kotlin DSL
+
+
 ## 2.0.0
+
+April 2026
 
 ### ⚠️ Breaking changes!
 

@@ -1,12 +1,13 @@
-## 2.1.0
+## 2.1.0-dev.1
 
 August 2026
 
 ### Gradle 9 compatibility
 
-* Migrated flutter_embed_unity_6000_0_android to support Gradle 9 and built-in Kotlin
+* Migrated flutter_embed_unity_6000_0_android to support Gradle 9 and built-in Kotlin (with backward compatibility for apps using Flutter < 3.44)
 * Updated examples for compatibility with Flutter 3.47, Gradle 9, new DSL
 * Updated example Unity 6 project to use Unity >= 6000.3.17f1 and ARFoundation >= 6.5.0 for [Gradle 9 compatibility](https://discussions.unity.com/t/android-gradle-9-1-0-agp-9-0-0-update-in-unity-6-0/1709062)
+* Migrated android implementation packages build from Groovy to Kotlin DSL
 
 > Note that Unity 2022.3 LTS is now unsupported without an extended industry license and [currently does not have support for Gradle 9](https://docs.unity3d.com/2022.3/Documentation/Manual/android-gradle-overview.html)
 
