@@ -6,7 +6,7 @@ Embed your [Unity 3D](https://unity.com/) game / app into Flutter apps as a widg
 
 
 > [!IMPORTANT]
-> Embedding Unity in Flutter is not supported by Unity, and is essentially a complicated hack. Consider carefully before commiting to using this plugin, as future changes to Flutter, Unity, Xcode, Gradle or other moving parts may unexpectedly break this plugin, which may not be fixed quickly or at all. Building your app entirely in Unity, or entirely in Flutter / Dart using [Flutter GPU](https://github.com/flutter-team-archive/engine/blob/main/docs/impeller/Flutter-GPU.md) may be a better alternative (see [fscene.dev](https://fscene.dev/) for some great examples of what is possible using Flutter GPU by leveraging the [flutter_scene](https://pub.dev/packages/flutter_scene) package).
+> Embedding Unity in Flutter is not supported by Unity and involves many moving parts. Consider carefully before commiting to using this plugin, as future changes to Flutter, Unity, Xcode, Swift Package Manager, Gradle, AGP, JVM versions or other build plumbing may unexpectedly break this plugin, which may be difficult to fix. Building your app entirely in Unity, or entirely in Flutter using [Flutter GPU](https://github.com/flutter-team-archive/engine/blob/main/docs/impeller/Flutter-GPU.md) may be a better alternative (see [fscene.dev](https://fscene.dev/) for some great examples of what is possible using Flutter GPU by leveraging the [flutter_scene](https://pub.dev/packages/flutter_scene) package).
 
 
 # Usage
@@ -813,7 +813,7 @@ See [the Wiki](https://github.com/learntoflutter/flutter_embed_unity/wiki/Advanc
 
 ## Undefined symbol: OBJC_CLASS$_UnityFramework
 
-This is caused by changes to Xcode's linker in XCode 26. Upgrade to version 3.0.0 or later of this package. See [#84](https://github.com/learntoflutter/flutter_embed_unity/issues/84)
+This is caused by changes to Xcode's linker in XCode 26 package (see [#84](https://github.com/learntoflutter/flutter_embed_unity/issues/84)) which has been fixed in an updated version of this plugin - check the [changlelog notes](https://pub.dev/packages/flutter_embed_unity/changelog)
 
 ## Namespace 'com.google.ar.core' is used in multiple modules and/or libraries: :arcore_client:, :unityandroidpermissions:.
 
